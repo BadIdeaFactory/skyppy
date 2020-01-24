@@ -9,7 +9,7 @@ We use a number of open source libraries to do the tricky bits, such as ...
 
 2. the legendary [youtube-dl](https://github.com/ytdl-org/youtube-dl) for which we have so much love. ♥️
 
-## applications
+## uses
 
 - skypping the annoying male voices in videos (we appreciate that gender is fluid but this is the algorithms best guess)
 - skypping all the speech in videos (let's face it - we can understand a lot just from gestures and facial expressions)
