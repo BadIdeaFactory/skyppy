@@ -17,3 +17,6 @@ We use a number of open source libraries to do the tricky bits, such as ...
 - skypping the noise (life is to noisy already)
 - skypping the silence (who needs pregnant pauses - life is too short)
 
+##Installation
+
+Download all the files and double click on index.html
