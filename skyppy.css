@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+}
+
+.title {
+  font-family: 'Pacifico', cursive;
+  color: #1094fb;
+}
+
+.jumbotron {
+  padding: 16px;
+}
+
+.search-bar {
+  padding-bottom: 24px;
+}
+
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.form-control-underlined {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-radius: 0;
+  padding-left: 0;
+}
+
+.form-control::placeholder {
+  font-size: 0.95rem;
+  color: #aaa;
+  font-style: italic;
+}
+
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+html {
+  font-size: 18px;
+}
+fieldset {
+  display: block;
+  position: absolute;
+}
+label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: block;
+  margin: 1em;
+}
+label > input {
+  display: none;
+}
+label span {
+  color: #6A759B;
+}
+label i {
+  display: inline-block;
+  width: 64px;
+  height: 40px;
+  border-radius: 20px;
+  vertical-align: middle;
+  transition: 0.25s 0.09s;
+  position: relative;
+  background: #deeff7;
+}
+label i:after {
+  content: " ";
+  display: block;
+  width: 30px;
+  height: 30px;
+  top: 5px;
+  left: 5px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.4);
+  transition: 0.15s;
+}
+label > input:checked + i {
+  background: #1094fb;
+}
+label > input:checked + i + span {
+  color: #29316b;
+}
+label > input:checked + i:after {
+  transform: translateX(25px);
+}
+
+
