@@ -42,70 +42,118 @@
         <!--<p>youtube_link: <input type="url" id="youtube_link" value="https://www.youtube.com/watch?v=udVvb5giPcg" required pattern="https?://.+"></p>-->
         <!--<button onclick="start_download_video()" class="btn btn-primary">download</button>-->
     </div>
+
+
     
     <div class="row">
+      
+      
       <div class="col-sm-6" id="video">
         <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-1">
+        <span class="skyp">Skyp...</span>
+      </div>
+      <div class="col-sm-5">
         <!--<p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="male">lower pitched voice</p>
         <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="female">higher pitched voice</p>
         <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="noEnergy">noEnergy (silence)</p>
         <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="noise">noise</p>
         <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="music">music</p>-->
-        <span> Skip: </span>
-        <fieldset>
+        
+        <fieldset style="text-align: right;">
           <label>
-            <input type="checkbox" value="male" name="lower"/>
-            <i></i> 
             <span>lower pitched voice</span> 
+            <input class="filterCheckbox" type="checkbox" value="male" name="lower"/>
+            <i></i> 
+            
           </label>
           <label>
-            <input type="checkbox" value="female" name="higher"/>
-            <i></i> 
             <span>higher pitched voice</span> 
+            <input class="filterCheckbox" type="checkbox" value="female" name="higher"/>
+            <i></i> 
+            
           </label>
           <label>
-            <input type="checkbox" value="noEnergy" name="quiet"/>
-            <i></i> 
             <span>quiet</span> 
+            <input class="filterCheckbox" type="checkbox" value="noEnergy" name="quiet"/>
+            <i></i> 
           </label>
           <label>
-            <input type="checkbox" value="noise" name="noise"/>
-            <i></i> 
             <span>noise</span> 
+            <input class="filterCheckbox" type="checkbox" value="noise" name="noise"/>
+            <i></i> 
           </label>
           <label>
-            <input type="checkbox" value="music" name="music"/>
-            <i></i> 
             <span>music</span> 
+            <input class="filterCheckbox" type="checkbox" value="music" name="music"/>
+            <i></i>  
           </label>
         </fieldset>    
       </div>
     </div>
-
-    <div class="text-center" id="video">
-      <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
+  </main>
+    <div class="row">
+      <div class="col-sm-12">
+        <p class="info">
+          
+        </p>
+      </div>
     </div>
 
-    <!--<div class="plyr__video-embed" id="player">
-      <iframe
-          src="https://www.youtube.com/embed/udVvb5giPcg?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=0&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1"
-          allowfullscreen
-          allowtransparency
-          allow="autoplay"
-      ></iframe>
+    <!--<div class="text-center" id="video">
+      <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
     </div>-->
 
-    <!--<button onclick="start()">play and skip...</button>-->
- 
-    <!--<button onclick="filterTiming()" class="btn btn-primary">skip</button>-->
+ <!-- Footer -->
+ <footer class="page-footer font-small teal pt-4">
 
-    <p>
-      We will segment media of up to 30 minutes. For longer pieces or custom projects based on this technology please contact  <a href="https://twitter.com/mscarselli">Marco</a> or <a href="https://twitter.com/maboa/">Mark</a>.
-    </p>
+  <!-- Footer Text -->
+  <div class="container-fluid text-center text-md-left">
 
-    <div>
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase font-weight-bold">Limitations</h5>
+        <p>Currently only media under 30 minutes in length will be segmented. For longer pieces or custom projects based on this technology please contact  <a href="https://twitter.com/mscarselli">Marco</a> or <a href="https://twitter.com/maboa/">Mark</a>.</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mb-md-0 mb-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase font-weight-bold">Disclaimer</h5>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio deserunt fuga perferendis modi earum
+          commodi aperiam temporibus quod nulla nesciunt aliquid debitis ullam omnis quos ipsam, aspernatur id
+          excepturi hic.</p>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Text -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://biffud.com/">Bad Idea Factory LLC</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+    <!--<div>
         <p id="crono"></p>
     </div>
     <div>
@@ -113,7 +161,7 @@
     </div>
     <div id="segmenter_to_list_div">
     </div>
-  </main>    
+  </main>    -->
 
   <script>
   var player = new Plyr('#player');

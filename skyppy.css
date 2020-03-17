@@ -5,9 +5,14 @@ body {
   font-size: 1rem;
 }
 
-.title {
+.title, .skyp {
   font-family: 'Pacifico', cursive;
   color: #1094fb;
+}
+
+.skyp {
+  font-size: 32px;
+  padding-right: 64px;
 }
 
 .jumbotron {
@@ -45,7 +50,7 @@ html {
 }
 fieldset {
   display: block;
-  position: absolute;
+  /*position: absolute;*/
 }
 label {
   font-family: "Montserrat", sans-serif;
@@ -93,4 +98,13 @@ label > input:checked + i:after {
   transform: translateX(25px);
 }
 
+footer {
+  background-color: #1094fb;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+footer a {
+  color: #000099;
+}
 
