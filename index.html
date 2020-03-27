@@ -47,12 +47,11 @@
     
     <div class="row">
       
-      
       <div class="col-sm-6" id="video">
         <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
       </div>
       <div class="col-sm-1">
-        <span class="skyp">Skyp...</span>
+        <span class="skyp">skip...</span>
       </div>
       <div class="col-sm-5">
         <!--<p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="male">lower pitched voice</p>
@@ -65,29 +64,27 @@
           <label>
             <span>lower pitched voice</span> 
             <input class="filterCheckbox" type="checkbox" value="male" name="lower"/>
-            <i></i> 
-            
+            <i id="btn-lower"></i> 
           </label>
           <label>
             <span>higher pitched voice</span> 
             <input class="filterCheckbox" type="checkbox" value="female" name="higher"/>
-            <i></i> 
-            
+            <i id="btn-higher"></i> 
           </label>
           <label>
             <span>quiet</span> 
             <input class="filterCheckbox" type="checkbox" value="noEnergy" name="quiet"/>
-            <i></i> 
+            <i id="btn-quiet"></i> 
           </label>
           <label>
             <span>noise</span> 
             <input class="filterCheckbox" type="checkbox" value="noise" name="noise"/>
-            <i></i> 
+            <i id="btn-noise"></i> 
           </label>
           <label>
             <span>music</span> 
             <input class="filterCheckbox" type="checkbox" value="music" name="music"/>
-            <i></i>  
+            <i id="btn-music"></i>  
           </label>
         </fieldset>    
       </div>
@@ -104,6 +101,8 @@
     <!--<div class="text-center" id="video">
       <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
     </div>-->
+
+    <div id="timeline"></div>
 
  <!-- Footer -->
  <footer class="page-footer font-small teal pt-4">
@@ -166,9 +165,23 @@
   <script>
   var player = new Plyr('#player');
 
+  var result;
+
   player.on('play', event => {
     console.log("play event");
     start();
+  });
+
+  var timeline = document.getElementById('timeline');
+
+  timeline.addEventListener('click', event => {
+    //console.log(event.clientX);
+    //console.log(timeline.clientWidth);
+    //console.log(player.duration);
+    //console.log(player.duration * event.clientX / timeline.clientWidth);
+    player.currentTime = player.duration * event.clientX / timeline.clientWidth;
+    player.play();
+    return false;
   });
 
   var replace = function(url) {
@@ -603,6 +616,7 @@
   var all_timings = segmenter_to_list;
   console.log("about to filterTiming()");
   filterTiming();
+
   var start_download_video = function() {
 
     document.getElementById("crono").innerHTML = "start process...";
@@ -639,17 +653,31 @@
     });*/
   };
 
-  
+  function drawTimeline(times) {
+    console.log("p-----");
+    console.log(times);
+    timings = times;
+    var tl = document.getElementById('timeline');
+    tl.innerHTML = "";
+    var totalTime = timings[timings.length-1][2];
+    console.log(tl);
+    for (var t=0; t < times.length; t++) {
+      var widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
+      var label = times[t][0];
+      tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%"></div>`);
+    }
+  }
+
 
   function filterTiming() {
     result = [];
-    console.log("filterTiming");
-    console.log(all_timings);
+    //console.log("filterTiming");
+    //console.log(all_timings);
     var inputElements = document.getElementsByClassName('filterCheckbox');
-    console.log("inputElements");
-    console.log(inputElements);
+    //console.log("inputElements");
+    //console.log(inputElements);
     for (var i = 0; i < all_timings.length; i++) {
-      console.log(all_timings[i][0]);
+      //console.log(all_timings[i][0]);
 
       for(var j = 0; inputElements[j]; j++) {
         if(inputElements[j].checked == false) {
@@ -660,8 +688,10 @@
         }
       }
     }
-    console.log("result=");
+    
+    console.log("-----");
     console.log(result);
+    drawTimeline(result);
     return result;
   }
 
@@ -671,7 +701,7 @@
     var counter = 0;
     var margin = 0.1;
     var timings = filterTiming();
-    //console.log(timings);
+    console.log(timings);
     //player.play();
 
     function skip() {
@@ -680,7 +710,12 @@
       if (counter === 0) {
         //player.pause();
         //player.play();
-        player.currentTime = timings[index][1];
+        console.log("-----");
+        console.log(timings);
+        console.log(index);
+        if (typeof timings !== 'undefined') {
+          player.currentTime = timings[index][1];
+        }
         
         //console.log(timings[index][1]);
         requestAnimationFrame(timeUpdate);
@@ -692,7 +727,7 @@
 
     function timeUpdate() {
 
-      console.log(player.currentTime + " > " + timings[index][2]);
+      //console.log(player.currentTime + " > " + timings[index][2]);
 
       if (player.currentTime >= timings[index][2] - margin) {
         //player.pause();
