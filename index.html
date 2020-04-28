@@ -43,27 +43,37 @@
         <!--<button onclick="start_download_video()" class="btn btn-primary">download</button>-->
     </div>
 
+    
     <label>
+      <img class="editCheckname" src="edit.svg" />
       <span>lower voice</span> 
       <input class="filterCheckbox" type="checkbox" value="male" name="lower"/>
       <i id="btn-lower"></i> 
     </label>
+   
     <label>
+      <img class="editCheckname" src="edit.svg" />
       <span>higher voice</span> 
       <input class="filterCheckbox" type="checkbox" value="female" name="higher"/>
       <i id="btn-higher"></i> 
     </label>
+    
     <label>
+      <img class="editCheckname" src="edit.svg" />
       <span>quiet</span> 
       <input class="filterCheckbox" type="checkbox" value="noEnergy" name="quiet"/>
       <i id="btn-quiet"></i> 
     </label>
+    
     <label>
+      <img class="editCheckname" src="edit.svg" />
       <span>noise</span> 
       <input class="filterCheckbox" type="checkbox" value="noise" name="noise"/>
       <i id="btn-noise"></i> 
     </label>
+    
     <label>
+      <img class="editCheckname" src="edit.svg" />
       <span>music</span> 
       <input class="filterCheckbox" type="checkbox" value="music" name="music"/>
       <i id="btn-music"></i>  
@@ -118,7 +128,7 @@
     <a href="https://biffud.com/">Bad Idea Factory LLC</a>
   </div>
   <!-- Copyright -->
-
+1`  
 </footer>
 <!-- Footer -->
 
@@ -133,6 +143,23 @@
   </main>    -->
 
   <script>
+
+  /*document.getElementsByClassName("editCheckname")[0].onclick = function() {
+    console.log("click");
+    return false;
+  }*/
+
+  var labelEdit = document.getElementsByClassName("editCheckname");
+
+  for (let l = 0; l < labelEdit.length; l++) {
+    labelEdit[l].addEventListener('click', event => {
+      event.target.nextElementSibling.contentEditable = 'true';
+      event.target.nextElementSibling.focus();
+      event.preventDefault();
+      return false;
+    });
+  }
+
   var player = new Plyr('#player');
 
   var result;
