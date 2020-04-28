@@ -68,7 +68,7 @@ label {
   font-family: "Montserrat", sans-serif;
   font-size: 1.2rem;
   cursor: pointer;
-  display: block;
+  /*display: block;*/
   margin: 1em;
 }
 label > input {
@@ -121,7 +121,7 @@ label > input:checked + i:after {
 }
 
 #btn-music:after {
-  background-color: #d2d2e0;
+  background-color: #ffffff;
 }
 
 .label-noEnergy {
