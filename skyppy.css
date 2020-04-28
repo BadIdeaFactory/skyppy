@@ -102,10 +102,8 @@ label i:after {
 }
 
 
-
-
 label > input:checked + i {
-  background: #1094fb;
+  background: #87c3f1;
 }
 label > input:checked + i + span {
   color: #29316b;
@@ -121,7 +119,7 @@ label > input:checked + i:after {
 }
 
 #btn-music:after {
-  background-color: #ffffff;
+  background-color: #d2d2e0;
 }
 
 .label-noEnergy {
