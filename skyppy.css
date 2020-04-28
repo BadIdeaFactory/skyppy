@@ -102,10 +102,8 @@ label i:after {
 }
 
 
-
-
 label > input:checked + i {
-  background: #1094fb;
+  background: #87c3f1;
 }
 label > input:checked + i + span {
   color: #29316b;
@@ -121,7 +119,7 @@ label > input:checked + i:after {
 }
 
 #btn-music:after {
-  background-color: #ffffff;
+  background-color: #d2d2e0;
 }
 
 .label-noEnergy {
@@ -172,5 +170,16 @@ footer {
 
 footer a {
   color: #000099;
+}
+
+.editCheckname {
+  margin-right: -4px;
+  padding-bottom: 3px;
+  width: 16px;
+  filter: invert(93%) sepia(10%) saturate(609%) hue-rotate(196deg) brightness(93%) contrast(89%);
+}
+
+.editCheckname:hover {
+  filter: invert(49%) sepia(6%) saturate(2136%) hue-rotate(189deg) brightness(90%) contrast(83%);
 }
 
