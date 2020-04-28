@@ -46,35 +46,35 @@
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span>lower voice</span> 
+      <span class="checkname">lower voice</span> 
       <input class="filterCheckbox" type="checkbox" value="male" name="lower"/>
       <i id="btn-lower"></i> 
     </label>
    
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span>higher voice</span> 
+      <span class="checkname">higher voice</span> 
       <input class="filterCheckbox" type="checkbox" value="female" name="higher"/>
       <i id="btn-higher"></i> 
     </label>
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span>quiet</span> 
+      <span class="checkname">quiet</span> 
       <input class="filterCheckbox" type="checkbox" value="noEnergy" name="quiet"/>
       <i id="btn-quiet"></i> 
     </label>
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span>noise</span> 
+      <span class="checkname">noise</span> 
       <input class="filterCheckbox" type="checkbox" value="noise" name="noise"/>
       <i id="btn-noise"></i> 
     </label>
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span>music</span> 
+      <span class="checkname">music</span> 
       <input class="filterCheckbox" type="checkbox" value="music" name="music"/>
       <i id="btn-music"></i>  
     </label>
@@ -128,7 +128,7 @@
     <a href="https://biffud.com/">Bad Idea Factory LLC</a>
   </div>
   <!-- Copyright -->
-1`  
+  
 </footer>
 <!-- Footer -->
 
@@ -144,12 +144,10 @@
 
   <script>
 
-  /*document.getElementsByClassName("editCheckname")[0].onclick = function() {
-    console.log("click");
-    return false;
-  }*/
+  const labelParams = ["l","h","q","n","m"];
 
-  var labelEdit = document.getElementsByClassName("editCheckname");
+
+  let labelEdit = document.getElementsByClassName("editCheckname");
 
   for (let l = 0; l < labelEdit.length; l++) {
     labelEdit[l].addEventListener('click', event => {
@@ -160,16 +158,61 @@
     });
   }
 
-  var player = new Plyr('#player');
+  let label = document.getElementsByClassName("checkname");
 
-  var result;
+  for (let m = 0; m < label.length; m++) {
+    label[m].addEventListener('input', event => {
+      if (event.data == null) {
+        event.target.contentEditable = false;
+        event.target.innerHTML = event.target.innerHTML.replace('<br>','');
+        event.target.blur();
+        insertParam(labelParams[m], event.target.innerText);
+      }
+      event.preventDefault();
+      return false;
+    });
+
+    label[m].addEventListener('blur', event => {
+      event.target.blur();
+      event.preventDefault();
+      console.log(event.target);
+      insertParam(labelParams[m], event.target.innerText);
+      return false;
+    });
+  }
+
+  function insertParam(key, value) {
+    
+    key = encodeURIComponent(key); 
+    value = encodeURIComponent(value);
+    console.log(value);
+
+    let s = document.location.hash;
+    let kvp = key+"="+value;
+    console.log(kvp);
+
+    let r = new RegExp("(&|\\#)"+key+"=[^\&]*");
+
+    s = s.replace(r,"$1"+kvp);
+
+    if(!RegExp.$1) {s += (s.length>0 ? '&' : '#') + kvp;};
+
+    console.log("====");
+    console.log(s);
+    document.location.hash = s;
+  }
+
+
+  let player = new Plyr('#player');
+
+  let result;
 
   player.on('play', event => {
     console.log("play event");
     start();
   });
 
-  var timeline = document.getElementById('timeline');
+  let timeline = document.getElementById('timeline');
 
   timeline.addEventListener('click', event => {
     //console.log(event.clientX);
@@ -181,7 +224,7 @@
     return false;
   });
 
-  var replace = function(url) {
+  let replace = function(url) {
     player.source = {
       type: 'video',
       sources: [
@@ -193,7 +236,7 @@
     }
   };
 
-  var segmenter_to_list = [
+  let segmenter_to_list = [
     [
       "music",
       0,
@@ -607,14 +650,14 @@
   ];
 
 
-  var miavar;
-  var embed;
-  var html_video;
-  var all_timings = segmenter_to_list;
+  let miavar;
+  let embed;
+  let html_video;
+  let all_timings = segmenter_to_list;
   console.log("about to filterTiming()");
   filterTiming();
 
-  var start_download_video = function() {
+  let start_download_video = function() {
 
     document.getElementById("crono").innerHTML = "start process...";
 
@@ -628,7 +671,7 @@
     data: payload
     })
     .then(function (response) {
-        miavar =  "json" + response.data["result"];
+        mialet =  "json" + response.data["result"];
         embed = response.data["embed"];
         let video_id = embed.split("?v=");
         replace(video_id[video_id.length - 1]);
@@ -654,13 +697,13 @@
     console.log("p-----");
     console.log(times);
     timings = times;
-    var tl = document.getElementById('timeline');
+    let tl = document.getElementById('timeline');
     tl.innerHTML = "";
-    var totalTime = timings[timings.length-1][2];
+    let totalTime = timings[timings.length-1][2];
     console.log(tl);
-    for (var t=0; t < times.length; t++) {
-      var widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
-      var label = times[t][0];
+    for (let t=0; t < times.length; t++) {
+      let widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
+      let label = times[t][0];
       tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%"></div>`);
     }
   }
@@ -670,13 +713,13 @@
     result = [];
     //console.log("filterTiming");
     //console.log(all_timings);
-    var inputElements = document.getElementsByClassName('filterCheckbox');
+    let inputElements = document.getElementsByClassName('filterCheckbox');
     //console.log("inputElements");
     //console.log(inputElements);
-    for (var i = 0; i < all_timings.length; i++) {
+    for (let i = 0; i < all_timings.length; i++) {
       //console.log(all_timings[i][0]);
 
-      for(var j = 0; inputElements[j]; j++) {
+      for(let j = 0; inputElements[j]; j++) {
         if(inputElements[j].checked == false) {
           if (inputElements[j].value == all_timings[i][0]) {
             result.push(all_timings[i]);
@@ -693,11 +736,11 @@
   }
 
 
-  var start = function (){
-    var index = 0;
-    var counter = 0;
-    var margin = 0.1;
-    var timings = filterTiming();
+  let start = function (){
+    let index = 0;
+    let counter = 0;
+    let margin = 0.1;
+    let timings = filterTiming();
     console.log(timings);
     //player.play();
 
@@ -730,7 +773,7 @@
         //player.pause();
         index = index + 1;
         try {
-          var stop = timings[index][1];
+          let stop = timings[index][1];
         }
         catch(err) {
           console.log(err);
