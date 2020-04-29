@@ -46,39 +46,38 @@
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span class="checkname">lower voice</span> 
+      <span id="checkname-l" class="checkname">lower voice</span> 
       <input class="filterCheckbox" type="checkbox" value="male" name="lower"/>
       <i id="btn-lower"></i> 
     </label>
    
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span class="checkname">higher voice</span> 
+      <span id="checkname-h" class="checkname">higher voice</span> 
       <input class="filterCheckbox" type="checkbox" value="female" name="higher"/>
       <i id="btn-higher"></i> 
     </label>
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span class="checkname">quiet</span> 
+      <span id="checkname-q" class="checkname">quiet</span> 
       <input class="filterCheckbox" type="checkbox" value="noEnergy" name="quiet"/>
       <i id="btn-quiet"></i> 
     </label>
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span class="checkname">noise</span> 
+      <span id="checkname-n" class="checkname">noise</span> 
       <input class="filterCheckbox" type="checkbox" value="noise" name="noise"/>
       <i id="btn-noise"></i> 
     </label>
     
     <label>
       <img class="editCheckname" src="edit.svg" />
-      <span class="checkname">music</span> 
+      <span id="checkname-m" class="checkname">music</span> 
       <input class="filterCheckbox" type="checkbox" value="music" name="music"/>
       <i id="btn-music"></i>  
     </label>
-    
 
     <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
      
@@ -144,8 +143,17 @@
 
   <script>
 
+  const hashArray = window.location.hash.substr(1).split('&');
+  console.log(hashArray);
+
   const labelParams = ["l","h","q","n","m"];
 
+  // grab any labels off the URL
+
+  for (let h = 0; h < hashArray.length; h++) {
+    let keyval = hashArray[h].split('=');
+    document.getElementById('checkname-'+keyval[0]).innerHTML = decodeURIComponent(keyval[1]);
+  }
 
   let labelEdit = document.getElementsByClassName("editCheckname");
 
@@ -162,11 +170,13 @@
 
   for (let m = 0; m < label.length; m++) {
     label[m].addEventListener('input', event => {
-      if (event.inputType == "insertParagraph") {
+      console.log(event.inputType);
+      console.dir(event);
+      if (event.inputType == "insertParagraph" || (event.inputType == "insertText" && event.data == null)) { // check for return bring hit
         event.target.contentEditable = false;
         event.target.innerHTML = event.target.innerHTML.replace('<br>','');
         event.target.blur();
-        document.location.hash = addUrlParam(document.location.hash, labelParams[m], event.target.innerText);
+        addUrlParam(labelParams[m], event.target.innerText);
       }
       event.preventDefault();
       return false;
@@ -175,17 +185,21 @@
     label[m].addEventListener('blur', event => {
       event.target.blur();
       event.preventDefault();
-      document.location.hash = addUrlParam(document.location.hash, labelParams[m], event.target.innerText);
+      addUrlParam(labelParams[m], event.target.innerText);
       return false;
     });
   }
 
+  function addUrlParam(key, val){
 
-  var addUrlParam = function(search, key, val){
-    var newParam = key + '=' + val,
+    //key = encodeURIComponent(key); 
+    //value = encodeURIComponent(value);
+
+    let newParam = key + '=' + val,
         params = newParam;
 
-    // If the "search" string exists, then build params from it
+    let search = document.location.hash;    
+
     if (search) {
       // Try to replace an existance instance
       params = search.replace(new RegExp('([#&])' + key + '[^&]*'), '$1' + newParam);
@@ -196,7 +210,7 @@
       }
     }
 
-    return params;
+    document.location.hash = params;
   };
 
 
