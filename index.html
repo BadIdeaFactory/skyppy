@@ -162,11 +162,11 @@
 
   for (let m = 0; m < label.length; m++) {
     label[m].addEventListener('input', event => {
-      if (event.data == null) {
+      if (event.inputType == "insertParagraph") {
         event.target.contentEditable = false;
         event.target.innerHTML = event.target.innerHTML.replace('<br>','');
         event.target.blur();
-        insertParam(labelParams[m], event.target.innerText);
+        document.location.hash = addUrlParam(document.location.hash, labelParams[m], event.target.innerText);
       }
       event.preventDefault();
       return false;
@@ -175,32 +175,29 @@
     label[m].addEventListener('blur', event => {
       event.target.blur();
       event.preventDefault();
-      console.log(event.target);
-      insertParam(labelParams[m], event.target.innerText);
+      document.location.hash = addUrlParam(document.location.hash, labelParams[m], event.target.innerText);
       return false;
     });
   }
 
-  function insertParam(key, value) {
-    
-    key = encodeURIComponent(key); 
-    value = encodeURIComponent(value);
-    console.log(value);
 
-    let s = document.location.hash;
-    let kvp = key+"="+value;
-    console.log(kvp);
+  var addUrlParam = function(search, key, val){
+    var newParam = key + '=' + val,
+        params = newParam;
 
-    let r = new RegExp("(&|\\#)"+key+"=[^\&]*");
+    // If the "search" string exists, then build params from it
+    if (search) {
+      // Try to replace an existance instance
+      params = search.replace(new RegExp('([#&])' + key + '[^&]*'), '$1' + newParam);
 
-    s = s.replace(r,"$1"+kvp);
+      // If nothing was replaced, then add the new param to the end
+      if (params === search) {
+        params += '&' + newParam;
+      }
+    }
 
-    if(!RegExp.$1) {s += (s.length>0 ? '&' : '#') + kvp;};
-
-    console.log("====");
-    console.log(s);
-    document.location.hash = s;
-  }
+    return params;
+  };
 
 
   let player = new Plyr('#player');
