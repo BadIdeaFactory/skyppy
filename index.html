@@ -146,13 +146,20 @@
   const hashArray = window.location.hash.substr(1).split('&');
   console.log(hashArray);
 
+  
   const labelParams = ["l","h","q","n","m"];
 
   // grab any labels off the URL
 
-  for (let h = 0; h < hashArray.length; h++) {
-    let keyval = hashArray[h].split('=');
-    document.getElementById('checkname-'+keyval[0]).innerHTML = decodeURIComponent(keyval[1]);
+  if (window.location.hash.length > 0)
+  {
+    for (let h = 0; h < hashArray.length; h++) {
+      let keyval = hashArray[h].split('=');
+      let labelRef = document.getElementById('checkname-'+keyval[0]);
+      if (labelRef != null) {
+        labelRef.innerHTML = decodeURIComponent(keyval[1]);
+      }
+    }
   }
 
   let labelEdit = document.getElementsByClassName("editCheckname");
