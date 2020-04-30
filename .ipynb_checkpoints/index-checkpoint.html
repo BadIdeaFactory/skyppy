@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skyppy</title>
+  <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+  <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="skyppy.css" />
+  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet"> 
+
+  <style>
+    #video {
+      text-align: center;
+      height:400px;
+      width:640px;
+    }
+  </style>
+</head>
+<body>
+  <div class="jumbotron text-center">
+    <h1 class="title">Skyppy</h1>
+    <p>Cut to the chase!</p> 
+  </div>
+  <main role="main" class="container">
+    <div class="search-bar">
+      <form class="form-signin">  
+        <!--<input type="url" id="ytUrl" class="form-control" placeholder="YouTube URL" required autofocus>-->
+        <p style="text-align: center">YouTube URL:</p>
+        <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+          <div class="input-group">
+            
+            <input type="search" placeholder="https://www.youtube.com/watch?v=udVvb5giPcg" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+            <div class="input-group-append">
+              <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+      </form>
+        <!--<p>youtube_link: <input type="url" id="youtube_link" value="https://www.youtube.com/watch?v=udVvb5giPcg" required pattern="https?://.+"></p>-->
+        <!--<button onclick="start_download_video()" class="btn btn-primary">download</button>-->
+    </div>
+
+
+    
+    <div class="row">
+      
+      <div class="col-sm-6" id="video">
+        <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
+      </div>
+      <div class="col-sm-1">
+        <span class="skyp">skip...</span>
+      </div>
+      <div class="col-sm-5">
+        <!--<p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="male">lower pitched voice</p>
+        <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="female">higher pitched voice</p>
+        <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="noEnergy">noEnergy (silence)</p>
+        <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="noise">noise</p>
+        <p><input class="filterCheckbox" type="checkbox" name="filer-audio" value="music">music</p>-->
+        
+        <fieldset style="text-align: right;">
+          <label>
+            <span>lower pitched voice</span> 
+            <input class="filterCheckbox" type="checkbox" value="male" name="lower"/>
+            <i id="btn-lower"></i> 
+          </label>
+          <label>
+            <span>higher pitched voice</span> 
+            <input class="filterCheckbox" type="checkbox" value="female" name="higher"/>
+            <i id="btn-higher"></i> 
+          </label>
+          <label>
+            <span>quiet</span> 
+            <input class="filterCheckbox" type="checkbox" value="noEnergy" name="quiet"/>
+            <i id="btn-quiet"></i> 
+          </label>
+          <label>
+            <span>noise</span> 
+            <input class="filterCheckbox" type="checkbox" value="noise" name="noise"/>
+            <i id="btn-noise"></i> 
+          </label>
+          <label>
+            <span>music</span> 
+            <input class="filterCheckbox" type="checkbox" value="music" name="music"/>
+            <i id="btn-music"></i>  
+          </label>
+        </fieldset>    
+      </div>
+    </div>
+  </main>
+    <div class="row">
+      <div class="col-sm-12">
+        <p class="info">
+          
+        </p>
+      </div>
+    </div>
+
+    <!--<div class="text-center" id="video">
+      <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
+    </div>-->
+
+    <div id="timeline"></div>
+
+ <!-- Footer -->
+ <footer class="page-footer font-small teal pt-4">
+
+  <!-- Footer Text -->
+  <div class="container-fluid text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mt-md-0 mt-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase font-weight-bold">Limitations</h5>
+        <p>Currently only media under 30 minutes in length will be segmented. For longer pieces or custom projects based on this technology please contact  <a href="https://twitter.com/mscarselli">Marco</a> or <a href="https://twitter.com/maboa/">Mark</a>.</p>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <!-- Grid column -->
+      <div class="col-md-6 mb-md-0 mb-3">
+
+        <!-- Content -->
+        <h5 class="text-uppercase font-weight-bold">Disclaimer</h5>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio deserunt fuga perferendis modi earum
+          commodi aperiam temporibus quod nulla nesciunt aliquid debitis ullam omnis quos ipsam, aspernatur id
+          excepturi hic.</p>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Text -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://biffud.com/">Bad Idea Factory LLC</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+    <!--<div>
+        <p id="crono"></p>
+    </div>
+    <div>
+        <p id="result"></p>
+    </div>
+    <div id="segmenter_to_list_div">
+    </div>
+  </main>    -->
+
+  <script>
+  var player = new Plyr('#player');
+
+  var result;
+
+  player.on('play', event => {
+    console.log("play event");
+    start();
+  });
+
+  var timeline = document.getElementById('timeline');
+
+  timeline.addEventListener('click', event => {
+    //console.log(event.clientX);
+    //console.log(timeline.clientWidth);
+    //console.log(player.duration);
+    //console.log(player.duration * event.clientX / timeline.clientWidth);
+    player.currentTime = player.duration * event.clientX / timeline.clientWidth;
+    player.play();
+    return false;
+  });
+
+  var replace = function(url) {
+    player.source = {
+      type: 'video',
+      sources: [
+        {
+            src: url,
+            provider: 'youtube',
+        },
+      ],
+    }
+  };
+
+  var segmenter_to_list = [
+    [
+      "music",
+      0,
+      7.64
+    ],
+    [
+      "noEnergy",
+      7.64,
+      9.06
+    ],
+    [
+      "music",
+      9.06,
+      12.52
+    ],
+    [
+      "male",
+      12.52,
+      13.12
+    ],
+    [
+      "female",
+      13.12,
+      30.06
+    ],
+    [
+      "male",
+      30.06,
+      32.9
+    ],
+    [
+      "female",
+      32.9,
+      44.28
+    ],
+    [
+      "noEnergy",
+      44.28,
+      44.96
+    ],
+    [
+      "male",
+      44.96,
+      46.68
+    ],
+    [
+      "noEnergy",
+      46.68,
+      47.64
+    ],
+    [
+      "male",
+      47.64,
+      55.32
+    ],
+    [
+      "noEnergy",
+      55.32,
+      55.96
+    ],
+    [
+      "male",
+      55.96,
+      60.74
+    ],
+    [
+      "noEnergy",
+      60.74,
+      61.18
+    ],
+    [
+      "male",
+      61.18,
+      78.62
+    ],
+    [
+      "noEnergy",
+      78.62,
+      79.32
+    ],
+    [
+      "male",
+      79.32,
+      85.6
+    ],
+    [
+      "noEnergy",
+      85.6,
+      86.18
+    ],
+    [
+      "male",
+      86.18,
+      95.42
+    ],
+    [
+      "noEnergy",
+      95.42,
+      95.92
+    ],
+    [
+      "male",
+      95.92,
+      104.02
+    ],
+    [
+      "noEnergy",
+      104.02,
+      104.54
+    ],
+    [
+      "male",
+      104.54,
+      121.34
+    ],
+    [
+      "noEnergy",
+      121.34,
+      122.04
+    ],
+    [
+      "male",
+      122.04,
+      130.2
+    ],
+    [
+      "noEnergy",
+      130.2,
+      130.66
+    ],
+    [
+      "male",
+      130.66,
+      132.6
+    ],
+    [
+      "noEnergy",
+      132.6,
+      133.32
+    ],
+    [
+      "male",
+      133.32,
+      136.52
+    ],
+    [
+      "noEnergy",
+      136.52,
+      137.16
+    ],
+    [
+      "male",
+      137.16,
+      156.8
+    ],
+    [
+      "female",
+      156.8,
+      160.02
+    ],
+    [
+      "noEnergy",
+      160.02,
+      160.68
+    ],
+    [
+      "female",
+      160.68,
+      164.1
+    ],
+    [
+      "male",
+      164.1,
+      166.06
+    ],
+    [
+      "noEnergy",
+      166.06,
+      166.48
+    ],
+    [
+      "male",
+      166.48,
+      196.06
+    ],
+    [
+      "noEnergy",
+      196.06,
+      196.58
+    ],
+    [
+      "male",
+      196.58,
+      237.7
+    ],
+    [
+      "noEnergy",
+      237.7,
+      238.26
+    ],
+    [
+      "male",
+      238.26,
+      239.02
+    ],
+    [
+      "noEnergy",
+      239.02,
+      239.5
+    ],
+    [
+      "male",
+      239.5,
+      240.46
+    ],
+    [
+      "noEnergy",
+      240.46,
+      240.86
+    ],
+    [
+      "male",
+      240.86,
+      242.22
+    ],
+    [
+      "noEnergy",
+      242.22,
+      242.68
+    ],
+    [
+      "male",
+      242.68,
+      268.42
+    ],
+    [
+      "female",
+      268.42,
+      273.64
+    ],
+    [
+      "male",
+      273.64,
+      276.2
+    ],
+    [
+      "female",
+      276.2,
+      294.38
+    ],
+    [
+      "male",
+      294.38,
+      296.76
+    ],
+    [
+      "noEnergy",
+      296.76,
+      297.32
+    ],
+    [
+      "male",
+      297.32,
+      305.8
+    ],
+    [
+      "noEnergy",
+      305.8,
+      306.5
+    ],
+    [
+      "female",
+      306.5,
+      306.98
+    ],
+    [
+      "noEnergy",
+      306.98,
+      307.8
+    ],
+    [
+      "male",
+      307.8,
+      313.18
+    ],
+    [
+      "noEnergy",
+      313.18,
+      313.62
+    ],
+    [
+      "male",
+      313.62,
+      317.64
+    ],
+    [
+      "noEnergy",
+      317.64,
+      318.38
+    ],
+    [
+      "male",
+      318.38,
+      323.98
+    ],
+    [
+      "noEnergy",
+      323.98,
+      324.38
+    ],
+    [
+      "male",
+      324.38,
+      326.98
+    ],
+    [
+      "female",
+      326.98,
+      329.1
+    ],
+    [
+      "noEnergy",
+      329.1,
+      329.86
+    ],
+    [
+      "male",
+      329.86,
+      333.08
+    ],
+    [
+      "female",
+      333.08,
+      341.84
+    ],
+    [
+      "male",
+      341.84,
+      355.86
+    ],
+    [
+      "noEnergy",
+      355.86,
+      356.5
+    ],
+    [
+      "male",
+      356.5,
+      357.4
+    ],
+    [
+      "noEnergy",
+      357.4,
+      357.92
+    ],
+    [
+      "male",
+      357.92,
+      363.98
+    ],
+    [
+      "noEnergy",
+      363.98,
+      365.24
+    ],
+    [
+      "male",
+      365.24,
+      373.66
+    ],
+    [
+      "noEnergy",
+      373.66,
+      374.04
+    ],
+    [
+      "male",
+      374.04,
+      376.42
+    ],
+    [
+      "noEnergy",
+      376.42,
+      377.22
+    ],
+    [
+      "male",
+      377.22,
+      378.94
+    ],
+    [
+      "female",
+      378.94,
+      388.6
+    ],
+    [
+      "noEnergy",
+      388.6,
+      389.62
+    ],
+    [
+      "music",
+      389.62,
+      397.18
+    ],
+    [
+      "noEnergy",
+      397.18,
+      398.28
+    ]
+  ];
+
+
+  var miavar;
+  var embed;
+  var html_video;
+  var all_timings = segmenter_to_list;
+  console.log("about to filterTiming()");
+  filterTiming();
+
+  var start_download_video = function() {
+
+    document.getElementById("crono").innerHTML = "start process...";
+
+    /*let payload = {
+        link_video: document.getElementById("youtube_link").value
+    };
+
+    axios({
+    url: "{{url_for('give_video')}}",
+    method: 'post',
+    data: payload
+    })
+    .then(function (response) {
+        miavar =  "json" + response.data["result"];
+        embed = response.data["embed"];
+        let video_id = embed.split("?v=");
+        replace(video_id[video_id.length - 1]);
+        console.log(video_id[video_id.length - 1]);
+        html_data = response.data["html_data"];
+        segmenter_to_list = response.data["segmenter_to_list"];
+        all_timings = segmenter_to_list;
+
+    }).then(function(result) {
+        document.getElementById("crono").innerHTML = "process complete...";
+        document.getElementById("result").innerHTML = "downloading ... ";
+    }).then(function(result){
+        document.getElementById("result").innerHTML = "result " + miavar;
+
+        document.getElementById("segmenter_to_list_div").innerHTML = segmenter_to_list;
+    }).catch(function (error) {
+        document.getElementById("result").innerHTML = "Error..try later";
+        console.log(error);
+    });*/
+  };
+
+  function drawTimeline(times) {
+    console.log("p-----");
+    console.log(times);
+    timings = times;
+    var tl = document.getElementById('timeline');
+    tl.innerHTML = "";
+    var totalTime = timings[timings.length-1][2];
+    console.log(tl);
+    for (var t=0; t < times.length; t++) {
+      var widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
+      var label = times[t][0];
+      tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%"></div>`);
+    }
+  }
+
+
+  function filterTiming() {
+    result = [];
+    //console.log("filterTiming");
+    //console.log(all_timings);
+    var inputElements = document.getElementsByClassName('filterCheckbox');
+    //console.log("inputElements");
+    //console.log(inputElements);
+    for (var i = 0; i < all_timings.length; i++) {
+      //console.log(all_timings[i][0]);
+
+      for(var j = 0; inputElements[j]; j++) {
+        if(inputElements[j].checked == false) {
+          if (inputElements[j].value == all_timings[i][0]) {
+            result.push(all_timings[i]);
+          }
+          //break;
+        }
+      }
+    }
+    
+    console.log("-----");
+    console.log(result);
+    drawTimeline(result);
+    return result;
+  }
+
+
+  var start = function (){
+    var index = 0;
+    var counter = 0;
+    var margin = 0.1;
+    var timings = filterTiming();
+    console.log(timings);
+    //player.play();
+
+    function skip() {
+      //console.log("--------------- " + index + " --------------------- " + counter);
+
+      if (counter === 0) {
+        //player.pause();
+        //player.play();
+        console.log("-----");
+        console.log(timings);
+        console.log(index);
+        if (typeof timings !== 'undefined') {
+          player.currentTime = timings[index][1];
+        }
+        
+        //console.log(timings[index][1]);
+        requestAnimationFrame(timeUpdate);
+      } else {
+        player.pause();
+        console.log("the end!")
+      }
+    }
+
+    function timeUpdate() {
+
+      //console.log(player.currentTime + " > " + timings[index][2]);
+
+      if (player.currentTime >= timings[index][2] - margin) {
+        //player.pause();
+        index = index + 1;
+        try {
+          var stop = timings[index][1];
+        }
+        catch(err) {
+          console.log(err);
+          counter = 1;
+        }
+        //player.currentTime = timings[index][1];
+        skip();
+      } else {
+        requestAnimationFrame(timeUpdate);
+      }
+    }
+
+    skip();
+  }
+
+  </script>
+
+</body>
+</html>
