@@ -5,6 +5,7 @@
   <title>Skyppy</title>
   <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
   <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
+  <script src="long-press-event.min.js"></script>
   <link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -43,7 +44,6 @@
         <!--<button onclick="start_download_video()" class="btn btn-primary">download</button>-->
     </div>
 
-    
     <label>
       <img class="editCheckname" src="edit.svg" />
       <span id="checkname-l" class="checkname">lower voice</span> 
@@ -82,6 +82,7 @@
     <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
      
     <div id="timeline"></div>
+    <div id="timeline-edit"></div>
 
  <!-- Footer -->
  <footer class="page-footer font-small teal pt-4">
@@ -127,6 +128,13 @@
     <a href="https://biffud.com/">Bad Idea Factory LLC</a>
   </div>
   <!-- Copyright -->
+
+  <button id="button" aria-describedby="tooltip">I'm a button</button>
+  <div id="tooltip" role="tooltip">I'm a tooltip</div>
+
+  <button data-tippy-content="Tooltip">Text</button>
+
+
   
 </footer>
 <!-- Footer -->
@@ -141,42 +149,89 @@
     </div>
   </main>    -->
 
+  <!-- Development -->
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+
+  <!-- Production -->
+  <!-- <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script> -->
   <script>
+
+  const button = document.querySelector('#button');
+  const tooltip = document.querySelector('#tooltip');
+
+  // Pass the button, the tooltip, and some options, and Popper will do the
+  // magic positioning for you:
+  Popper.createPopper(button, tooltip, {
+    placement: 'top',
+  });
+
+  tippy('button', {
+    content: '[data-tippy-content]',
+    trigger: 'click',
+  });
+
+  function show() {
+    tooltip.setAttribute('data-show', '');
+  }
+
+  function hide() {
+    tooltip.removeAttribute('data-show');
+  }
+
+  const showEvents = ['mouseenter', 'focus'];
+  const hideEvents = ['mouseleave', 'blur'];
+
+  showEvents.forEach(event => {
+    button.addEventListener(event, show);
+  });
+
+  hideEvents.forEach(event => {
+    button.addEventListener(event, hide);
+  });
 
   const hashArray = window.location.hash.substr(1).split('&');
   console.log(hashArray);
 
   
   const labelParams = ["l","h","q","n","m"];
+  console.log(labelParams);
 
   // grab any labels off the URL
 
-  if (window.location.hash.length > 0)
-  {
-    for (let h = 0; h < hashArray.length; h++) {
-      let keyval = hashArray[h].split('=');
+  if (window.location.hash.length > 0) {
+    //for (let h = 0; h < hashArray.length; h++) {
+    hashArray.forEach(hash => {
+      //let keyval = hashArray[h].split('=');
+      let keyval = hash.split('=');
       let labelRef = document.getElementById('checkname-'+keyval[0]);
       if (labelRef != null) {
         labelRef.innerHTML = decodeURIComponent(keyval[1]);
       }
-    }
-  }
-
-  let labelEdit = document.getElementsByClassName("editCheckname");
-
-  for (let l = 0; l < labelEdit.length; l++) {
-    labelEdit[l].addEventListener('click', event => {
-      event.target.nextElementSibling.contentEditable = 'true';
-      event.target.nextElementSibling.focus();
-      event.preventDefault();
-      return false;
     });
   }
 
-  let label = document.getElementsByClassName("checkname");
+  const labelEdit = document.getElementsByClassName("editCheckname");
+  console.log(labelEdit);
 
-  for (let m = 0; m < label.length; m++) {
-    label[m].addEventListener('input', event => {
+  Array.from(labelEdit).forEach(element => {
+    element.addEventListener('click', event => {
+      let sibling = event.target.nextElementSibling;
+      sibling.contentEditable = 'true';
+      sibling.focus();
+      event.preventDefault();
+      return false;
+    });
+  });
+
+  const label = document.getElementsByClassName("checkname");
+
+  //for (let m = 0; m < label.length; m++) {
+  Array.from(label).forEach(addLabelListeners);
+
+  function addLabelListeners(element, index) {
+    element.addEventListener('input', event => {
       console.log(event.inputType);
       console.dir(event);
       if (event.inputType == "insertParagraph" || (event.inputType == "insertText" && event.data == null)) { // check for return bring hit
@@ -189,10 +244,10 @@
       return false;
     });
 
-    label[m].addEventListener('blur', event => {
+    element.addEventListener('blur', event => {
       event.target.blur();
       event.preventDefault();
-      addUrlParam(labelParams[m], event.target.innerText);
+      addUrlParam(labelParams[index], event.target.innerText);
       return false;
     });
   }
@@ -716,14 +771,25 @@
     console.log(times);
     timings = times;
     let tl = document.getElementById('timeline');
+    let te = document.getElementById('timeline-edit');
     tl.innerHTML = "";
+    te.innerHTML = "";
     let totalTime = timings[timings.length-1][2];
     console.log(tl);
     for (let t=0; t < times.length; t++) {
       let widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
       let label = times[t][0];
       tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%"></div>`);
+      //te.insertAdjacentHTML('beforeend', `<div class="label-edit" style="width:${widthPc}%"></div>`);
     }
+
+    tippy('.label-male', {
+      trigger: 'long-press',
+      placement: 'bottom',
+      content: '<span class="picker label-female"></span><span class="picker label-music"></span><span class="picker label-noEnergy"></span><span class="picker label-noise"></span>',
+      allowHTML: true,
+      theme: 'male',
+    });
   }
 
 

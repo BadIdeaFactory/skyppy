@@ -24,7 +24,6 @@ body {
   padding-bottom: 24px;
 }
 
-
 .form-control:focus {
   box-shadow: none;
 }
@@ -46,7 +45,6 @@ body {
   height: 64px;
   width: 100%;
   background-color: #000099;
-  margin-bottom: 16px;
 }
 
 #timeline:hover {
@@ -158,6 +156,20 @@ label > input:checked + i:after {
   height: 64px;
 }
 
+.label-edit {
+  display:inline-block;
+  background-color: #ccc;
+  height: 16px;
+}
+
+.label-edit:hover {
+  background-color: #fff;
+  background-image: url('edit.svg');
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: center; 
+}
+
 #btn-noise:after {
   background-color: #666666;
 }
@@ -181,5 +193,27 @@ footer a {
 
 .editCheckname:hover {
   filter: invert(49%) sepia(6%) saturate(2136%) hue-rotate(189deg) brightness(90%) contrast(83%);
+}
+
+#tooltip {
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  display: none;
+}
+
+#tooltip[data-show] {
+  display: block;
+}
+
+.picker {
+  padding: 0 8px;
+  height: 16px;
+}
+
+.tippy-box[data-theme~='male'] {
+  background-color: #9e9df6;
 }
 
