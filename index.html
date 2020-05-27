@@ -128,13 +128,6 @@
     <a href="https://biffud.com/">Bad Idea Factory LLC</a>
   </div>
   <!-- Copyright -->
-
-  <button id="button" aria-describedby="tooltip">I'm a button</button>
-  <div id="tooltip" role="tooltip">I'm a tooltip</div>
-
-  <button data-tippy-content="Tooltip">Text</button>
-
-
   
 </footer>
 <!-- Footer -->
@@ -158,15 +151,6 @@
   <script src="https://unpkg.com/tippy.js@6"></script> -->
   <script>
 
-  const button = document.querySelector('#button');
-  const tooltip = document.querySelector('#tooltip');
-
-  // Pass the button, the tooltip, and some options, and Popper will do the
-  // magic positioning for you:
-  Popper.createPopper(button, tooltip, {
-    placement: 'top',
-  });
-
   tippy('button', {
     content: '[data-tippy-content]',
     trigger: 'click',
@@ -183,13 +167,13 @@
   const showEvents = ['mouseenter', 'focus'];
   const hideEvents = ['mouseleave', 'blur'];
 
-  showEvents.forEach(event => {
+  /*showEvents.forEach(event => {
     button.addEventListener(event, show);
   });
 
   hideEvents.forEach(event => {
     button.addEventListener(event, hide);
-  });
+  });*/
 
   const hashArray = window.location.hash.substr(1).split('&');
   console.log(hashArray);
@@ -776,7 +760,7 @@
     te.innerHTML = "";
     let totalTime = timings[timings.length-1][2];
     console.log(tl);
-    for (let t=0; t < times.length; t++) {
+    for (let t = 0; t < times.length; t++) {
       let widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
       let label = times[t][0];
       tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%"></div>`);
@@ -786,11 +770,60 @@
     tippy('.label-male', {
       trigger: 'long-press',
       placement: 'bottom',
-      content: '<span class="picker label-female"></span><span class="picker label-music"></span><span class="picker label-noEnergy"></span><span class="picker label-noise"></span>',
+      content: '<span title="'+document.getElementById('checkname-h').innerText+'" class="picker label-female"></span>'
+              +'<span title="'+document.getElementById('checkname-m').innerText+'" class="picker label-music"></span>'
+              +'<span title="'+document.getElementById('checkname-q').innerText+'" class="picker label-noEnergy"></span>' 
+              +'<span title="'+document.getElementById('checkname-n').innerText+'" class="picker label-noise"></span>',
       allowHTML: true,
       theme: 'male',
     });
+
+    tippy('.label-female', {
+      trigger: 'long-press',
+      placement: 'bottom',
+      content: '<span title="'+document.getElementById('checkname-l').innerText+'" class="picker label-male"></span>'
+              +'<span title="'+document.getElementById('checkname-m').innerText+'" class="picker label-music"></span>'
+              +'<span title="'+document.getElementById('checkname-q').innerText+'" class="picker label-noEnergy"></span>' 
+              +'<span title="'+document.getElementById('checkname-n').innerText+'" class="picker label-noise"></span>',
+      allowHTML: true,
+      theme: 'female',
+    });
+
+    tippy('.label-music', {
+      trigger: 'long-press',
+      placement: 'bottom',
+      content: '<span title="'+document.getElementById('checkname-l').innerText+'" class="picker label-male"></span>'
+              +'<span title="'+document.getElementById('checkname-h').innerText+'" class="picker label-female"></span>'
+              +'<span title="'+document.getElementById('checkname-q').innerText+'" class="picker label-noEnergy"></span>' 
+              +'<span title="'+document.getElementById('checkname-n').innerText+'" class="picker label-noise"></span>',
+      allowHTML: true,
+      theme: 'music',
+    });
+
+    tippy('.label-noEnergy', {
+      trigger: 'long-press',
+      placement: 'bottom',
+      content: '<span title="'+document.getElementById('checkname-l').innerText+'" class="picker label-male"></span>'
+              +'<span title="'+document.getElementById('checkname-h').innerText+'" class="picker label-female"></span>'
+              +'<span title="'+document.getElementById('checkname-m').innerText+'" class="picker label-music"></span>' 
+              +'<span title="'+document.getElementById('checkname-n').innerText+'" class="picker label-noise"></span>',
+      allowHTML: true,
+      theme: 'noEnergy',
+    });
+
+    tippy('.label-noise', {
+      trigger: 'long-press',
+      placement: 'bottom',
+      content: '<span title="'+document.getElementById('checkname-l').innerText+'" class="picker label-male"></span>'
+              +'<span title="'+document.getElementById('checkname-h').innerText+'" class="picker label-female"></span>'
+              +'<span title="'+document.getElementById('checkname-m').innerText+'" class="picker label-music"></span>' 
+              +'<span title="'+document.getElementById('checkname-q').innerText+'" class="picker label-noEnergy"></span>',
+      allowHTML: true,
+      theme: 'noise',
+    });
+
   }
+  
 
 
   function filterTiming() {
