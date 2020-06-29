@@ -220,12 +220,20 @@ footer a {
   border-bottom-color: #9e9df6;
 }
 
+.tippy-box[data-theme~='male'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #9e9df6;
+}
+
 .tippy-box[data-theme~='female'] {
   background-color: #594b63;
 }
 
 .tippy-box[data-theme~='female'][data-placement^='bottom'] > .tippy-arrow::before {
   border-bottom-color: #594b63;
+}
+
+.tippy-box[data-theme~='female'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #594b63;
 }
 
 .tippy-box[data-theme~='music'] {
@@ -236,6 +244,10 @@ footer a {
   border-bottom-color: #d2d2e0;
 }
 
+.tippy-box[data-theme~='music'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #d2d2e0;
+}
+
 .tippy-box[data-theme~='noEnergy'] {
   background-color: #ffffff;
 }
@@ -244,11 +256,19 @@ footer a {
   border-bottom-color: #ffffff;
 }
 
+.tippy-box[data-theme~='noEnergy'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #ffffff;
+}
+
 .tippy-box[data-theme~='noise'] {
   background-color: #666666;
 }
 
 .tippy-box[data-theme~='noise'][data-placement^='bottom'] > .tippy-arrow::before {
   border-bottom-color: #666666;
+}
+
+.tippy-box[data-theme~='noise'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #666666;
 }
 
