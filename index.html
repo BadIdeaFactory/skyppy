@@ -20,7 +20,7 @@
     }
   </style>
 </head>
-<body>
+<body id="pagebody">
   <div class="jumbotron text-center">
     <h1 class="title">Skyppy</h1>
     <p>Cut to the chase!</p> 
@@ -340,6 +340,9 @@
   });
 
   let timeline = document.getElementById('timeline');
+  //console.log("timeline");
+  //console.dir(timeline);
+
 
   let lastClickedSegmentIndex = null;
 
@@ -348,15 +351,19 @@
     //console.log(timeline.clientWidth);
     //console.log(player.duration);
     //console.log(player.duration * event.clientX / timeline.clientWidth);
-    player.currentTime = player.duration * event.clientX / timeline.clientWidth;
+
+    let offset = (document.getElementById('pagebody').clientWidth - timeline.clientWidth) / 2;
+    //console.log("offset");
+    //console.dir(offset);
+    player.currentTime = player.duration * (event.clientX - offset) / timeline.clientWidth;
     player.play();
-    console.log("========= clicked element =======");
-    console.dir(event);
+    //console.log("========= clicked element =======");
+    //console.dir(event);
     lastClickedSegmentIndex = event.target.getAttribute("data-index");
-    console.log("lastClickedSegmentIndex = "+lastClickedSegmentIndex);
+    //console.log("lastClickedSegmentIndex = "+lastClickedSegmentIndex);
     let pickers = document.getElementsByClassName('picker');
     Array.from(pickers).forEach(addPickerListeners);
-    console.dir(pickers);
+    //console.dir(pickers);
     return false;
   });
 
