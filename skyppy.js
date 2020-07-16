@@ -284,7 +284,7 @@
       //console.log(all_timings[i][0]);
 
       for(let j = 0; inputElements[j]; j++) {
-        if(inputElements[j].checked == false) {
+        if(inputElements[j].checked == true) {
           if (inputElements[j].value == all_timings[i][0]) {
             result.push(all_timings[i]);
           }
