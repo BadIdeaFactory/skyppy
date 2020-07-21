@@ -149,7 +149,7 @@
 
   let player = new Plyr('#player');
 
-  let result;
+  //let result;
 
   player.on('play', event => {
     console.log("play event");
@@ -299,7 +299,7 @@
     });
   }
 
-  function filterTiming() {
+  /*function filterTiming() {
     result = [];
     //console.log("filterTiming");
     console.log(all_timings);
@@ -322,6 +322,24 @@
     //console.log("-----");
     //console.log(result);
     //drawTimeline(result);
+    return result;
+  }*/
+
+  function filterTiming() {
+    let result = [];
+  
+    let inputElements = document.getElementsByClassName('filterCheckbox');
+   
+    all_timings.forEach(element => {
+      Array.from(inputElements).forEach(input => {
+        if (input.checked == true) {
+          if (input.value == element[0]) {
+            result.push(element);
+          }
+        }
+      });
+    });
+  
     return result;
   }
 
