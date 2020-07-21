@@ -44,7 +44,7 @@ body {
 #timeline{
   height: 64px;
   width: 100%;
-  background-color: #000099;
+  background-color: #fff;
 }
 
 #timeline:hover {

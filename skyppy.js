@@ -86,10 +86,10 @@
 
     element.addEventListener('click', event => {
       greySwitchText(event.target);
+      drawTimeline(all_timings);
       return false;
     });
   });
-
 
 
   function addPickerListeners(element, index) {
@@ -117,7 +117,7 @@
 
       all_timings[lastClickedSegmentIndex][0] = segmentType;
       let timings = filterTiming();
-      drawTimeline(timings);
+      drawTimeline(all_timings);
       event.preventDefault();
       return false;
     });
@@ -149,7 +149,7 @@
 
   let player = new Plyr('#player');
 
-  let result;
+  //let result;
 
   player.on('play', event => {
     console.log("play event");
@@ -168,9 +168,6 @@
     Array.from(pickers).forEach(addPickerListeners);
     return false;
   });
-
-
-
 
 
   let replace = function(url) {
@@ -192,7 +189,7 @@
   .then(json => {
     all_timings = json.data;
     let timings = filterTiming();
-    drawTimeline(timings);
+    drawTimeline(all_timings);
   });
 
   let miavar;
@@ -245,12 +242,29 @@
     te.innerHTML = "";
     let totalTime = timings[timings.length-1][2];
     //console.log(tl);
-    for (let t = 0; t < times.length; t++) {
-      let widthPc = ((times[t][2] - times[t][1]) / totalTime) * 100;
-      let label = times[t][0];
-      tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%" data-index="${t}"></div>`);
-      //te.insertAdjacentHTML('beforeend', `<div class="label-edit" style="width:${widthPc}%"></div>`);
-    }
+
+    times.forEach((element, index) => {
+      let widthPc = ((element[2] - element[1]) / totalTime) * 100;
+      let label = element[0];
+
+      let inputElements = document.getElementsByClassName('filterCheckbox');
+
+      let matched = false;
+
+      Array.from(inputElements).forEach(input => {
+        if (input.checked == true) {
+          if (input.value == element[0]) {
+            tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%" data-index="${index}"></div>`);
+            matched = true;
+          }
+        }
+      });
+
+      if (matched == false) {
+        tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`);
+      }
+      
+    });
 
     const spanHigherPicker = `<span title="${document.getElementById('checkname-h').innerText}" class="picker label-female"></span>`;
     const spanMusicPicker  = `<span title="${document.getElementById('checkname-m').innerText}" class="picker label-music"></span>`;
@@ -299,7 +313,7 @@
     });
   }
 
-  function filterTiming() {
+  /*function filterTiming() {
     result = [];
     //console.log("filterTiming");
     console.log(all_timings);
@@ -322,6 +336,24 @@
     //console.log("-----");
     //console.log(result);
     //drawTimeline(result);
+    return result;
+  }*/
+
+  function filterTiming() {
+    let result = [];
+  
+    let inputElements = document.getElementsByClassName('filterCheckbox');
+   
+    all_timings.forEach(element => {
+      Array.from(inputElements).forEach(input => {
+        if (input.checked == true) {
+          if (input.value == element[0]) {
+            result.push(element);
+          }
+        }
+      });
+    });
+  
     return result;
   }
 
