@@ -99,13 +99,19 @@ label i:after {
   transition: 0.15s;
 }
 
+label > span.deselected {
+  color: #ccc;
+}
+
 
 label > input:checked + i {
   background: #87c3f1;
 }
+
 label > input:checked + i + span {
   color: #29316b;
 }
+
 label > input:checked + i:after {
   transform: translateX(25px);
 }

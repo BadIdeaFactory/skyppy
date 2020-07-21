@@ -70,6 +70,28 @@
     });
   }
 
+  const switches = document.getElementsByClassName('filterCheckbox');
+
+  function greySwitchText(element) {
+    if (element.checked === false) {
+      element.previousElementSibling.classList.add("deselected");
+    } else {
+      element.previousElementSibling.classList.remove("deselected");
+    }
+  } 
+
+  Array.from(switches).forEach(element => {
+
+    greySwitchText(element);
+
+    element.addEventListener('click', event => {
+      greySwitchText(event.target);
+      return false;
+    });
+  });
+
+
+
   function addPickerListeners(element, index) {
 
     element.addEventListener('click', event => {
@@ -134,7 +156,7 @@
     start();
   });
 
-  let timeline = document.getElementById('timeline');
+  const timeline = document.getElementById('timeline');
   let lastClickedSegmentIndex = null;
 
   timeline.addEventListener('click', event => {
@@ -146,6 +168,10 @@
     Array.from(pickers).forEach(addPickerListeners);
     return false;
   });
+
+
+
+
 
   let replace = function(url) {
     player.source = {
@@ -284,7 +310,7 @@
       //console.log(all_timings[i][0]);
 
       for(let j = 0; inputElements[j]; j++) {
-        if(inputElements[j].checked == false) {
+        if(inputElements[j].checked == true) {
           if (inputElements[j].value == all_timings[i][0]) {
             result.push(all_timings[i]);
           }
