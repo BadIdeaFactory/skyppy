@@ -237,9 +237,9 @@
     //console.log(times);
     timings = times;
     let tl = document.getElementById('timeline');
-    let te = document.getElementById('timeline-edit');
+    //let te = document.getElementById('timeline-edit');
     tl.innerHTML = "";
-    te.innerHTML = "";
+    //te.innerHTML = "";
     let totalTime = timings[timings.length-1][2];
     //console.log(tl);
 
@@ -385,19 +385,13 @@
 
     function timeUpdate() {
 
-      //console.log(player.currentTime + " > " + timings[index][2]);
+      let position = player.currentTime * (timeline.clientWidth / player.duration);
+      console.log(position);
+
+      document.getElementById("progress-marker").style.marginLeft = position+"px";
 
       if (player.currentTime >= timings[index][2] - margin) {
-        //player.pause();
         index = index + 1;
-        try {
-          let stop = timings[index][1];
-        }
-        catch(err) {
-          console.log(err);
-          counter = 1;
-        }
-        //player.currentTime = timings[index][1];
         skip();
       } else {
         requestAnimationFrame(timeUpdate);
