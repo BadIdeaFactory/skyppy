@@ -1,5 +1,50 @@
+let skyppy = (function (allTimings) {
+  let index = 0;
+  let counter = 0;
+  let margin = 0.1;
+  let activeTimings = 0;
+  filterTiming();
+  console.log("filtered timings");
+  console.log(activeTimings);
+  //player.play();
+
+  function skip() {
+    //console.log("--------------- " + index + " --------------------- " + counter);
+    //console.log(activeTimings);
+
+    if (counter === 0) {
+
+      if (typeof activeTimings !== 'undefined') {
+        console.log("skipping");
+        player.currentTime = activeTimings[index][1];
+      }
+      
+      //console.log(activeTimings[index][1]);
+      requestAnimationFrame(timeUpdate);
+    } else {
+      player.pause();
+      //console.log("the end!")
+    }
+  }
+
+  function timeUpdate() {
+
+    let position = player.currentTime * (timeline.clientWidth / player.duration);
+    //console.log(position);
+
+    document.getElementById("progress-marker").style.marginLeft = position+"px";
+
+    if (player.currentTime >= timings[index][2] - margin) {
+      index = index + 1;
+      skip();
+    } else {
+      requestAnimationFrame(timeUpdate);
+    }
+  }
+
   const showEvents = ['mouseenter', 'focus'];
   const hideEvents = ['mouseleave', 'blur'];
+
 
   /*showEvents.forEach(event => {
     button.addEventListener(event, show);
@@ -86,7 +131,7 @@
 
     element.addEventListener('click', event => {
       greySwitchText(event.target);
-      drawTimeline(all_timings);
+      drawTimeline(allTimings);
       return false;
     });
   });
@@ -115,9 +160,9 @@
         segmentType = "noise";
       }
 
-      all_timings[lastClickedSegmentIndex][0] = segmentType;
-      let timings = filterTiming();
-      drawTimeline(all_timings);
+      allTimings[lastClickedSegmentIndex][0] = segmentType;
+      filterTiming();
+      drawTimeline(allTimings);
       event.preventDefault();
       return false;
     });
@@ -153,7 +198,9 @@
 
   player.on('play', event => {
     console.log("play event");
-    start();
+    console.dir(skyppy);
+    skip();
+    //skyppy.skip();
   });
 
   const timeline = document.getElementById('timeline');
@@ -170,7 +217,7 @@
   });
 
 
-  let replace = function(url) {
+  /*let replace = function(url) {
     player.source = {
       type: 'video',
       sources: [
@@ -180,17 +227,10 @@
         },
       ],
     }
-  };
+  };*/
 
-  let all_timings = null;
-
-  fetch("test.json")
-  .then(response => response.json())
-  .then(json => {
-    all_timings = json.data;
-    let timings = filterTiming();
-    drawTimeline(all_timings);
-  });
+  //timings = filterTiming();
+  drawTimeline(allTimings);
 
   let miavar;
   let embed;
@@ -217,7 +257,7 @@
         console.log(video_id[video_id.length - 1]);
         html_data = response.data["html_data"];
         segmenter_to_list = response.data["segmenter_to_list"];
-        all_timings = segmenter_to_list;
+        allTimings = segmenter_to_list;
 
     }).then(function(result) {
         document.getElementById("crono").innerHTML = "process complete...";
@@ -235,12 +275,12 @@
   function drawTimeline(times) {
     //console.log("p-----");
     //console.log(times);
-    timings = times;
+    //timings = times;
     let tl = document.getElementById('timeline');
     //let te = document.getElementById('timeline-edit');
     tl.innerHTML = "";
     //te.innerHTML = "";
-    let totalTime = timings[timings.length-1][2];
+    let totalTime = times[times.length-1][2];
     //console.log(tl);
 
     times.forEach((element, index) => {
@@ -263,7 +303,7 @@
       if (matched == false) {
         tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`);
       }
-      
+
     });
 
     const spanHigherPicker = `<span title="${document.getElementById('checkname-h').innerText}" class="picker label-female"></span>`;
@@ -313,38 +353,11 @@
     });
   }
 
-  /*function filterTiming() {
-    result = [];
-    //console.log("filterTiming");
-    console.log(all_timings);
-    let inputElements = document.getElementsByClassName('filterCheckbox');
-    //console.log("inputElements");
-    //console.log(inputElements);
-    for (let i = 0; i < all_timings.length; i++) {
-      //console.log(all_timings[i][0]);
-
-      for(let j = 0; inputElements[j]; j++) {
-        if(inputElements[j].checked == true) {
-          if (inputElements[j].value == all_timings[i][0]) {
-            result.push(all_timings[i]);
-          }
-          //break;
-        }
-      }
-    }
-    
-    //console.log("-----");
-    //console.log(result);
-    //drawTimeline(result);
-    return result;
-  }*/
-
   function filterTiming() {
-    let result = [];
-  
     let inputElements = document.getElementsByClassName('filterCheckbox');
+    let result = [];
    
-    all_timings.forEach(element => {
+    allTimings.forEach(element => {
       Array.from(inputElements).forEach(input => {
         if (input.checked == true) {
           if (input.value == element[0]) {
@@ -354,49 +367,16 @@
       });
     });
   
-    return result;
+    activeTimings = result;
   }
+});
 
+window.onload = function() {
 
-  let start = function (){
-    let index = 0;
-    let counter = 0;
-    let margin = 0.1;
-    let timings = filterTiming();
-    //console.log(timings);
-    //player.play();
-
-    function skip() {
-      //console.log("--------------- " + index + " --------------------- " + counter);
-
-      if (counter === 0) {
-
-        if (typeof timings !== 'undefined') {
-          player.currentTime = timings[index][1];
-        }
-        
-        //console.log(timings[index][1]);
-        requestAnimationFrame(timeUpdate);
-      } else {
-        player.pause();
-        //console.log("the end!")
-      }
-    }
-
-    function timeUpdate() {
-
-      let position = player.currentTime * (timeline.clientWidth / player.duration);
-      console.log(position);
-
-      document.getElementById("progress-marker").style.marginLeft = position+"px";
-
-      if (player.currentTime >= timings[index][2] - margin) {
-        index = index + 1;
-        skip();
-      } else {
-        requestAnimationFrame(timeUpdate);
-      }
-    }
-
-    skip();
-  }
+  fetch("test.json")
+  .then(response => response.json())
+  .then(json => {
+    skyppy(json.data);
+  });
+  
+}
