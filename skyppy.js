@@ -34,7 +34,7 @@ let skyppy = (function (allTimings) {
 
     document.getElementById("progress-marker").style.marginLeft = position+"px";
 
-    if (player.currentTime >= timings[index][2] - margin) {
+    if (player.currentTime >= activeTimings[index][2] - margin) {
       index = index + 1;
       skip();
     } else {
@@ -162,6 +162,7 @@ let skyppy = (function (allTimings) {
 
       allTimings[lastClickedSegmentIndex][0] = segmentType;
       filterTiming();
+      console.log("CLICKED");
       drawTimeline(allTimings);
       event.preventDefault();
       return false;
