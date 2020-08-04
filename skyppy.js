@@ -1,46 +1,58 @@
 let skyppy = (function (allTimings) {
   let index = 0;
-  let counter = 0;
   let margin = 0.1;
   let activeTimings = 0;
+
+
+  let player = new Plyr('#player');
+
+  //let result;
+
+  player.on('play', event => {
+    console.log("play event");
+    console.dir(skyppy);
+    skip();
+    //skyppy.skip();
+  });
+
   filterTiming();
   console.log("filtered timings");
   console.log(activeTimings);
   //player.play();
 
+  
+
   function skip() {
-    //console.log("--------------- " + index + " --------------------- " + counter);
-    //console.log(activeTimings);
+    console.log("SKIP");
+    console.log(activeTimings);
 
-    if (counter === 0) {
-
-      if (typeof activeTimings !== 'undefined') {
-        console.log("skipping");
-        player.currentTime = activeTimings[index][1];
-      }
-      
-      //console.log(activeTimings[index][1]);
-      requestAnimationFrame(timeUpdate);
-    } else {
-      player.pause();
-      //console.log("the end!")
+    if (typeof activeTimings !== 'undefined') {
+      console.log("skipping");
+      player.currentTime = activeTimings[index][1];
     }
+    
+    //console.log(activeTimings[index][1]);
+    requestAnimationFrame(timeUpdate);
   }
 
   function timeUpdate() {
+
+    console.log("timeUpdate");
 
     let position = player.currentTime * (timeline.clientWidth / player.duration);
     //console.log(position);
 
     document.getElementById("progress-marker").style.marginLeft = position+"px";
 
-    if (player.currentTime >= timings[index][2] - margin) {
+    if (player.currentTime >= activeTimings[index][2] - margin) {
       index = index + 1;
       skip();
     } else {
       requestAnimationFrame(timeUpdate);
     }
   }
+
+  
 
   const showEvents = ['mouseenter', 'focus'];
   const hideEvents = ['mouseleave', 'blur'];
@@ -131,6 +143,8 @@ let skyppy = (function (allTimings) {
 
     element.addEventListener('click', event => {
       greySwitchText(event.target);
+      console.log("filtering timings .......");
+      filterTiming();
       drawTimeline(allTimings);
       return false;
     });
@@ -138,6 +152,9 @@ let skyppy = (function (allTimings) {
 
 
   function addPickerListeners(element, index) {
+
+    console.log("adding ....");
+    console.log(element);
 
     element.addEventListener('click', event => {
 
@@ -162,6 +179,7 @@ let skyppy = (function (allTimings) {
 
       allTimings[lastClickedSegmentIndex][0] = segmentType;
       filterTiming();
+      console.log("------CLICKED------");
       drawTimeline(allTimings);
       event.preventDefault();
       return false;
@@ -192,16 +210,7 @@ let skyppy = (function (allTimings) {
   };
 
 
-  let player = new Plyr('#player');
-
-  //let result;
-
-  player.on('play', event => {
-    console.log("play event");
-    console.dir(skyppy);
-    skip();
-    //skyppy.skip();
-  });
+  
 
   const timeline = document.getElementById('timeline');
   let lastClickedSegmentIndex = null;
@@ -368,6 +377,17 @@ let skyppy = (function (allTimings) {
     });
   
     activeTimings = result;
+    recalculateCurrentIndex();
+    
+    console.log(activeTimings);
+    //skip();
+  }
+
+  function recalculateCurrentIndex() {
+    index = 0;
+    while (player.currentTime >= activeTimings[index][2] - margin) {
+      index = index + 1;
+    }
   }
 });
 
