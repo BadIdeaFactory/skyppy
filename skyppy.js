@@ -11,8 +11,8 @@ let skyppy = (function (allTimings) {
   player.on('play', event => {
     console.log("play event");
     console.dir(skyppy);
-    skip();
-    //skyppy.skip();
+    player.play();
+    requestAnimationFrame(timeUpdate);
   });
 
   filterTiming();
@@ -20,51 +20,29 @@ let skyppy = (function (allTimings) {
   console.log(activeTimings);
   //player.play();
 
-  
-
-  function skip() {
-    console.log("SKIP");
-    console.log(activeTimings);
-
-    if (typeof activeTimings !== 'undefined') {
-      console.log("skipping");
-      player.currentTime = activeTimings[index][1];
-    }
-    
-    //console.log(activeTimings[index][1]);
-    requestAnimationFrame(timeUpdate);
-  }
 
   function timeUpdate() {
 
-    console.log("timeUpdate");
+    console.log("..."+index+" "+Math.round(player.currentTime)+" "+activeTimings[index][2]);
 
-    let position = player.currentTime * (timeline.clientWidth / player.duration);
-    //console.log(position);
+    let position = player.currentTime * (timeline.clientWidth / player.duration)
 
     document.getElementById("progress-marker").style.marginLeft = position+"px";
 
-    if (player.currentTime >= activeTimings[index][2] - margin) {
-      index = index + 1;
-      skip();
-    } else {
-      requestAnimationFrame(timeUpdate);
+    index = 0;
+
+    while (player.currentTime >= activeTimings[index][2] - margin) {
+      index++;
     }
+
+    if (player.currentTime < activeTimings[index][1]) { // it's in a gap between active timings
+      // jump to the start of the next active timing
+      player.currentTime = activeTimings[index][1];
+    }
+
+    requestAnimationFrame(timeUpdate);
   }
 
-  
-
-  const showEvents = ['mouseenter', 'focus'];
-  const hideEvents = ['mouseleave', 'blur'];
-
-
-  /*showEvents.forEach(event => {
-    button.addEventListener(event, show);
-  });
-
-  hideEvents.forEach(event => {
-    button.addEventListener(event, hide);
-  });*/
 
   const hashArray = window.location.hash.substr(1).split('&');
   //console.log(hashArray);
@@ -210,15 +188,18 @@ let skyppy = (function (allTimings) {
   };
 
 
-  
-
   const timeline = document.getElementById('timeline');
   let lastClickedSegmentIndex = null;
 
   timeline.addEventListener('click', event => {
     let offset = (document.getElementById('pagebody').clientWidth - timeline.clientWidth) / 2;
-    player.currentTime = player.duration * (event.clientX - offset) / timeline.clientWidth;
+    let newTime = player.duration * (event.clientX - offset) / timeline.clientWidth;
+    player.currentTime = newTime;
+    console.log("newTime = "+newTime);
+    //recalculateCurrentIndex(newTime);
     player.play();
+    
+    //index = 0;
     lastClickedSegmentIndex = event.target.getAttribute("data-index");
     let pickers = document.getElementsByClassName('picker');
     Array.from(pickers).forEach(addPickerListeners);
@@ -377,18 +358,10 @@ let skyppy = (function (allTimings) {
     });
   
     activeTimings = result;
-    recalculateCurrentIndex();
-    
+
     console.log(activeTimings);
-    //skip();
   }
 
-  function recalculateCurrentIndex() {
-    index = 0;
-    while (player.currentTime >= activeTimings[index][2] - margin) {
-      index = index + 1;
-    }
-  }
 });
 
 window.onload = function() {
