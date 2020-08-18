@@ -51,7 +51,7 @@ let skyppy = (function (allTimings) {
   const labelParams = ["l","h","q","n","m"];
   //console.log(labelParams);
 
-  // grab any labels off the URL
+  // grab parameters from the URL
 
   console.log(window.location.hash);
 
@@ -73,9 +73,18 @@ let skyppy = (function (allTimings) {
       // check for switches state
       if (keyval[0] === "s") {
         let switchesOn = keyval[1].split("");
+        console.log("checking the switches that are on ....");
         console.log(switchesOn);
-        switchesOn.forEach((val, index) => {
-          document.getElementById('switchname-'+val).checked = true;
+        labelParams.forEach((val, index) => {
+          
+          if (switchesOn.includes(val)) {
+            console.log("switching on "+val);
+            document.getElementById('switchname-'+val).checked = true;
+          } else {
+            console.log("switching off "+val);
+            document.getElementById('switchname-'+val).checked = false;
+          }
+          
         });
       }
 
@@ -144,8 +153,12 @@ let skyppy = (function (allTimings) {
       addUrlParam("s", switchStr);
   }
 
-
-  updateSwitchState();
+  /*if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    console.info( "This page is reloaded" );
+  } else {
+    updateSwitchState();
+  }*/
+  
 
   Array.from(switches).forEach(element => {
 
