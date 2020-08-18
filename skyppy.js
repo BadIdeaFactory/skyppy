@@ -51,17 +51,43 @@ let skyppy = (function (allTimings) {
   const labelParams = ["l","h","q","n","m"];
   //console.log(labelParams);
 
-  // grab any labels off the URL
+  // grab parameters from the URL
+
+  console.log(window.location.hash);
 
   if (window.location.hash.length > 0) {
     //for (let h = 0; h < hashArray.length; h++) {
     hashArray.forEach(hash => {
       //let keyval = hashArray[h].split('=');
       let keyval = hash.split('=');
-      let labelRef = document.getElementById('checkname-'+keyval[0]);
-      if (labelRef != null) {
-        labelRef.innerHTML = decodeURIComponent(keyval[1]);
+      console.log("hash..............");
+      console.log(hash);
+
+      if (labelParams.includes(keyval[0])) {
+        let labelRef = document.getElementById('checkname-'+keyval[0]);
+        if (labelRef != null) {
+          labelRef.innerHTML = decodeURIComponent(keyval[1]);
+        }
       }
+
+      // check for switches state
+      if (keyval[0] === "s") {
+        let switchesOn = keyval[1].split("");
+        console.log("checking the switches that are on ....");
+        console.log(switchesOn);
+        labelParams.forEach((val, index) => {
+          
+          if (switchesOn.includes(val)) {
+            console.log("switching on "+val);
+            document.getElementById('switchname-'+val).checked = true;
+          } else {
+            console.log("switching off "+val);
+            document.getElementById('switchname-'+val).checked = false;
+          }
+          
+        });
+      }
+
     });
   }
 
@@ -115,6 +141,25 @@ let skyppy = (function (allTimings) {
     }
   } 
 
+  function updateSwitchState() {
+    let switchStr = "";
+      
+      labelParams.forEach((val, index) => {
+        if (switches[index].checked === true){
+          switchStr += val;
+        }
+      });
+
+      addUrlParam("s", switchStr);
+  }
+
+  /*if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    console.info( "This page is reloaded" );
+  } else {
+    updateSwitchState();
+  }*/
+  
+
   Array.from(switches).forEach(element => {
 
     greySwitchText(element);
@@ -124,6 +169,7 @@ let skyppy = (function (allTimings) {
       console.log("filtering timings .......");
       filterTiming();
       drawTimeline(allTimings);
+      updateSwitchState();
       return false;
     });
   });
