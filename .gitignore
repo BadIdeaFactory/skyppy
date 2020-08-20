@@ -119,3 +119,9 @@ dmypy.json
 
 # Idea
 .idea/
+
+#Node Modules
+node_modules/
+
+#DS_Store
+.DS_Store
