@@ -1,259 +1,255 @@
-let skyppy = (function (allTimings) {
-  let index = 0;
-  let margin = 0.1;
-  let activeTimings = 0;
+let skyppy = function(allTimings) {
+	let index = 0;
+	let margin = 0.1;
+	let activeTimings = 0;
 
+	// rome-ignore lint/js/noUndeclaredVariables
+	let player = new Plyr("#player");
 
-  let player = new Plyr('#player');
+	player.on(
+		"play",
+		() => {
+			player.play();
+			requestAnimationFrame(timeUpdate);
+		},
+	);
 
-  //let result;
+	filterTiming();
+	console.log("filtered timings");
+	console.log(activeTimings);
+	//player.play();
 
-  player.on('play', event => {
-    console.log("play event");
-    console.dir(skyppy);
-    player.play();
-    requestAnimationFrame(timeUpdate);
-  });
+	function timeUpdate() {
+		console.log(
+			`...${index} ${Math.round(player.currentTime)} ${activeTimings[index][2]}`,
+		);
 
-  filterTiming();
-  console.log("filtered timings");
-  console.log(activeTimings);
-  //player.play();
+		let position = player.currentTime * (timeline.clientWidth / player.duration);
 
+		document.getElementById("progress-marker").style.marginLeft = `${position}px`;
 
-  function timeUpdate() {
+		index = 0;
 
-    console.log("..."+index+" "+Math.round(player.currentTime)+" "+activeTimings[index][2]);
+		while (player.currentTime >= activeTimings[index][2] - margin) {
+			index++;
+		}
 
-    let position = player.currentTime * (timeline.clientWidth / player.duration)
+		if (player.currentTime < activeTimings[index][1]) {
+			// it's in a gap between active timings
+			// jump to the start of the next active timing
+			player.currentTime = activeTimings[index][1];
+		}
 
-    document.getElementById("progress-marker").style.marginLeft = position+"px";
+		requestAnimationFrame(timeUpdate);
+	}
 
-    index = 0;
+	const hashArray = window.location.hash.substr(1).split("&");
+	//console.log(hashArray);
 
-    while (player.currentTime >= activeTimings[index][2] - margin) {
-      index++;
-    }
+	const labelParams = ["l", "h", "q", "n", "m"];
+	//console.log(labelParams);
 
-    if (player.currentTime < activeTimings[index][1]) { // it's in a gap between active timings
-      // jump to the start of the next active timing
-      player.currentTime = activeTimings[index][1];
-    }
+	// grab parameters from the URL
 
-    requestAnimationFrame(timeUpdate);
-  }
+	console.log(window.location.hash);
 
+	if (window.location.hash.length > 0) {
+		hashArray.forEach((hash) => {
+			let keyval = hash.split("=");
+			console.log("hash..............");
+			console.log(hash);
 
-  const hashArray = window.location.hash.substr(1).split('&');
-  //console.log(hashArray);
+			if (labelParams.includes(keyval[0])) {
+				let labelRef = document.getElementById(`checkname-${keyval[0]}`);
+				if (labelRef != null) {
+					labelRef.innerHTML = decodeURIComponent(keyval[1]);
+				}
+			}
 
-  
-  const labelParams = ["l","h","q","n","m"];
-  //console.log(labelParams);
+			// check for switches state
+			if (keyval[0] === "s") {
+				let switchesOn = keyval[1].split("");
+				console.log("checking the switches that are on ....");
+				console.log(switchesOn);
+				labelParams.forEach((val) => {
+					if (switchesOn.includes(val)) {
+						console.log(`switching on ${val}`);
+						document.getElementById(`switchname-${val}`).checked = true;
+					} else {
+						console.log(`switching off ${val}`);
+						document.getElementById(`switchname-${val}`).checked = false;
+					}
+				});
+			}
+		});
+	}
 
-  // grab parameters from the URL
+	const labelEdit = document.getElementsByClassName("editCheckname");
 
-  console.log(window.location.hash);
+	Array.from(labelEdit).forEach((element) => {
+		element.addEventListener(
+			"click",
+			(event) => {
+				let sibling = event.target.nextElementSibling;
+				sibling.contentEditable = "true";
+				sibling.focus();
+				event.preventDefault();
+				return false;
+			},
+		);
+	});
 
-  if (window.location.hash.length > 0) {
-    //for (let h = 0; h < hashArray.length; h++) {
-    hashArray.forEach(hash => {
-      //let keyval = hashArray[h].split('=');
-      let keyval = hash.split('=');
-      console.log("hash..............");
-      console.log(hash);
+	const label = document.getElementsByClassName("checkname");
 
-      if (labelParams.includes(keyval[0])) {
-        let labelRef = document.getElementById('checkname-'+keyval[0]);
-        if (labelRef != null) {
-          labelRef.innerHTML = decodeURIComponent(keyval[1]);
-        }
-      }
+	Array.from(label).forEach(addLabelListeners);
 
-      // check for switches state
-      if (keyval[0] === "s") {
-        let switchesOn = keyval[1].split("");
-        console.log("checking the switches that are on ....");
-        console.log(switchesOn);
-        labelParams.forEach((val, index) => {
-          
-          if (switchesOn.includes(val)) {
-            console.log("switching on "+val);
-            document.getElementById('switchname-'+val).checked = true;
-          } else {
-            console.log("switching off "+val);
-            document.getElementById('switchname-'+val).checked = false;
-          }
-          
-        });
-      }
+	function addLabelListeners(element, index) {
+		element.addEventListener(
+			"input",
+			(event) => {
+				console.log(event.inputType);
+				console.dir(event);
+				if (
+					event.inputType === "insertParagraph" ||
+					(event.inputType === "insertText" && event.data == null)
+				) {
+					// check for return bring hit
+					event.target.contentEditable = false;
+					event.target.innerHTML = event.target.innerHTML.replace("<br>", "");
+          event.target.blur();
+				}
+				event.preventDefault();
+				return false;
+			},
+		);
 
-    });
-  }
+		element.addEventListener(
+			"blur",
+			(event) => {
+				event.target.blur();
+				event.preventDefault();
+				addUrlParam(labelParams[index], event.target.innerText);
+				return false;
+			},
+		);
+	}
 
-  const labelEdit = document.getElementsByClassName("editCheckname");
-  //console.log(labelEdit);
+	const switches = document.getElementsByClassName("filterCheckbox");
 
-  Array.from(labelEdit).forEach(element => {
-    element.addEventListener('click', event => {
-      let sibling = event.target.nextElementSibling;
-      sibling.contentEditable = 'true';
-      sibling.focus();
-      event.preventDefault();
-      return false;
-    });
-  });
+	function greySwitchText(element) {
+		if (element.checked === false) {
+			element.previousElementSibling.classList.add("deselected");
+		} else {
+			element.previousElementSibling.classList.remove("deselected");
+		}
+	}
 
-  const label = document.getElementsByClassName("checkname");
+	function updateSwitchState() {
+		let switchStr = "";
 
-  //for (let m = 0; m < label.length; m++) {
-  Array.from(label).forEach(addLabelListeners);
+		labelParams.forEach((val, index) => {
+			if (switches[index].checked === true) {
+				switchStr += val;
+			}
+		});
 
-  function addLabelListeners(element, index) {
-    element.addEventListener('input', event => {
-      console.log(event.inputType);
-      console.dir(event);
-      if (event.inputType == "insertParagraph" || (event.inputType == "insertText" && event.data == null)) { // check for return bring hit
-        event.target.contentEditable = false;
-        event.target.innerHTML = event.target.innerHTML.replace('<br>','');
-        event.target.blur();
-        addUrlParam(labelParams[m], event.target.innerText);
-      }
-      event.preventDefault();
-      return false;
-    });
+		addUrlParam("s", switchStr);
+	}
 
-    element.addEventListener('blur', event => {
-      event.target.blur();
-      event.preventDefault();
-      addUrlParam(labelParams[index], event.target.innerText);
-      return false;
-    });
-  }
+	Array.from(switches).forEach((element) => {
+		greySwitchText(element);
 
-  const switches = document.getElementsByClassName('filterCheckbox');
+		element.addEventListener(
+			"click",
+			(event) => {
+				greySwitchText(event.target);
+				console.log("filtering timings .......");
+				filterTiming();
+				drawTimeline(allTimings);
+				updateSwitchState();
+				return false;
+			},
+		);
+	});
 
-  function greySwitchText(element) {
-    if (element.checked === false) {
-      element.previousElementSibling.classList.add("deselected");
-    } else {
-      element.previousElementSibling.classList.remove("deselected");
-    }
-  } 
+	function addPickerListeners(element, index) {
+		console.log("adding ....");
+		console.log(element);
 
-  function updateSwitchState() {
-    let switchStr = "";
-      
-      labelParams.forEach((val, index) => {
-        if (switches[index].checked === true){
-          switchStr += val;
-        }
-      });
+		element.addEventListener(
+			"click",
+			(event) => {
+				let segmentType = null;
+				let classList = event.target.classList;
 
-      addUrlParam("s", switchStr);
-  }
+				if (classList.contains("label-female")) {
+					segmentType = "female";
+				}
+				if (classList.contains("label-male")) {
+					segmentType = "male";
+				}
+				if (classList.contains("label-music")) {
+					segmentType = "music";
+				}
+				if (classList.contains("label-noEnergy")) {
+					segmentType = "noEnergy";
+				}
+				if (classList.contains("label-noise")) {
+					segmentType = "noise";
+				}
 
-  /*if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-    console.info( "This page is reloaded" );
-  } else {
-    updateSwitchState();
-  }*/
-  
+				allTimings[lastClickedSegmentIndex][0] = segmentType;
+				filterTiming();
+				console.log("------CLICKED------");
+				drawTimeline(allTimings);
+				event.preventDefault();
+				return false;
+			},
+		);
+	}
 
-  Array.from(switches).forEach(element => {
+	function addUrlParam(key, val) {
+		let newParam = `${key}=${val}`;
+		let params = newParam;
+		let search = document.location.hash;
 
-    greySwitchText(element);
+		if (search) {
+			// Try to replace an existance instance
+			params = search.replace(new RegExp(`([#&])${key}[^&]*`), `$1${newParam}`);
 
-    element.addEventListener('click', event => {
-      greySwitchText(event.target);
-      console.log("filtering timings .......");
-      filterTiming();
-      drawTimeline(allTimings);
-      updateSwitchState();
-      return false;
-    });
-  });
+			// If nothing was replaced, then add the new param to the end
+			if (params === search) {
+				params += `&${newParam}`;
+			}
+		}
 
+		document.location.hash = params;
+	}
+	const timeline = document.getElementById("timeline");
+	let lastClickedSegmentIndex = null;
 
-  function addPickerListeners(element, index) {
+	timeline.addEventListener(
+		"click",
+		(event) => {
+			let offset =
+				(document.getElementById("pagebody").clientWidth - timeline.clientWidth) /
+				2;
+			let newTime =
+				player.duration * (event.clientX - offset) / timeline.clientWidth;
+			player.currentTime = newTime;
+			console.log(`newTime = ${newTime}`);
+			//recalculateCurrentIndex(newTime);
+			player.play();
 
-    console.log("adding ....");
-    console.log(element);
+			//index = 0;
+			lastClickedSegmentIndex = event.target.getAttribute("data-index");
+			let pickers = document.getElementsByClassName("picker");
+			Array.from(pickers).forEach(addPickerListeners);
+			return false;
+		},
+	);
 
-    element.addEventListener('click', event => {
-
-      let segmentType = null;
-      let classList = event.target.classList;
-
-      if (classList.contains("label-female")) {
-        segmentType = "female";
-      }
-      if (classList.contains("label-male")) {
-        segmentType = "male";
-      }
-      if (classList.contains("label-music")) {
-        segmentType = "music";
-      }
-      if (classList.contains("label-noEnergy")) {
-        segmentType = "noEnergy";
-      }
-      if (classList.contains("label-noise")) {
-        segmentType = "noise";
-      }
-
-      allTimings[lastClickedSegmentIndex][0] = segmentType;
-      filterTiming();
-      console.log("------CLICKED------");
-      drawTimeline(allTimings);
-      event.preventDefault();
-      return false;
-    });
-  }
-
-  function addUrlParam(key, val){
-
-    //key = encodeURIComponent(key); 
-    //value = encodeURIComponent(value);
-
-    let newParam = key + '=' + val,
-        params = newParam;
-
-    let search = document.location.hash;    
-
-    if (search) {
-      // Try to replace an existance instance
-      params = search.replace(new RegExp('([#&])' + key + '[^&]*'), '$1' + newParam);
-
-      // If nothing was replaced, then add the new param to the end
-      if (params === search) {
-        params += '&' + newParam;
-      }
-    }
-
-    document.location.hash = params;
-  };
-
-
-  const timeline = document.getElementById('timeline');
-  let lastClickedSegmentIndex = null;
-
-  timeline.addEventListener('click', event => {
-    let offset = (document.getElementById('pagebody').clientWidth - timeline.clientWidth) / 2;
-    let newTime = player.duration * (event.clientX - offset) / timeline.clientWidth;
-    player.currentTime = newTime;
-    console.log("newTime = "+newTime);
-    //recalculateCurrentIndex(newTime);
-    player.play();
-    
-    //index = 0;
-    lastClickedSegmentIndex = event.target.getAttribute("data-index");
-    let pickers = document.getElementsByClassName('picker');
-    Array.from(pickers).forEach(addPickerListeners);
-    return false;
-  });
-
-
-  /*let replace = function(url) {
+	/*let replace = function(url) {
     player.source = {
       type: 'video',
       sources: [
@@ -265,157 +261,159 @@ let skyppy = (function (allTimings) {
     }
   };*/
 
-  //timings = filterTiming();
-  drawTimeline(allTimings);
+	drawTimeline(allTimings);
 
-  let miavar;
-  let embed;
-  let html_video;
+	function drawTimeline(times) {
+		//console.log("p-----");
+		//console.log(times);
+		//timings = times;
+		let tl = document.getElementById("timeline");
+		tl.innerHTML = "";
+		let totalTime = times[times.length - 1][2];
+		//console.log(tl);
 
-  let start_download_video = function() {
+		times.forEach((element, index) => {
+			let widthPc = (element[2] - element[1]) / totalTime * 100;
+			let label = element[0];
 
-    document.getElementById("crono").innerHTML = "start process...";
+			let inputElements = document.getElementsByClassName("filterCheckbox");
 
-    /*let payload = {
-        link_video: document.getElementById("youtube_link").value
-    };
+			let matched = false;
 
-    axios({
-    url: "{{url_for('give_video')}}",
-    method: 'post',
-    data: payload
-    })
-    .then(function (response) {
-        mialet =  "json" + response.data["result"];
-        embed = response.data["embed"];
-        let video_id = embed.split("?v=");
-        replace(video_id[video_id.length - 1]);
-        console.log(video_id[video_id.length - 1]);
-        html_data = response.data["html_data"];
-        segmenter_to_list = response.data["segmenter_to_list"];
-        allTimings = segmenter_to_list;
+			Array.from(inputElements).forEach((input) => {
+				if (input.checked === true) {
+					if (input.value === element[0]) {
+						tl.insertAdjacentHTML(
+							"beforeend",
+							`<div class="label-${label}" style="width:${widthPc}%" data-index="${index}"></div>`,
+						);
+						matched = true;
+					}
+				}
+			});
 
-    }).then(function(result) {
-        document.getElementById("crono").innerHTML = "process complete...";
-        document.getElementById("result").innerHTML = "downloading ... ";
-    }).then(function(result){
-        document.getElementById("result").innerHTML = "result " + miavar;
+			if (matched === false) {
+				tl.insertAdjacentHTML(
+					"beforeend",
+					`<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`,
+				);
+			}
+		});
 
-        document.getElementById("segmenter_to_list_div").innerHTML = segmenter_to_list;
-    }).catch(function (error) {
-        document.getElementById("result").innerHTML = "Error..try later";
-        console.log(error);
-    });*/
-  };
+		const spanHigherPicker = `<span title="${document.getElementById(
+			"checkname-h",
+		).innerText}" class="picker label-female"></span>`;
+		const spanMusicPicker = `<span title="${document.getElementById(
+			"checkname-m",
+		).innerText}" class="picker label-music"></span>`;
+		const spanQuietPicker = `<span title="${document.getElementById(
+			"checkname-q",
+		).innerText}" class="picker label-noEnergy"></span>`;
+		const spanNoisePicker = `<span title="${document.getElementById(
+			"checkname-n",
+		).innerText}" class="picker label-noise"></span>`;
+		const spanLowerPicker = `<span title="${document.getElementById(
+			"checkname-l",
+		).innerText}" class="picker label-male"></span>`;
 
-  function drawTimeline(times) {
-    //console.log("p-----");
-    //console.log(times);
-    //timings = times;
-    let tl = document.getElementById('timeline');
-    //let te = document.getElementById('timeline-edit');
-    tl.innerHTML = "";
-    //te.innerHTML = "";
-    let totalTime = times[times.length-1][2];
-    //console.log(tl);
+		// rome-ignore lint/js/noUndeclaredVariables
+		tippy(
+			".label-male",
+			{
+				trigger: "long-press",
+				placement: "bottom",
+				content: spanHigherPicker +
+				spanMusicPicker +
+				spanQuietPicker +
+				spanNoisePicker,
+				allowHTML: true,
+				theme: "male",
+			},
+		);
 
-    times.forEach((element, index) => {
-      let widthPc = ((element[2] - element[1]) / totalTime) * 100;
-      let label = element[0];
+		// rome-ignore lint/js/noUndeclaredVariables
+		tippy(
+			".label-female",
+			{
+				trigger: "long-press",
+				placement: "bottom",
+				content: spanLowerPicker +
+				spanMusicPicker +
+				spanQuietPicker +
+				spanNoisePicker,
+				allowHTML: true,
+				theme: "female",
+			},
+		);
 
-      let inputElements = document.getElementsByClassName('filterCheckbox');
+		// rome-ignore lint/js/noUndeclaredVariables
+		tippy(
+			".label-music",
+			{
+				trigger: "long-press",
+				placement: "bottom",
+				content: spanLowerPicker +
+				spanHigherPicker +
+				spanQuietPicker +
+				spanNoisePicker,
+				allowHTML: true,
+				theme: "music",
+			},
+		);
 
-      let matched = false;
+		// rome-ignore lint/js/noUndeclaredVariables
+		tippy(
+			".label-noEnergy",
+			{
+				trigger: "long-press",
+				placement: "bottom",
+				content: spanLowerPicker +
+				spanHigherPicker +
+				spanMusicPicker +
+				spanNoisePicker,
+				allowHTML: true,
+				theme: "noEnergy",
+			},
+		);
 
-      Array.from(inputElements).forEach(input => {
-        if (input.checked == true) {
-          if (input.value == element[0]) {
-            tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%" data-index="${index}"></div>`);
-            matched = true;
-          }
-        }
-      });
+		// rome-ignore lint/js/noUndeclaredVariables
+		tippy(
+			".label-noise",
+			{
+				trigger: "long-press",
+				placement: "bottom",
+				content: spanLowerPicker +
+				spanHigherPicker +
+				spanMusicPicker +
+				spanQuietPicker,
+				allowHTML: true,
+				theme: "noise",
+			},
+		);
+	}
 
-      if (matched == false) {
-        tl.insertAdjacentHTML('beforeend', `<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`);
-      }
+	function filterTiming() {
+		let inputElements = document.getElementsByClassName("filterCheckbox");
+		let result = [];
 
-    });
+		allTimings.forEach((element) => {
+			Array.from(inputElements).forEach((input) => {
+				if (input.checked === true) {
+					if (input.value === element[0]) {
+						result.push(element);
+					}
+				}
+			});
+		});
 
-    const spanHigherPicker = `<span title="${document.getElementById('checkname-h').innerText}" class="picker label-female"></span>`;
-    const spanMusicPicker  = `<span title="${document.getElementById('checkname-m').innerText}" class="picker label-music"></span>`;
-    const spanQuietPicker  = `<span title="${document.getElementById('checkname-q').innerText}" class="picker label-noEnergy"></span>`;
-    const spanNoisePicker  = `<span title="${document.getElementById('checkname-n').innerText}" class="picker label-noise"></span>`;
-    const spanLowerPicker  = `<span title="${document.getElementById('checkname-l').innerText}" class="picker label-male"></span>`;
+		activeTimings = result;
 
-    tippy('.label-male', {
-      trigger: 'long-press',
-      placement: 'bottom',
-      content: spanHigherPicker + spanMusicPicker + spanQuietPicker + spanNoisePicker,
-      allowHTML: true,
-      theme: 'male',
-    });
-
-    tippy('.label-female', {
-      trigger: 'long-press',
-      placement: 'bottom',
-      content: spanLowerPicker + spanMusicPicker + spanQuietPicker + spanNoisePicker,
-      allowHTML: true,
-      theme: 'female',
-    });
-
-    tippy('.label-music', {
-      trigger: 'long-press',
-      placement: 'bottom',
-      content: spanLowerPicker + spanHigherPicker + spanQuietPicker + spanNoisePicker,
-      allowHTML: true,
-      theme: 'music',
-    });
-
-    tippy('.label-noEnergy', {
-      trigger: 'long-press',
-      placement: 'bottom',
-      content: spanLowerPicker + spanHigherPicker + spanMusicPicker + spanNoisePicker,
-      allowHTML: true,
-      theme: 'noEnergy',
-    });
-
-    tippy('.label-noise', {
-      trigger: 'long-press',
-      placement: 'bottom',
-      content: spanLowerPicker + spanHigherPicker + spanMusicPicker + spanQuietPicker,
-      allowHTML: true,
-      theme: 'noise',
-    });
-  }
-
-  function filterTiming() {
-    let inputElements = document.getElementsByClassName('filterCheckbox');
-    let result = [];
-   
-    allTimings.forEach(element => {
-      Array.from(inputElements).forEach(input => {
-        if (input.checked == true) {
-          if (input.value == element[0]) {
-            result.push(element);
-          }
-        }
-      });
-    });
-  
-    activeTimings = result;
-
-    console.log(activeTimings);
-  }
-
-});
+		console.log(activeTimings);
+	}
+};
 
 window.onload = function() {
-
-  fetch("test.json")
-  .then(response => response.json())
-  .then(json => {
-    skyppy(json.data);
-  });
-  
-}
+	fetch("test.json").then((response) => response.json()).then((json) => {
+		skyppy(json.data);
+	});
+};
