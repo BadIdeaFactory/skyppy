@@ -88,7 +88,33 @@ let skyppy = (function (allTimings) {
         });
       }
 
+      // check for segment override
+      let firstChar = keyval[0].substr(0,1);
+      if (firstChar == "i") {
+        let index = keyval[0].substr(1);
+        let segmentType = keyval[1];
+
+        switch(segmentType) {
+          case 'l' : 
+            allTimings[index][0] = "male";
+            break;
+          case 'h' : 
+            allTimings[index][0] = "female";
+            break;
+          case 'q' : 
+            allTimings[index][0] = "noEnergy";
+            break;
+          case 'n' : 
+            allTimings[index][0] = "noise";
+            break;
+          case 'm' : 
+            allTimings[index][0] = "music";
+            break;
+        }
+      }
     });
+    console.log("allTimings after reading params...");
+    console.log(allTimings);
   }
 
   const labelEdit = document.getElementsByClassName("editCheckname");
@@ -183,22 +209,38 @@ let skyppy = (function (allTimings) {
     element.addEventListener('click', event => {
 
       let segmentType = null;
+      // labelParams = ["l","h","q","n","m"];
+      let param = null;
       let classList = event.target.classList;
+
+      
+      if (classList.contains("label-male")) {
+        segmentType = "male";
+        param = labelParams[0];
+      }
 
       if (classList.contains("label-female")) {
         segmentType = "female";
+        param = labelParams[1];
       }
-      if (classList.contains("label-male")) {
-        segmentType = "male";
-      }
-      if (classList.contains("label-music")) {
-        segmentType = "music";
-      }
+
       if (classList.contains("label-noEnergy")) {
         segmentType = "noEnergy";
+        param = labelParams[2];
       }
+
       if (classList.contains("label-noise")) {
         segmentType = "noise";
+        param = labelParams[3];
+      }
+
+      if (classList.contains("label-music")) {
+        segmentType = "music";
+        param = labelParams[4];
+      }
+
+      if (param.length != null) {
+        addUrlParam("i"+lastClickedSegmentIndex, param);
       }
 
       allTimings[lastClickedSegmentIndex][0] = segmentType;
@@ -406,6 +448,8 @@ let skyppy = (function (allTimings) {
     activeTimings = result;
 
     console.log(activeTimings);
+    console.log("allTimings");
+    console.log(allTimings);
   }
 
 });
