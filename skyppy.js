@@ -260,14 +260,33 @@ let skyppy = (function (allTimings) {
     let newParam = key + '=' + val,
         params = newParam;
 
+    let exactMatch = false;
+
     let search = document.location.hash;    
+
+    console.log("search");
+    console.log(search);
 
     if (search) {
       // Try to replace an existance instance
       params = search.replace(new RegExp('([#&])' + key + '[^&]*'), '$1' + newParam);
 
-      // If nothing was replaced, then add the new param to the end
-      if (params === search) {
+      console.log("params");
+
+      //console.log(search.match(new RegExp('/'+newParam+'+')));
+
+      if (search.endsWith(newParam)){
+        exactMatch = true;
+        console.log("exact match at end");
+      }
+
+      if (search.indexOf(newParam+"&") >= 0){
+        exactMatch = true;
+        console.log("exact match somewhere");
+      }
+
+      // If nothing was replaced OR an exact match wasn't found, then add the new param to the end
+      if (params === search && exactMatch == false) {
         params += '&' + newParam;
       }
     }
