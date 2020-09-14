@@ -150,10 +150,20 @@ let skyppy = (function (allTimings) {
     });
 
     element.addEventListener('blur', event => {
+      console.log("BLUR");
       event.target.blur();
+      event.target.contentEditable = "false";
       event.preventDefault();
       addUrlParam(labelParams[index], encodeURI(event.target.innerText));
       return false;
+    });
+
+    element.addEventListener('click', event => {
+      console.log(event.target.contentEditable);
+      if (event.target.contentEditable === "true") {
+        event.preventDefault();
+        return false;
+      }
     });
   }
 
