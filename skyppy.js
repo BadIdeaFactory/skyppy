@@ -143,7 +143,7 @@ let skyppy = (function (allTimings) {
         event.target.contentEditable = false;
         event.target.innerHTML = event.target.innerHTML.replace('<br>','');
         event.target.blur();
-        addUrlParam(labelParams[m], event.target.innerText);
+        addUrlParam(labelParams[index], encodeURI(event.target.innerText));
       }
       event.preventDefault();
       return false;
@@ -152,7 +152,7 @@ let skyppy = (function (allTimings) {
     element.addEventListener('blur', event => {
       event.target.blur();
       event.preventDefault();
-      addUrlParam(labelParams[index], event.target.innerText);
+      addUrlParam(labelParams[index], encodeURI(event.target.innerText));
       return false;
     });
   }
