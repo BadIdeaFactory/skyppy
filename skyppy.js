@@ -13,8 +13,6 @@ let skyppy = function(allTimings) {
 		},
 	);
 
-	filterTiming();
-
 	function timeUpdate() {
 		let position = player.currentTime * (timeline.clientWidth / player.duration);
 		document.getElementById("progress-marker").style.marginLeft = `${position}px`;
@@ -70,7 +68,9 @@ let skyppy = function(allTimings) {
 				allTimings[index][0] = segmentType;
 			}
 		});
-	}
+  }
+  
+  filterTiming();
 
 	const labelEdit = document.getElementsByClassName("editCheckname");
 
@@ -151,7 +151,7 @@ let skyppy = function(allTimings) {
 			}
 		});
 
-		addUrlParam("s", switchStr);
+    addUrlParam("s", switchStr);
 	}
 
 	Array.from(switches).forEach((element) => {
