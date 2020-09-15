@@ -94,7 +94,7 @@ let skyppy = (function (allTimings) {
         let index = keyval[0].substr(1);
         let segmentType = keyval[1];
 
-        switch(segmentType) {
+        /*switch(segmentType) {
           case 'l' : 
             allTimings[index][0] = "male";
             break;
@@ -110,7 +110,8 @@ let skyppy = (function (allTimings) {
           case 'm' : 
             allTimings[index][0] = "music";
             break;
-        }
+        }*/
+        allTimings[index][0] = segmentType;
       }
     });
     console.log("allTimings after reading params...");
@@ -224,30 +225,32 @@ let skyppy = (function (allTimings) {
       let classList = event.target.classList;
 
       
-      if (classList.contains("label-male")) {
-        segmentType = "male";
-        param = labelParams[0];
+      if (classList.contains("label-l")) {
+        //segmentType = "male";
+        param = labelParams[0]; // l
       }
 
-      if (classList.contains("label-female")) {
-        segmentType = "female";
-        param = labelParams[1];
+      if (classList.contains("label-h")) {
+        //segmentType = "female"; 
+        param = labelParams[1]; // h
       }
 
-      if (classList.contains("label-noEnergy")) {
-        segmentType = "noEnergy";
-        param = labelParams[2];
+      if (classList.contains("label-q")) {
+        //segmentType = "noEnergy";
+        param = labelParams[2]; // q
       }
 
-      if (classList.contains("label-noise")) {
-        segmentType = "noise";
-        param = labelParams[3];
+      if (classList.contains("label-n")) {
+        //segmentType = "noise";
+        param = labelParams[3]; // n
       }
 
-      if (classList.contains("label-music")) {
-        segmentType = "music";
-        param = labelParams[4];
+      if (classList.contains("label-m")) {
+        //segmentType = "music";
+        param = labelParams[4]; // m
       }
+
+      segmentType = param;
 
       if (param.length != null) {
         addUrlParam("i"+lastClickedSegmentIndex, param);
@@ -413,50 +416,51 @@ let skyppy = (function (allTimings) {
 
     });
 
-    const spanHigherPicker = `<span title="${document.getElementById('checkname-h').innerText}" class="picker label-female"></span>`;
-    const spanMusicPicker  = `<span title="${document.getElementById('checkname-m').innerText}" class="picker label-music"></span>`;
-    const spanQuietPicker  = `<span title="${document.getElementById('checkname-q').innerText}" class="picker label-noEnergy"></span>`;
-    const spanNoisePicker  = `<span title="${document.getElementById('checkname-n').innerText}" class="picker label-noise"></span>`;
-    const spanLowerPicker  = `<span title="${document.getElementById('checkname-l').innerText}" class="picker label-male"></span>`;
+    const spanLowerPicker  = `<span title="${document.getElementById('checkname-l').innerText}" class="picker label-l"></span>`;
+    const spanHigherPicker = `<span title="${document.getElementById('checkname-h').innerText}" class="picker label-h"></span>`;
+    const spanMusicPicker  = `<span title="${document.getElementById('checkname-m').innerText}" class="picker label-m"></span>`;
+    const spanQuietPicker  = `<span title="${document.getElementById('checkname-q').innerText}" class="picker label-q"></span>`;
+    const spanNoisePicker  = `<span title="${document.getElementById('checkname-n').innerText}" class="picker label-n"></span>`;
+    
 
-    tippy('.label-male', {
+    tippy('.label-l', {
       trigger: 'long-press',
       placement: 'bottom',
       content: spanHigherPicker + spanMusicPicker + spanQuietPicker + spanNoisePicker,
       allowHTML: true,
-      theme: 'male',
+      theme: 'l',
     });
 
-    tippy('.label-female', {
+    tippy('.label-h', {
       trigger: 'long-press',
       placement: 'bottom',
       content: spanLowerPicker + spanMusicPicker + spanQuietPicker + spanNoisePicker,
       allowHTML: true,
-      theme: 'female',
+      theme: 'h',
     });
 
-    tippy('.label-music', {
+    tippy('.label-m', {
       trigger: 'long-press',
       placement: 'bottom',
       content: spanLowerPicker + spanHigherPicker + spanQuietPicker + spanNoisePicker,
       allowHTML: true,
-      theme: 'music',
+      theme: 'm',
     });
 
-    tippy('.label-noEnergy', {
+    tippy('.label-q', {
       trigger: 'long-press',
       placement: 'bottom',
       content: spanLowerPicker + spanHigherPicker + spanMusicPicker + spanNoisePicker,
       allowHTML: true,
-      theme: 'noEnergy',
+      theme: 'q',
     });
 
-    tippy('.label-noise', {
+    tippy('.label-n', {
       trigger: 'long-press',
       placement: 'bottom',
       content: spanLowerPicker + spanHigherPicker + spanMusicPicker + spanQuietPicker,
       allowHTML: true,
-      theme: 'noise',
+      theme: 'n',
     });
   }
 
