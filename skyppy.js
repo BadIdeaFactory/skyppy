@@ -7,8 +7,7 @@ let skyppy = function(allTimings) {
 
 	player.on(
 		"play",
-		// rome-ignore lint/js/noUnusedVariables
-		(event) => {
+		() => {
 			player.play();
 			requestAnimationFrame(timeUpdate);
 		},
@@ -54,8 +53,7 @@ let skyppy = function(allTimings) {
 			if (keyval[0] === "s") {
 				let switchesOn = keyval[1].split("");
 
-				// rome-ignore lint/js/noUnusedVariables
-				labelParams.forEach((val, index) => {
+				labelParams.forEach((val) => {
 					if (switchesOn.includes(val)) {
 						document.getElementById(`switchname-${val}`).checked = true;
 					} else {
@@ -171,8 +169,7 @@ let skyppy = function(allTimings) {
 		);
 	});
 
-	// rome-ignore lint/js/noUnusedVariables
-	function addPickerListeners(element, index) {
+	function addPickerListeners(element) {
 		element.addEventListener(
 			"click",
 			(event) => {
@@ -240,7 +237,8 @@ let skyppy = function(allTimings) {
 			}
 		}
 		document.location.hash = params;
-	}
+  }
+  
 	const timeline = document.getElementById("timeline");
 	let lastClickedSegmentIndex = null;
 
@@ -262,11 +260,6 @@ let skyppy = function(allTimings) {
 	);
 
 	drawTimeline(allTimings);
-
-	let miavar;
-	let embed;
-	// rome-ignore lint/js/useCamelCase
-	let html_video;
 
 	function drawTimeline(times) {
 		let tl = document.getElementById("timeline");
@@ -347,6 +340,7 @@ let skyppy = function(allTimings) {
 			},
 		);
 
+		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
 			".label-m",
 			{
@@ -361,6 +355,7 @@ let skyppy = function(allTimings) {
 			},
 		);
 
+		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
 			".label-q",
 			{
@@ -375,6 +370,7 @@ let skyppy = function(allTimings) {
 			},
 		);
 
+		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
 			".label-n",
 			{
@@ -396,8 +392,8 @@ let skyppy = function(allTimings) {
 
 		allTimings.forEach((element) => {
 			Array.from(inputElements).forEach((input) => {
-				if (input.checked == true) {
-					if (input.value == element[0]) {
+				if (input.checked === true) {
+					if (input.value === element[0]) {
 						result.push(element);
 					}
 				}
