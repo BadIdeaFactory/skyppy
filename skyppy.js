@@ -1,95 +1,95 @@
 let skyppy = function(allTimings) {
-	let index = 0;
-	let margin = 0.1;
-	let activeTimings = 0;
+	let index = 0
+	let margin = 0.1
+	let activeTimings = 0
 	// rome-ignore lint/js/noUndeclaredVariables
-	let player = new Plyr("#player");
+	let player = new Plyr("#player")
 
 	player.on(
 		"play",
 		() => {
-			player.play();
-			requestAnimationFrame(timeUpdate);
+			player.play()
+			requestAnimationFrame(timeUpdate)
 		},
-	);
+	)
 
 	function timeUpdate() {
-		let position = player.currentTime * (timeline.clientWidth / player.duration);
-		document.getElementById("progress-marker").style.marginLeft = `${position}px`;
-		index = 0;
+		let position = player.currentTime * (timeline.clientWidth / player.duration)
+		document.getElementById("progress-marker").style.marginLeft = `${position}px`
+		index = 0
 
 		while (player.currentTime >= activeTimings[index][2] - margin) {
-			index++;
+			index++
 		}
 
 		if (player.currentTime < activeTimings[index][1]) {
 			// it's in a gap between active timings
 			// jump to the start of the next active timing
-			player.currentTime = activeTimings[index][1];
+			player.currentTime = activeTimings[index][1]
 		}
 
-		requestAnimationFrame(timeUpdate);
+		requestAnimationFrame(timeUpdate)
 	}
 
-	const hashArray = window.location.hash.substr(1).split("&");
-	const labelParams = ["l", "h", "q", "n", "m"];
+	const hashArray = window.location.hash.substr(1).split("&")
+	const labelParams = ["l", "h", "q", "n", "m"]
 
 	// grab parameters from the URL
 
 	if (window.location.hash.length > 0) {
 		hashArray.forEach((hash) => {
-			let keyval = hash.split("=");
+			let keyval = hash.split("=")
 
 			if (labelParams.includes(keyval[0])) {
-				let labelRef = document.getElementById(`checkname-${keyval[0]}`);
+				let labelRef = document.getElementById(`checkname-${keyval[0]}`)
 				if (labelRef != null) {
-					labelRef.innerHTML = decodeURIComponent(keyval[1]);
+					labelRef.innerHTML = decodeURIComponent(keyval[1])
 				}
 			}
 
 			// check for switches state
 			if (keyval[0] === "s") {
-				let switchesOn = keyval[1].split("");
+				let switchesOn = keyval[1].split("")
 
 				labelParams.forEach((val) => {
 					if (switchesOn.includes(val)) {
-						document.getElementById(`switchname-${val}`).checked = true;
+						document.getElementById(`switchname-${val}`).checked = true
 					} else {
-						document.getElementById(`switchname-${val}`).checked = false;
+						document.getElementById(`switchname-${val}`).checked = false
 					}
-				});
+				})
 			}
 
 			// check for segment override
-			let firstChar = keyval[0].substr(0, 1);
+			let firstChar = keyval[0].substr(0, 1)
 			if (firstChar === "i") {
-				let index = keyval[0].substr(1);
-				let segmentType = keyval[1];
-				allTimings[index][0] = segmentType;
+				let index = keyval[0].substr(1)
+				let segmentType = keyval[1]
+				allTimings[index][0] = segmentType
 			}
-		});
+		})
   }
   
-  filterTiming();
+  filterTiming()
 
-	const labelEdit = document.getElementsByClassName("editCheckname");
+	const labelEdit = document.getElementsByClassName("editCheckname")
 
 	Array.from(labelEdit).forEach((element) => {
 		element.addEventListener(
 			"click",
 			(event) => {
-				let sibling = event.target.nextElementSibling;
-				sibling.contentEditable = "true";
-				sibling.focus();
-				event.preventDefault();
-				return false;
+				let sibling = event.target.nextElementSibling
+				sibling.contentEditable = "true"
+				sibling.focus()
+				event.preventDefault()
+				return false
 			},
-		);
-	});
+		)
+	})
 
-	const label = document.getElementsByClassName("checkname");
+	const label = document.getElementsByClassName("checkname")
 
-	Array.from(label).forEach(addLabelListeners);
+	Array.from(label).forEach(addLabelListeners)
 
 	function addLabelListeners(element, index) {
 		element.addEventListener(
@@ -100,179 +100,179 @@ let skyppy = function(allTimings) {
 					(event.inputType === "insertText" && event.data == null)
 				) {
 					// check for return bring hit
-					event.target.contentEditable = false;
-					event.target.innerHTML = event.target.innerHTML.replace("<br>", "");
-					event.target.blur();
-					addUrlParam(labelParams[index], encodeURI(event.target.innerText));
+					event.target.contentEditable = false
+					event.target.innerHTML = event.target.innerHTML.replace("<br>", "")
+					event.target.blur()
+					addUrlParam(labelParams[index], encodeURI(event.target.innerText))
 				}
-				event.preventDefault();
-				return false;
+				event.preventDefault()
+				return false
 			},
-		);
+		)
 
 		element.addEventListener(
 			"blur",
 			(event) => {
-				event.target.blur();
-				event.target.contentEditable = "false";
-				event.preventDefault();
-				addUrlParam(labelParams[index], encodeURI(event.target.innerText));
-				return false;
+				event.target.blur()
+				event.target.contentEditable = "false"
+				event.preventDefault()
+				addUrlParam(labelParams[index], encodeURI(event.target.innerText))
+				return false
 			},
-		);
+		)
 
 		element.addEventListener(
 			"click",
 			(event) => {
 				if (event.target.contentEditable === "true") {
-					event.preventDefault();
-					return false;
+					event.preventDefault()
+					return false
 				}
 			},
-		);
+		)
 	}
 
-	const switches = document.getElementsByClassName("filterCheckbox");
+	const switches = document.getElementsByClassName("filterCheckbox")
 
 	function greySwitchText(element) {
 		if (element.checked === false) {
-			element.previousElementSibling.classList.add("deselected");
+			element.previousElementSibling.classList.add("deselected")
 		} else {
-			element.previousElementSibling.classList.remove("deselected");
+			element.previousElementSibling.classList.remove("deselected")
 		}
 	}
 
 	function updateSwitchState() {
-		let switchStr = "";
+		let switchStr = ""
 
 		labelParams.forEach((val, index) => {
 			if (switches[index].checked === true) {
-				switchStr += val;
+				switchStr += val
 			}
-		});
+		})
 
-    addUrlParam("s", switchStr);
+    addUrlParam("s", switchStr)
 	}
 
 	Array.from(switches).forEach((element) => {
-		greySwitchText(element);
+		greySwitchText(element)
 
 		element.addEventListener(
 			"click",
 			(event) => {
-				greySwitchText(event.target);
-				filterTiming();
-				drawTimeline(allTimings);
-				updateSwitchState();
-				return false;
+				greySwitchText(event.target)
+				filterTiming()
+				drawTimeline(allTimings)
+				updateSwitchState()
+				return false
 			},
-		);
-	});
+		)
+	})
 
 	function addPickerListeners(element) {
 		element.addEventListener(
 			"click",
 			(event) => {
-				let segmentType = null;
-				let param = null;
-				let classList = event.target.classList;
+				let segmentType = null
+				let param = null
+				let classList = event.target.classList
 
 				if (classList.contains("label-l")) {
-					param = labelParams[0]; // l
+					param = labelParams[0] // l
 				}
 
 				if (classList.contains("label-h")) {
-					param = labelParams[1]; // h
+					param = labelParams[1] // h
 				}
 
 				if (classList.contains("label-q")) {
-					param = labelParams[2]; // q
+					param = labelParams[2] // q
 				}
 
 				if (classList.contains("label-n")) {
-					param = labelParams[3]; // n
+					param = labelParams[3] // n
 				}
 
 				if (classList.contains("label-m")) {
-					param = labelParams[4]; // m
+					param = labelParams[4] // m
 				}
 
-				segmentType = param;
+				segmentType = param
 
 				if (param.length != null) {
-					addUrlParam(`i${lastClickedSegmentIndex}`, param);
+					addUrlParam(`i${lastClickedSegmentIndex}`, param)
 				}
 
-				allTimings[lastClickedSegmentIndex][0] = segmentType;
-				filterTiming();
-				drawTimeline(allTimings);
-				event.preventDefault();
-				return false;
+				allTimings[lastClickedSegmentIndex][0] = segmentType
+				filterTiming()
+				drawTimeline(allTimings)
+				event.preventDefault()
+				return false
 			},
-		);
+		)
 	}
 
 	function addUrlParam(key, val) {
-		let newParam = `${key}=${val}`;
-		let params = newParam;
+		let newParam = `${key}=${val}`
+		let params = newParam
 
-		let exactMatch = false;
-		let search = document.location.hash;
+		let exactMatch = false
+		let search = document.location.hash
 
 		if (search) {
 			// Try to replace an existance instance
-			params = search.replace(new RegExp(`([#&])${key}[^&]*`), `$1${newParam}`);
+			params = search.replace(new RegExp(`([#&])${key}[^&]*`), `$1${newParam}`)
 
 			if (search.endsWith(newParam)) {
-				exactMatch = true;
+				exactMatch = true
 			}
 
 			if (search.indexOf(`${newParam}&`) >= 0) {
-				exactMatch = true;
+				exactMatch = true
 			}
 
 			// If nothing was replaced OR an exact match wasn't found, then add the new param to the end
 			if (params === search && exactMatch === false) {
-				params += `&${newParam}`;
+				params += `&${newParam}`
 			}
 		}
-		document.location.hash = params;
+		document.location.hash = params
   }
   
-	const timeline = document.getElementById("timeline");
-	let lastClickedSegmentIndex = null;
+	const timeline = document.getElementById("timeline")
+	let lastClickedSegmentIndex = null
 
 	timeline.addEventListener(
 		"click",
 		(event) => {
 			let offset =
 				(document.getElementById("pagebody").clientWidth - timeline.clientWidth) /
-				2;
+				2
 			let newTime =
-				player.duration * (event.clientX - offset) / timeline.clientWidth;
-			player.currentTime = newTime;
-			player.play();
-			lastClickedSegmentIndex = event.target.getAttribute("data-index");
-			let pickers = document.getElementsByClassName("picker");
-			Array.from(pickers).forEach(addPickerListeners);
-			return false;
+				player.duration * (event.clientX - offset) / timeline.clientWidth
+			player.currentTime = newTime
+			player.play()
+			lastClickedSegmentIndex = event.target.getAttribute("data-index")
+			let pickers = document.getElementsByClassName("picker")
+			Array.from(pickers).forEach(addPickerListeners)
+			return false
 		},
-	);
+	)
 
-	drawTimeline(allTimings);
+	drawTimeline(allTimings)
 
 	function drawTimeline(times) {
-		let tl = document.getElementById("timeline");
-		tl.innerHTML = "";
-		let totalTime = times[times.length - 1][2];
+		let tl = document.getElementById("timeline")
+		tl.innerHTML = ""
+		let totalTime = times[times.length - 1][2]
 
 		times.forEach((element, index) => {
-			let widthPc = (element[2] - element[1]) / totalTime * 100;
-			let label = element[0];
+			let widthPc = (element[2] - element[1]) / totalTime * 100
+			let label = element[0]
 
-			let inputElements = document.getElementsByClassName("filterCheckbox");
+			let inputElements = document.getElementsByClassName("filterCheckbox")
 
-			let matched = false;
+			let matched = false
 
 			Array.from(inputElements).forEach((input) => {
 				if (input.checked === true) {
@@ -280,35 +280,35 @@ let skyppy = function(allTimings) {
 						tl.insertAdjacentHTML(
 							"beforeend",
 							`<div class="label-${label}" style="width:${widthPc}%" data-index="${index}"></div>`,
-						);
-						matched = true;
+						)
+						matched = true
 					}
 				}
-			});
+			})
 
 			if (matched === false) {
 				tl.insertAdjacentHTML(
 					"beforeend",
 					`<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`,
-				);
+				)
 			}
-		});
+		})
 
 		const spanLowerPicker = `<span title="${document.getElementById(
 			"checkname-l",
-		).innerText}" class="picker label-l"></span>`;
+		).innerText}" class="picker label-l"></span>`
 		const spanHigherPicker = `<span title="${document.getElementById(
 			"checkname-h",
-		).innerText}" class="picker label-h"></span>`;
+		).innerText}" class="picker label-h"></span>`
 		const spanMusicPicker = `<span title="${document.getElementById(
 			"checkname-m",
-		).innerText}" class="picker label-m"></span>`;
+		).innerText}" class="picker label-m"></span>`
 		const spanQuietPicker = `<span title="${document.getElementById(
 			"checkname-q",
-		).innerText}" class="picker label-q"></span>`;
+		).innerText}" class="picker label-q"></span>`
 		const spanNoisePicker = `<span title="${document.getElementById(
 			"checkname-n",
-		).innerText}" class="picker label-n"></span>`;
+		).innerText}" class="picker label-n"></span>`
 
 		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
@@ -323,7 +323,7 @@ let skyppy = function(allTimings) {
 				allowHTML: true,
 				theme: "l",
 			},
-		);
+		)
 
 		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
@@ -338,7 +338,7 @@ let skyppy = function(allTimings) {
 				allowHTML: true,
 				theme: "h",
 			},
-		);
+		)
 
 		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
@@ -353,7 +353,7 @@ let skyppy = function(allTimings) {
 				allowHTML: true,
 				theme: "m",
 			},
-		);
+		)
 
 		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
@@ -368,7 +368,7 @@ let skyppy = function(allTimings) {
 				allowHTML: true,
 				theme: "q",
 			},
-		);
+		)
 
 		// rome-ignore lint/js/noUndeclaredVariables
 		tippy(
@@ -383,28 +383,28 @@ let skyppy = function(allTimings) {
 				allowHTML: true,
 				theme: "n",
 			},
-		);
+		)
 	}
 
 	function filterTiming() {
-		let inputElements = document.getElementsByClassName("filterCheckbox");
-		let result = [];
+		let inputElements = document.getElementsByClassName("filterCheckbox")
+		let result = []
 
 		allTimings.forEach((element) => {
 			Array.from(inputElements).forEach((input) => {
 				if (input.checked === true) {
 					if (input.value === element[0]) {
-						result.push(element);
+						result.push(element)
 					}
 				}
-			});
-		});
-		activeTimings = result;
+			})
+		})
+		activeTimings = result
 	}
-};
+}
 
 window.onload = function() {
 	fetch("test.json").then((response) => response.json()).then((json) => {
-		skyppy(json.data);
-	});
-};
+		skyppy(json.data)
+	})
+}
