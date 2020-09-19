@@ -72,15 +72,15 @@ def api():
 
         os.remove(filename)
 
-        output = jsonify({"result": str(pd.DataFrame(segmentation).to_html()),
-                                      "embed": embed,
-                                      "segmenter_to_list": segmentation_output})
+        output = jsonify({
+            "embed": embed,
+            "data": segmentation_output}
+            )
 
 
 
         with open("./log/" + id_youtube_file, "w") as logging_file:
-            json.dump({"embed": embed, "result": str(pd.DataFrame(segmentation).to_html()),
-                                              "segmenter_to_list": segmentation_output}, logging_file)
+            json.dump({"embed": embed, "data": segmentation_output}, logging_file)
 
 
 
