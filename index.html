@@ -44,40 +44,42 @@
         <!--<button onclick="start_download_video()" class="btn btn-primary">download</button>-->
     </div>
 
-    <label>
-      <img class="editCheckname" src="edit.svg" />
-      <span id="checkname-l" class="checkname">lower voice</span> 
-      <input id="switchname-l" class="filterCheckbox" type="checkbox" value="l" name="lower" checked/>
-      <i id="btn-lower"></i> 
-    </label>
-   
-    <label>
-      <img class="editCheckname" src="edit.svg" />
-      <span id="checkname-h" class="checkname">higher voice</span> 
-      <input id="switchname-h" class="filterCheckbox" type="checkbox" value="h" name="higher" checked/>
-      <i id="btn-higher"></i> 
-    </label>
+    <div class="label-holder">
+      <label>
+        <img class="editCheckname" src="edit.svg" />
+        <span id="checkname-l" class="checkname">lower voice</span> 
+        <input id="switchname-l" class="filterCheckbox" type="checkbox" value="l" name="lower" checked/>
+        <i id="btn-lower"></i> 
+      </label>
     
-    <label>
-      <img class="editCheckname" src="edit.svg" />
-      <span id="checkname-q" class="checkname">quiet</span> 
-      <input id="switchname-q" class="filterCheckbox" type="checkbox" value="q" name="quiet" checked/>
-      <i id="btn-quiet"></i> 
-    </label>
-    
-    <label>
-      <img class="editCheckname" src="edit.svg" />
-      <span id="checkname-n" class="checkname">noise</span> 
-      <input id="switchname-n" class="filterCheckbox" type="checkbox" value="n" name="noise" checked/>
-      <i id="btn-noise"></i> 
-    </label>
-    
-    <label>
-      <img class="editCheckname" src="edit.svg" />
-      <span id="checkname-m" class="checkname">music</span> 
-      <input id="switchname-m" class="filterCheckbox" type="checkbox" value="m" name="music" checked/>
-      <i id="btn-music"></i>  
-    </label>
+      <label>
+        <img class="editCheckname" src="edit.svg" />
+        <span id="checkname-h" class="checkname">higher voice</span> 
+        <input id="switchname-h" class="filterCheckbox" type="checkbox" value="h" name="higher" checked/>
+        <i id="btn-higher"></i> 
+      </label>
+      
+      <label>
+        <img class="editCheckname" src="edit.svg" />
+        <span id="checkname-q" class="checkname">quiet</span> 
+        <input id="switchname-q" class="filterCheckbox" type="checkbox" value="q" name="quiet" checked/>
+        <i id="btn-quiet"></i> 
+      </label>
+      
+      <label>
+        <img class="editCheckname" src="edit.svg" />
+        <span id="checkname-n" class="checkname">noise</span> 
+        <input id="switchname-n" class="filterCheckbox" type="checkbox" value="n" name="noise" checked/>
+        <i id="btn-noise"></i> 
+      </label>
+      
+      <label>
+        <img class="editCheckname" src="edit.svg" />
+        <span id="checkname-m" class="checkname">music</span> 
+        <input id="switchname-m" class="filterCheckbox" type="checkbox" value="m" name="music" checked/>
+        <i id="btn-music"></i>  
+      </label>
+    </div>
 
     <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="udVvb5giPcg"></div>     
      
@@ -91,7 +93,7 @@
  <footer class="page-footer font-small teal pt-4">
 
   <!-- Footer Text -->
-  <div class="container-fluid text-center text-md-left">
+  <div class="container-fluid text-md-left">
 
     <!-- Grid row -->
     <div class="row">
@@ -101,7 +103,7 @@
 
         <!-- Content -->
         <h5 class="text-uppercase font-weight-bold">Notes</h5>
-        <p><strong>Long-press</strong> on the segments in the progress bar above <span style="font-size: 2em;">&#9757;</span><br/> to reassign them!</p>
+        <p><strong>Long-press</strong> on the segments in the progress bar above <span style="font-size: 2em;">&#9757;</span> to reassign them!</p>
         <p>Currently only media under 30 minutes in length will be segmented. For longer pieces or custom projects based on this technology please contact  <a href="https://twitter.com/mscarselli">Marco</a> or <a href="https://twitter.com/maboa/">Mark</a>.</p>
 
       </div>
@@ -132,28 +134,17 @@
   <!-- Copyright -->
   
 </footer>
-<!-- Footer -->
 
-    <!--<div>
-        <p id="crono"></p>
-    </div>
-    <div>
-        <p id="result"></p>
-    </div>
-    <div id="segmenter_to_list_div">
-    </div>
-  </main>    -->
+<!-- Development -->
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
-  <!-- Development -->
-  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
-  <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
-  
 
-  <!-- Production -->
-  <!-- <script src="https://unpkg.com/@popperjs/core@2"></script>
-  <script src="https://unpkg.com/tippy.js@6"></script> -->
+<!-- Production -->
+<!-- <script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script> -->
 
-  <script src="skyppy.js"></script>
+<script src="skyppy.js"></script>
 
 </body>
 </html>
