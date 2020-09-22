@@ -122,7 +122,7 @@ label > input:checked + i:after {
   height: 64px;
 }
 
-#btn-m:after {
+#btn-music:after {
   background-color: #d2d2e0;
 }
 
@@ -176,7 +176,7 @@ label > input:checked + i:after {
   background-position: center; 
 }
 
-#btn-n:after {
+#btn-noise:after {
   background-color: #666666;
 }
 
