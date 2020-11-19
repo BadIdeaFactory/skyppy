@@ -47,7 +47,6 @@ class Segment:
             
             return str(e)
 
-        
     
     def segmenter(self):
         # initialize segmenter and use on-it
@@ -65,7 +64,8 @@ class Segment:
 
             output = {
                 "embed": embed,
-                "data": segmentation_output
+                "data": segmentation_output,
+                "status_code": 200
                 }
             
             self.logging = str(output)
@@ -76,11 +76,38 @@ class Segment:
             
             return { 
                 "embed": "error",
-                "data": "error"
+                "data": "error",
+                "status_code": 404
                 }
         finally:
             for item in os.listdir():
                 if item[-3:] == "mp3":
                     os.remove(item)
 
-            
+
+
+
+class Skyppy_flask:
+    @staticmethod
+    def process(request, make_response, Segment, jsonify, Cache): 
+        posted = {}
+        posted["link_video"] = "https://" + request.args.get('url', default='*', type=str)
+        id_youtube_file = request.args.get('url', default='*', type=str).split("?v=")[1] + ".json"
+        try:
+            cache = Cache(id_youtube_file)
+
+            if cache.check_log():
+                return cache.data_from_log()
+
+            segment = Segment(posted)
+            segment.download()
+            video_segment = segment.segmenter()
+            output = jsonify(video_segment)
+            if video_segment["embed"] != "error":
+                cache.save_from_log(video_segment["embed"], video_segment["data"])
+            result =  output, 200
+        except:
+            payload = jsonify(id_youtube_file)
+            resp = make_response(payload, 404)
+            result = resp
+        return result
