@@ -10,14 +10,9 @@ from subprocess import call
 from skyppy_core import Segment
 
 
-
-
-
 #initialize flask
 app = Flask(__name__)
 app.static_url_path=app.config.get('video')
-
-
 
 
 @app.route('/')
