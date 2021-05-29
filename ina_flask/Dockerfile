@@ -27,5 +27,5 @@ RUN apt-get -y install ffmpeg
 # to be equal to the cores available.
 # Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
 #CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
-
+CMD exec pip3 install --upgrade youtube-dl
 CMD exec gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 main:app
