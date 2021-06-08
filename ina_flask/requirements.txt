@@ -39,7 +39,7 @@ numpy==1.18.1
 oauthlib==3.1.0
 opt-einsum==3.1.0
 pandas==0.25.3
-Pillow==7.0.0
+Pillow==8.2.0
 pkg-resources==0.0.0
 protobuf==3.11.2
 pyannote.algorithms==0.8
