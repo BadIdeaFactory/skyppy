@@ -22,7 +22,7 @@ let skyppy = function (allTimings) {
       index++;
     }
 
-    if (player.currentTime < activeTimings[index][1]) {
+    if (player.currentTime < activeTimings[index][1] - margin) {
       // it's in a gap between active timings
       // jump to the start of the next active timing
       player.currentTime = activeTimings[index][1];
