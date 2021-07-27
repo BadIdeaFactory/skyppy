@@ -1,9 +1,8 @@
-let skyppy = function (allTimings) {
+let skyppy = function (allTimings, player) {
   let index = 0;
   let margin = 0.1;
   let activeTimings = 0;
   // rome-ignore lint/js/noUndeclaredVariables
-  let player = new Plyr("#player");
 
   player.on("play", () => {
     player.play();
@@ -357,6 +356,15 @@ let skyppy = function (allTimings) {
   }
 };
 
+function getYouTubeId(url) {
+  var regExp =
+    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  var match = url.match(regExp);
+  return match && match[7].length == 11 ? match[7] : false;
+}
+
+// https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+
 window.onload = function () {
   //fetch("test.json").then((response) => response.json()).then((json) => {
   // SXG4KdstVw4
@@ -371,42 +379,92 @@ window.onload = function () {
   // --P6IGVLVZo
   // jomcECjuYa0
   // v-xh_gq8sbk
+  // cPyXP-wb2RM
 
   //fetch("https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3DDqH-iwA0ZmU").then((response) => response.json()).then((json) => {
   /*fetch("http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DlooRuovPcbg").then((response) => response.json()).then((json) => {
 	  skyppy(json.data);
 	});*/
 
-  loadData("v-xh_gq8sbk");
+  let player = null;
+
+  document
+    .getElementById("button-search")
+    .addEventListener("click", function (event) {
+      let element = (searchBox = document.getElementById("box-search"));
+      let searchStr = searchBox.value;
+      console.log(searchStr.len);
+      if (searchStr === "") {
+        console.log("zero length");
+        searchStr = searchBox.getAttribute("placeholder");
+      }
+      console.log(searchStr);
+
+      if (player !== null) {
+        player.destroy();
+      }
+      let youTubeId = getYouTubeId(searchStr);
+      document
+        .getElementById("player")
+        .setAttribute("data-plyr-embed-id", youTubeId);
+
+      player = new Plyr("#player");
+
+      console.log("calling loadData...");
+      loadData(youTubeId, player);
+      event.preventDefault();
+      return false;
+    });
+
+  //console.log("calling loadData...");
+  //loadData("d_Hfal3unHE");
 };
 
-async function loadData(youtubeId) {
+async function loadData(youTubeId, player) {
+  console.log("in loadData...");
+
   try {
+    console.log(
+      "trying " +
+        "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
+        youTubeId
+    );
+
+    document.getElementById("timeline").innerHTML =
+      "Calculating. Please wait ...";
+
     const response = await fetchWithTimeout(
       "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
-        youtubeId,
+        youTubeId,
       {
         //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
-        timeout: 30000,
+
+        timeout: 3000,
       }
     );
+
+    console.log("grabbing json...");
     const json = await response.json();
-    skyppy(json.data);
+    skyppy(json.data, player);
   } catch (error) {
+    console.log("timed out");
+
     // Timeouts if the request takes
     // longer than 3 seconds
     const interval = setInterval(async () => {
+      document.getElementById("timeline").innerHTML += ".";
       const response = await fetchWithTimeout(
         "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
-          youtubeId +
+          youTubeId +
           "&noprocess=true",
         {
           timeout: 2000,
         }
       );
       const json = await response.json();
+      console.log(json);
       if (json !== false) {
-        skyppy(json.data);
+        skyppy(json.data, player);
         clearInterval(interval);
       }
     }, 1000);
@@ -416,6 +474,7 @@ async function loadData(youtubeId) {
 }
 
 async function fetchWithTimeout(resource, options) {
+  console.log("in fetch");
   const { timeout = 8000 } = options;
 
   const controller = new AbortController();
@@ -426,6 +485,8 @@ async function fetchWithTimeout(resource, options) {
     signal: controller.signal,
   });
   clearTimeout(id);
+
+  console.log(response);
 
   return response;
 }
