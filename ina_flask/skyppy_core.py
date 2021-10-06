@@ -1,9 +1,9 @@
 import uuid
 import youtube_dl
+import os
 from ina_tools import segmentation_to_json
 from inaSpeechSegmenter import Segmenter, seg2csv
-import os
-
+from tool.check_video_lenght import CheckVideoLenght
 
 class Segment:
     def __init__(self, posted):
@@ -38,9 +38,10 @@ class Segment:
 
             # stop concurrent youtube download
             open("status.txt", "a").close()
+            
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([self.posted["link_video"]])
-            self.video_id = ydl.extract_info(self.posted["link_video"])["id"]
+            self.video_id = ydl.extract_info(self.posted["link_video"], download = False)["id"]
             os.remove("status.txt")
             self.logging = self.video_id
 
@@ -79,11 +80,17 @@ class Segment:
 
 class Skyppy_flask:
     @staticmethod
-    def process(request, make_response, Segment, jsonify, Cache):
+    def process(request, make_response, Segment, jsonify, Cache, video_lengt_in_minutes: int = 15):
         posted = {}
         posted["link_video"] = "https://" + request.args.get(
             "url", default="*", type=str
         )
+
+        video_lenght = CheckVideoLenght().get(posted["link_video"])
+        
+        if video_lenght >= 60 * video_lengt_in_minutes:
+            return make_response(jsonify({"video": posted["link_video"], "duration_in_seconds": video_lenght, "status": "too long"}))
+
         id_youtube_file = (
             request.args.get("url", default="*", type=str).split("?v=")[1] + ".json"
         )
