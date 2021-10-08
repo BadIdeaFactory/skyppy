@@ -21,6 +21,7 @@
   </style>
 </head>
 <body id="pagebody">
+
   <div class="jumbotron text-center">
     <h1 class="title">Skyppy</h1>
     <p>Cut to the chase!</p> 
@@ -36,7 +37,13 @@
             
             <input id="box-search" type="search" placeholder="https://www.youtube.com/watch?v=udVvb5giPcg" aria-describedby="button-search" class="form-control border-0 bg-light">
             <div class="input-group-append">
-              <button id="button-search" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+              <button id="button-search" type="submit" class="btn btn-link text-primary">
+                <i class="fa fa-search"></i>
+                <svg style="display:none" class="spinner" viewBox="0 0 100 100">
+                  <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5"></circle>
+                </svg>
+              </button>
+              
             </div>
           </div>
         </div>
@@ -136,6 +143,8 @@
   <!-- Copyright -->
   
 </footer>
+
+
 
 <!-- Development -->
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>

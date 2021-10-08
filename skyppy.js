@@ -2,6 +2,8 @@ let skyppy = function (allTimings, player) {
   let index = 0;
   let margin = 0.1;
   let activeTimings = 0;
+
+  
   // rome-ignore lint/js/noUndeclaredVariables
 
   player.on("play", () => {
@@ -270,6 +272,12 @@ let skyppy = function (allTimings, player) {
           `<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`
         );
       }
+
+      // switch the search button back on (and hide the spinner)
+
+      document.querySelector(".fa-search").style.removeProperty('display');
+      document.querySelector("#button-search").disabled = false;
+      document.querySelector(".spinner").style.display = 'none';
     });
 
     const spanLowerPicker = `<span title="${
@@ -388,9 +396,19 @@ window.onload = function () {
 
   let player = null;
 
+
+
   document
     .getElementById("button-search")
     .addEventListener("click", function (event) {
+
+      // disable button, hide search graphic and show spinner
+      
+      document.querySelector(".fa-search").style.display = 'none';
+      document.querySelector("#button-search").disabled = true;
+      document.querySelector(".spinner").style.display = 'block';
+
+
       let element = (searchBox = document.getElementById("box-search"));
       let searchStr = searchBox.value;
       console.log(searchStr.len);
@@ -423,6 +441,10 @@ window.onload = function () {
 async function loadData(youTubeId, player) {
   console.log("in loadData...");
 
+  //let loadProgress = 0;
+  let tl = document.getElementById("timeline");
+  tl.innerHTML = "";
+
   try {
     console.log(
       "trying " +
@@ -430,8 +452,10 @@ async function loadData(youTubeId, player) {
         youTubeId
     );
 
-    document.getElementById("timeline").innerHTML =
-      "Calculating. Please wait ...";
+    //document.getElementById("timeline").innerHTML =
+    // "Calculating. Please wait ...";
+
+    
 
     const response = await fetchWithTimeout(
       "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
@@ -452,7 +476,10 @@ async function loadData(youTubeId, player) {
     // Timeouts if the request takes
     // longer than 3 seconds
     const interval = setInterval(async () => {
-      document.getElementById("timeline").innerHTML += ".";
+      //document.getElementById("timeline").innerHTML += ".";
+
+      
+
       const response = await fetchWithTimeout(
         "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
           youTubeId +
@@ -463,6 +490,12 @@ async function loadData(youTubeId, player) {
       );
       const json = await response.json();
       console.log(json);
+
+      tl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="label-m" style="width:0.3%"></div>`
+      );
+
       if (json !== false) {
         skyppy(json.data, player);
         clearInterval(interval);
