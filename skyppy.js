@@ -7,6 +7,8 @@ let skyppy = function (allTimings, player) {
   // rome-ignore lint/js/noUndeclaredVariables
 
   player.on("play", () => {
+    player.volume = 1;
+    player.muted = false;
     player.play();
     requestAnimationFrame(timeUpdate);
   });
