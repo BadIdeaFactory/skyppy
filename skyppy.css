@@ -194,6 +194,34 @@ label > input:checked + i:after {
   background-color: #d2d2e0;
 }
 
+.label-loader {
+  display: inline-block;
+  height: 64px;
+  animation-name: backgroundColorPalette;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: linear; 
+}
+
+@keyframes backgroundColorPalette {
+	0% {
+		background: #0000ff;
+	}
+	25% {
+		background: #9e9df6;
+	}
+	50% {
+		background: #594b63;
+	}
+	75% {
+		background: #d2d2e0;
+	}
+	100% {
+		background: #ffffff;
+	}
+}
+
 footer {
   background-color: #1094fb;
   color: #ffffff;
@@ -289,6 +317,11 @@ footer a {
 
 .tippy-box[data-theme~="n"][data-placement^="top"] > .tippy-arrow::before {
   border-top-color: #d2d2e0;
+}
+
+.length-error {
+  padding: 16px;
+  text-align: center;
 }
 
 .spinner {
