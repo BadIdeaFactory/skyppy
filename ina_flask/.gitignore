@@ -122,3 +122,6 @@ dmypy.json
 
 # Idea
 .idea/
+
+#
+.mp3

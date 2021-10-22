@@ -11,7 +11,7 @@ from flask import (
     Response,
 )
 from flask_cors import CORS
-from ina_cache import Cache
+from lib.ina_cache import Cache
 import pandas as pd
 import re
 import time
