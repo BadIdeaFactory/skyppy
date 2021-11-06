@@ -3,10 +3,10 @@ import youtube_dl
 import os
 from ina_tools import segmentation_to_json
 from inaSpeechSegmenter import Segmenter, seg2csv
-from lib.check_video_lenght import CheckVideoLenght
-from lib.download_audio import DownloadAudio
-from lib.audio_segmenter import AudioSegmenter
-from lib.get_video_id import get_video_id
+from ina_lib.check_video_lenght import CheckVideoLenght
+from ina_lib.download_audio import DownloadAudio
+from ina_lib.audio_segmenter import AudioSegmenter
+from ina_lib.get_video_id import get_video_id
 class Segment:
     def __init__(self, posted):
         self.filename: str

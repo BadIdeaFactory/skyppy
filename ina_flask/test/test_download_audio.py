@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
 
 
-from lib.download_audio import DownloadAudio
+from ina_lib.download_audio import DownloadAudio
 os.chdir("./test")
 file_path = "audio_test.mp3"
 file_path = os.path.join(os.getcwd(), file_path)
