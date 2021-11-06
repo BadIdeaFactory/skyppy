@@ -1,3 +1,4 @@
+const api_url = "http://0.0.0.0:8080/"
 let skyppy = function (allTimings, player) {
   let index = 0;
   let margin = 0.1;
@@ -453,7 +454,7 @@ async function loadData(youTubeId, player) {
   try {
     console.log(
       "trying " +
-        "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
+        `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
         youTubeId
     );
 
@@ -463,7 +464,7 @@ async function loadData(youTubeId, player) {
     
 
     const response = await fetchWithTimeout(
-      "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
+      `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
         youTubeId,
       {
         //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
@@ -506,7 +507,7 @@ async function loadData(youTubeId, player) {
       console.log(player.duration);
 
       const response = await fetchWithTimeout(
-        "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
+        `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
           youTubeId +
           "&noprocess=true",
         {

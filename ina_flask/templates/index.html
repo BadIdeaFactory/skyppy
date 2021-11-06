@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="skyppy.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='skyppy.css') }}" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap"> 
 
   <style>
@@ -54,35 +54,35 @@
 
     <div class="label-holder">
       <label>
-        <img class="editCheckname" src="edit.svg" />
+        <img class="editCheckname" src="{{ url_for('static', filename='edit.svg') }}"  />
         <span id="checkname-l" class="checkname">lower voice</span> 
         <input id="switchname-l" class="filterCheckbox" type="checkbox" value="l" name="lower" checked/>
         <i id="btn-lower"></i> 
       </label>
     
       <label>
-        <img class="editCheckname" src="edit.svg" />
+        <img class="editCheckname" src="{{ url_for('static', filename='edit.svg') }}" />
         <span id="checkname-h" class="checkname">higher voice</span> 
         <input id="switchname-h" class="filterCheckbox" type="checkbox" value="h" name="higher" checked/>
         <i id="btn-higher"></i> 
       </label>
       
       <label>
-        <img class="editCheckname" src="edit.svg" />
+        <img class="editCheckname" src="{{ url_for('static', filename='edit.svg') }}" />
         <span id="checkname-q" class="checkname">quiet</span> 
         <input id="switchname-q" class="filterCheckbox" type="checkbox" value="q" name="quiet" checked/>
         <i id="btn-quiet"></i> 
       </label>
       
       <label>
-        <img class="editCheckname" src="edit.svg" />
+        <img class="editCheckname" src="{{ url_for('static', filename='edit.svg') }}" />
         <span id="checkname-n" class="checkname">noise</span> 
         <input id="switchname-n" class="filterCheckbox" type="checkbox" value="n" name="noise" checked/>
         <i id="btn-noise"></i> 
       </label>
       
       <label>
-        <img class="editCheckname" src="edit.svg" />
+        <img class="editCheckname" src="{{ url_for('static', filename='edit.svg') }}" />
         <span id="checkname-m" class="checkname">music</span> 
         <input id="switchname-m" class="filterCheckbox" type="checkbox" value="m" name="music" checked/>
         <i id="btn-music"></i>  
@@ -155,7 +155,7 @@
 <!-- <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script> -->
 
-<script src="skyppy.js"></script>
+<script src="{{ url_for('static', filename='skyppy.js') }}"></script>
 
 </body>
 </html>

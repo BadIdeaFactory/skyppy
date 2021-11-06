@@ -9,6 +9,7 @@ from flask import (
     make_response,
     url_for,
     Response,
+    render_template
 )
 from flask_cors import CORS
 from ina_lib.ina_cache import Cache
@@ -25,9 +26,13 @@ app.static_url_path = app.config.get("video")
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
+@app.route("/guide")
+def guide():
+    return "api example = www.skyppy.io/api?url=www.youtube.com/watch?v={{youtube_id}}"
+
 @app.route("/")
 def first_page():
-    return "api example = www.skyppy.io/api?url=www.youtube.com/watch?v={{youtube_id}}"
+    return render_template("index.html")
 
 
 @app.route("/api", methods=["get", "post"])
