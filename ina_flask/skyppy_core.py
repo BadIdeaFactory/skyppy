@@ -7,6 +7,7 @@ from ina_lib.check_video_lenght import CheckVideoLenght
 from ina_lib.download_audio import DownloadAudio
 from ina_lib.audio_segmenter import AudioSegmenter
 from ina_lib.get_video_id import get_video_id
+from ina_lib.status import Status
 class Segment:
     def __init__(self, posted):
         self.filename: str
@@ -46,7 +47,12 @@ class Skyppy_flask:
         posted["link_video"] = "https://" + request.args.get(
             "url", default="*", type=str
         )
-
+        id_youtube_file = (
+            request.args.get("url", default="*", type=str).split("?v=")[1] + ".json"
+        )
+        id_youtube = (
+            request.args.get("url", default="*", type=str).split("?v=")[1]
+        )
         
         try:
             video_lenght = CheckVideoLenght().get(posted["link_video"])
@@ -60,10 +66,9 @@ class Skyppy_flask:
             result = make_response(jsonify({"video": posted["link_video"], "duration_in_seconds": video_lenght, "status": "too long"}))
             return result
 
-        id_youtube_file = (
-            request.args.get("url", default="*", type=str).split("?v=")[1] + ".json"
-        )
+        
 
+        status = Status(id_youtube)
         try:
             cache = Cache(id_youtube_file)
 
@@ -76,19 +81,27 @@ class Skyppy_flask:
 
             segment = Segment(posted)
             try:
-                segment.download()
+                if status.download():
+                    segment.download()
+                else:
+                    payload = jsonify({"lib": """processing {id_youtube_file}""", "data": "please wait", "status_code": 102})
+                    resp = make_response(payload, 102)
+                    result = resp
+                    return result
+
             except:
                 payload = jsonify({"lib": "error_in_download", "data": "error", "status_code": 404})
                 resp = make_response(payload, 404)
                 result = resp
                 return result
-
+            status.segmenter()
             video_segment = segment.segmenter() 
             video_segment["embed"] = "https://www.youtube.com/embed/{}".format(segment.video_id)
             output = jsonify(video_segment)
             if video_segment["embed"] != "error":
                 cache.save_from_log(video_segment["embed"], video_segment["data"])
             result = output, 200
+            status.complete()
         except:
             payload = jsonify({"lib": "audio_segmenter", "data": "error", "status_code": 404})
             resp = make_response(payload, 404)
