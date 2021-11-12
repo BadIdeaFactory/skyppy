@@ -14,5 +14,10 @@ class Cache:
             return json.load(youtube_in_memory)
 
     def save_from_log(self, embed, segmentation_output):
-        with open("./log/" + self.id_youtube_file, "w") as logging_file:
-            json.dump({"cache": "True", "embed": embed, "data": segmentation_output}, logging_file)
+        if segmentation_output == "error":
+            pass
+        else:
+            with open("./log/" + self.id_youtube_file, "w") as logging_file:
+                json.dump({"cache": "True", "embed": embed, "data": segmentation_output}, logging_file)
+
+            

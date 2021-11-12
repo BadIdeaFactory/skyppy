@@ -26,7 +26,7 @@ app.static_url_path = app.config.get("video")
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
-@app.route("/status/<youtube_id>")
+@app.route("/api/status/<youtube_id>")
 def status(youtube_id):
     with open(youtube_id + ".status", "r") as youtube_id_file_status:
         youtube_id_file_status = json.loads(youtube_id_file_status.read())

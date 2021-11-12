@@ -463,15 +463,16 @@ async function loadData(youTubeId, player) {
 
     
 
-    const response = await fetchWithTimeout(
-      `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
-        youTubeId,
-      {
-        //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
+    // rimoso temporaneamente 
+    // const response = await fetchWithTimeout(
+    //   `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
+    //     youTubeId,
+    //   {
+    //     //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
 
-        timeout: 3000,
-      }
-    );
+    //     timeout: 3000,
+    //   }
+    // );
 
     console.log("duration");
     console.log(player.duration);
@@ -496,6 +497,7 @@ async function loadData(youTubeId, player) {
     }
     
   } catch (error) {
+    console.log(error);
     console.log("timed out");
 
     // Timeouts if the request takes

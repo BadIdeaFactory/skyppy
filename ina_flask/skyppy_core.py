@@ -101,7 +101,7 @@ class Skyppy_flask:
             if video_segment["embed"] != "error":
                 cache.save_from_log(video_segment["embed"], video_segment["data"])
             result = output, 200
-            status.complete()
+            status.complete(video_segment["data"])
         except:
             payload = jsonify({"lib": "audio_segmenter", "data": "error", "status_code": 404})
             resp = make_response(payload, 404)

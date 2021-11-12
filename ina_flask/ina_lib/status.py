@@ -17,6 +17,6 @@ class Status:
         with open(self.youtube_id_file, "w") as youtube_id_file:
                 youtube_id_file.write(json.dumps({"youtube_id": self.youtube_id, "status": 102, "status_description": "segmenter", "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}))
 
-    def complete(self):
+    def complete(self, data):
         with open(self.youtube_id_file, "w") as youtube_id_file:
-                youtube_id_file.write(json.dumps({"youtube_id": self.youtube_id, "status": 200, "status_description": "complete", "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}))
+                youtube_id_file.write(json.dumps({"data": data, "youtube_id": self.youtube_id, "status": 200, "status_description": "complete", "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}))
