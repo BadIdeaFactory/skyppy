@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import os
 from flask import Flask, render_template, send_file, request, jsonify, make_response, url_for, Response
-from ina_cache import Cache
+from ina_lib.ina_cache import Cache
 import pandas as pd
 import re
 import time

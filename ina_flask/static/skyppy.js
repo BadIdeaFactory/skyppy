@@ -1,3 +1,5 @@
+const api_url = "http://0.0.0.0:8080/"
+var ina_skyppy_data;
 let skyppy = function (allTimings, player) {
   let index = 0;
   let margin = 0.1;
@@ -450,10 +452,10 @@ async function loadData(youTubeId, player) {
   let tl = document.getElementById("timeline");
   tl.innerHTML = "";
 
-  try {
+  
     console.log(
       "trying " +
-        "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
+        `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
         youTubeId
     );
 
@@ -462,85 +464,38 @@ async function loadData(youTubeId, player) {
 
     
 
-    const response = await fetchWithTimeout(
-      "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
-        youTubeId,
-      {
-        //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
+    // rimoso temporaneamente 
+    // const response = await fetchWithTimeout(
+    //   `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
+    //     youTubeId,
+    //   {
+    //     //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
 
-        timeout: 3000,
-      }
-    );
+    //     timeout: 3000,
+    //   }
+    // );
 
     console.log("duration");
     console.log(player.duration);
 
     console.log("grabbing json...");
-    const json = await response.json();
+    fetch(`http://0.0.0.0:8080/api?url=www.youtube.com/watch?v=${youTubeId}`).then(response => response.json()).then(data => {ina_skyppy_data = data})
+      .then(another_fetch => fetch(`http://0.0.0.0:8080/api/status/${youTubeId}`).then(response => response.json()).then(data => {ina_skyppy_data = data}).then(data => {countinua()}))
+
+    function countinua () {
+      const json = ina_skyppy_data;
+    console.log("mio check", json);
     console.log("first json status");
     //alert("test");
-    console.log(json.status);
-    if (json.status === "too long") {
-      
-      tl.innerHTML = '<div class="length-error">Sorry – we don\'t currently process videos over 15 minutes in duration.</div>';
-      
-      // reenable search button
-      document.querySelector(".fa-search").style.removeProperty('display');
-      document.querySelector("#button-search").disabled = false;
-      document.querySelector(".spinner").style.display = 'none';
+    
 
-
-    } else {
       skyppy(json.data, player);
     }
     
-  } catch (error) {
-    console.log("timed out");
 
-    // Timeouts if the request takes
-    // longer than 3 seconds
-    const interval = setInterval(async () => {
-      //document.getElementById("timeline").innerHTML += ".";
+    
+  
 
-      console.log("duration");
-      console.log(player.duration);
-
-      const response = await fetchWithTimeout(
-        "https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3D" +
-          youTubeId +
-          "&noprocess=true",
-        {
-          timeout: 2000,
-        }
-      );
-      const json = await response.json();
-      console.log(json);
-      console.log("-====-=-");
-      console.log(json.status);
-
-      let increment = 0.2;
-
-      if (player.duration > 0) {
-        increment = 150 / (player.duration + 30); // the magic numbers
-      }
-
-      console.log("increment = "+increment);
-     
-      tl.insertAdjacentHTML(
-        "beforeend",
-        `<div class="label-loader" style="width:${increment}%"></div>`
-      );
-
-      if (json !== false) {
-        skyppy(json.data, player);
-        clearInterval(interval);
-      }
-      
-    }, 1000);
-    console.log(error.name);
-    //loadData();
-  }
-}
 
 async function fetchWithTimeout(resource, options) {
   console.log("in fetch");
@@ -558,4 +513,4 @@ async function fetchWithTimeout(resource, options) {
   console.log(response);
 
   return response;
-}
+}}

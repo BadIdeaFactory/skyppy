@@ -9,9 +9,10 @@ from flask import (
     make_response,
     url_for,
     Response,
+    render_template
 )
 from flask_cors import CORS
-from lib.ina_cache import Cache
+from ina_lib.ina_cache import Cache
 import pandas as pd
 import re
 import time
@@ -25,9 +26,20 @@ app.static_url_path = app.config.get("video")
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
+@app.route("/api/status/<youtube_id>")
+def status(youtube_id):
+    with open(youtube_id + ".status", "r") as youtube_id_file_status:
+        youtube_id_file_status = json.loads(youtube_id_file_status.read())
+
+    return jsonify(youtube_id_file_status)
+
+@app.route("/guide")
+def guide():
+    return "api example = www.skyppy.io/api?url=www.youtube.com/watch?v={{youtube_id}}"
+
 @app.route("/")
 def first_page():
-    return "api example = www.skyppy.io/api?url=www.youtube.com/watch?v={{youtube_id}}"
+    return render_template("index.html")
 
 
 @app.route("/api", methods=["get", "post"])
