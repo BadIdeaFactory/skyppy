@@ -20,6 +20,7 @@ We use a number of open source libraries to do the tricky bits, such as ...
 ## Installation
 
 1. Install [Docker](https://docs.docker.com/get-docker/)
+2. Run Docker
 
 ``` bash
 cd ina_flask
