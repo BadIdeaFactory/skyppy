@@ -21,9 +21,12 @@ We use a number of open source libraries to do the tricky bits, such as ...
 
 1. Install [Docker](https://docs.docker.com/get-docker/)
 2. Run Docker
+3. Open a terminal and running the following commands
 
 ``` bash
 cd ina_flask
 docker build --tag skyppy .
 docker run --rm -p 8080:8080 skyppy
 ``` 
+
+4. Navigate to `http://0.0.0.0:8080/` in your browser.
