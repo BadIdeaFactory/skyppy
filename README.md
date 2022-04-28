@@ -1,5 +1,5 @@
-# skyppy
-## speech is overrated - skyp it
+# Skyppy
+## Speech is overrated - skyp it
 
 Everyone's talking and nobody's listening. What if we could reduce conversations to the gaps in between and while we're at it perhaps remove that pesky intro music. No music, no speaking - life would be so much better - this is the promise of Skyppy - a new app to let you concentrate on the good parts of YouTube videos.
 
@@ -9,7 +9,7 @@ We use a number of open source libraries to do the tricky bits, such as ...
 
 2. the legendary [youtube-dl](https://github.com/ytdl-org/youtube-dl) for which we have so much love. ♥️
 
-## uses
+## Uses
 
 - skypping the annoying male voices in videos (we appreciate that gender is fluid but you can assign genders yourself)
 - skypping all the speech in videos (let's face it - we can understand a lot just from gestures and facial expressions)
@@ -19,4 +19,10 @@ We use a number of open source libraries to do the tricky bits, such as ...
 
 ## Installation
 
-Download all the files and double click on index.html
+1. Install [Docker](https://docs.docker.com/get-docker/)
+
+``` bash
+cd ina_flask
+docker build --tag skyppy .
+docker run --rm -p 8080:8080 skyppy
+``` 
