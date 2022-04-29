@@ -1,5 +1,5 @@
 Flask
-inaSpeechSegmenter
+inaSpeechSegmenter==0.6.8
 youtube_dl
 Keras==2.4.3
 tensorflow==2.2.0
