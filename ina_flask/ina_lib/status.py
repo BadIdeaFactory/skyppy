@@ -13,6 +13,14 @@ class Status:
         with open(self.youtube_id_file, "w") as youtube_id_file:
             youtube_id_file.write(json.dumps({"youtube_id": self.youtube_id, "status": 102, "status_description": "download", "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}))
         return True
+
+    def current_download_percentage(self, d):
+
+        data = {'filename': d['filename'],'percent_str':  d['percent_str'],'eta_str': d['_eta_str'],
+            "youtube_id": self.youtube_id, "status": 102, "status_description": "download", "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
+        with open(self.youtube_id_file, "w") as youtube_id_file:
+            youtube_id_file.write(json.dumps(data))
+        return True
     def segmenter(self):
         with open(self.youtube_id_file, "w") as youtube_id_file:
                 youtube_id_file.write(json.dumps({"youtube_id": self.youtube_id, "status": 102, "status_description": "segmenter", "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}))

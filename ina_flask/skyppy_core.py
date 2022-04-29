@@ -25,7 +25,7 @@ class Segment:
     def download(self):
     
         try:
-            yt_connection = DownloadAudio(self.input_file)
+            yt_connection = DownloadAudio(self.input_file, self.video_id)
             yt_connection.download(self.posted["link_video"])
         
         except Exception as e:
