@@ -1,0 +1,4 @@
+# basic configuration
+
+server_url: "http://0.0.0.0:8080/"
+max_video_lenght_in_minutes: 15

@@ -6,3 +6,4 @@ tensorflow==2.2.0
 pandas
 gunicorn
 flask-cors
+pyyaml
