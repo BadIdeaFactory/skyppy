@@ -9,7 +9,7 @@ from flask import (
     make_response,
     url_for,
     Response,
-    render_template
+    render_template,
 )
 from flask_cors import CORS
 from ina_lib.ina_cache import Cache
@@ -19,6 +19,7 @@ import time
 import json
 from subprocess import call
 from skyppy_core import Segment, Skyppy_flask
+import config
 
 # initialize flask
 app = Flask(__name__)
@@ -33,13 +34,15 @@ def status(youtube_id):
 
     return jsonify(youtube_id_file_status)
 
+
 @app.route("/guide")
 def guide():
     return "api example = www.skyppy.io/api?url=www.youtube.com/watch?v={{youtube_id}}"
 
+
 @app.route("/")
 def first_page():
-    return render_template("index.html")
+    return render_template("index.html", option=config.option.__dict__)
 
 
 @app.route("/api", methods=["get", "post"])
