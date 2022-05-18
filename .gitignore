@@ -98,6 +98,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+ina_flask/venv
 
 # Spyder project settings
 .spyderproject

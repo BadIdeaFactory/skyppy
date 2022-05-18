@@ -1,3 +1,11 @@
 {
-    "python.formatting.provider": "black"
+  "[python]": {
+    "editor.defaultFormatter": null
+  },
+  "editor.formatOnSaveMode": "file",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "python.formatting.provider": "black"
 }
