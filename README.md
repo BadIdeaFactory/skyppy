@@ -14,7 +14,7 @@ We use a number of open source libraries to do the tricky bits, such as ...
 - skypping the annoying male voices in videos (we appreciate that gender is fluid but you can assign genders yourself)
 - skypping all the speech in videos (let's face it - we can understand a lot just from gestures and facial expressions)
 - skypping the music (let's get to the point shall we)
-- skypping the noise (life is to noisy already)
+- skypping the noise (life is too noisy already)
 - skypping the silence (who needs pregnant pauses - life is too short)
 
 ## Installation
