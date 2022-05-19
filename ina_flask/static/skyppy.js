@@ -490,9 +490,37 @@ function main(option) {
     console.log("duration");
     console.log(player.duration);
 
-    console.log("grabbing json...");
+    console.log("grabbing json...*.*!!!");
+
+    let segmenterStr = "Segmenting";
+
+    const poll = setInterval(function () {
+      console.log("in setTimeout");
+      fetch(`http://0.0.0.0:8080/api/status/${youTubeId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          //ina_skyppy_status = data;
+          console.log("ina_skyppy_status");
+          console.log(data);
+          if (data.status_description === "complete") {
+            clearInterval(poll);
+          }
+
+          if (data.status_description === "download") {
+            tl.innerHTML = `<div class="label-m" style="width:${data.percent_str}"></div>`;
+          }
+
+          if (data.status_description === "segmenter") {
+            segmenterStr += ".";
+            tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; padding-left:40%; padding-top:20px">${segmenterStr}</div>`;
+          }
+        });
+    }, 1000);
+
     fetch(`http://0.0.0.0:8080/api?url=www.youtube.com/watch?v=${youTubeId}`)
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+      })
       .then((data) => {
         ina_skyppy_data = data;
       })
