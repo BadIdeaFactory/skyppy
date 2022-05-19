@@ -6,14 +6,12 @@
  */
 
 function main(option) {
-
-  const api_url = option["server_url"]
+  const api_url = option["server_url"];
   var ina_skyppy_data;
   let skyppy = function (allTimings, player) {
     let index = 0;
     let margin = 0.1;
     let activeTimings = 0;
-
 
     // rome-ignore lint/js/noUndeclaredVariables
 
@@ -23,8 +21,6 @@ function main(option) {
       player.play();
       requestAnimationFrame(timeUpdate);
     });
-
-
 
     function timeUpdate() {
       let position =
@@ -219,7 +215,10 @@ function main(option) {
 
       if (search) {
         // Try to replace an existance instance
-        params = search.replace(new RegExp(`([#&])${key}[^&]*`), `$1${newParam}`);
+        params = search.replace(
+          new RegExp(`([#&])${key}[^&]*`),
+          `$1${newParam}`
+        );
 
         if (search.endsWith(newParam)) {
           exactMatch = true;
@@ -242,7 +241,8 @@ function main(option) {
 
     timeline.addEventListener("click", (event) => {
       let offset =
-        (document.getElementById("pagebody").clientWidth - timeline.clientWidth) /
+        (document.getElementById("pagebody").clientWidth -
+          timeline.clientWidth) /
         2;
       let newTime =
         (player.duration * (event.clientX - offset)) / timeline.clientWidth;
@@ -290,28 +290,36 @@ function main(option) {
 
         // switch the search button back on (and hide the spinner)
 
-        document.querySelector(".fa-search").style.removeProperty('display');
+        document.querySelector(".fa-search").style.removeProperty("display");
         document.querySelector("#button-search").disabled = false;
-        document.querySelector(".spinner").style.display = 'none';
+        document.querySelector(".spinner").style.display = "none";
       });
 
-      const spanLowerPicker = `<span title="${document.getElementById("checkname-l").innerText
-        }" class="picker label-l"></span>`;
-      const spanHigherPicker = `<span title="${document.getElementById("checkname-h").innerText
-        }" class="picker label-h"></span>`;
-      const spanMusicPicker = `<span title="${document.getElementById("checkname-m").innerText
-        }" class="picker label-m"></span>`;
-      const spanQuietPicker = `<span title="${document.getElementById("checkname-q").innerText
-        }" class="picker label-q"></span>`;
-      const spanNoisePicker = `<span title="${document.getElementById("checkname-n").innerText
-        }" class="picker label-n"></span>`;
+      const spanLowerPicker = `<span title="${
+        document.getElementById("checkname-l").innerText
+      }" class="picker label-l"></span>`;
+      const spanHigherPicker = `<span title="${
+        document.getElementById("checkname-h").innerText
+      }" class="picker label-h"></span>`;
+      const spanMusicPicker = `<span title="${
+        document.getElementById("checkname-m").innerText
+      }" class="picker label-m"></span>`;
+      const spanQuietPicker = `<span title="${
+        document.getElementById("checkname-q").innerText
+      }" class="picker label-q"></span>`;
+      const spanNoisePicker = `<span title="${
+        document.getElementById("checkname-n").innerText
+      }" class="picker label-n"></span>`;
 
       // rome-ignore lint/js/noUndeclaredVariables
       tippy(".label-l", {
         trigger: "long-press",
         placement: "bottom",
         content:
-          spanHigherPicker + spanMusicPicker + spanQuietPicker + spanNoisePicker,
+          spanHigherPicker +
+          spanMusicPicker +
+          spanQuietPicker +
+          spanNoisePicker,
         allowHTML: true,
         theme: "l",
       });
@@ -331,7 +339,10 @@ function main(option) {
         trigger: "long-press",
         placement: "bottom",
         content:
-          spanLowerPicker + spanHigherPicker + spanQuietPicker + spanNoisePicker,
+          spanLowerPicker +
+          spanHigherPicker +
+          spanQuietPicker +
+          spanNoisePicker,
         allowHTML: true,
         theme: "m",
       });
@@ -341,7 +352,10 @@ function main(option) {
         trigger: "long-press",
         placement: "bottom",
         content:
-          spanLowerPicker + spanHigherPicker + spanMusicPicker + spanNoisePicker,
+          spanLowerPicker +
+          spanHigherPicker +
+          spanMusicPicker +
+          spanNoisePicker,
         allowHTML: true,
         theme: "q",
       });
@@ -351,7 +365,10 @@ function main(option) {
         trigger: "long-press",
         placement: "bottom",
         content:
-          spanLowerPicker + spanHigherPicker + spanMusicPicker + spanQuietPicker,
+          spanLowerPicker +
+          spanHigherPicker +
+          spanMusicPicker +
+          spanQuietPicker,
         allowHTML: true,
         theme: "n",
       });
@@ -406,18 +423,14 @@ function main(option) {
 
     let player = null;
 
-
-
     document
       .getElementById("button-search")
       .addEventListener("click", function (event) {
-
         // disable button, hide search graphic and show spinner
 
-        document.querySelector(".fa-search").style.display = 'none';
+        document.querySelector(".fa-search").style.display = "none";
         document.querySelector("#button-search").disabled = true;
-        document.querySelector(".spinner").style.display = 'block';
-
+        document.querySelector(".spinner").style.display = "block";
 
         let element = (searchBox = document.getElementById("box-search"));
         let searchStr = searchBox.value;
@@ -456,17 +469,12 @@ function main(option) {
     let tl = document.getElementById("timeline");
     tl.innerHTML = "";
 
-
     console.log(
-      "trying " +
-      `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
-      youTubeId
+      "trying " + `${api_url}api?url=www.youtube.com/watch%3Fv%3D` + youTubeId
     );
 
     //document.getElementById("timeline").innerHTML =
     // "Calculating. Please wait ...";
-
-
 
     // rimoso temporaneamente
     // const response = await fetchWithTimeout(
@@ -483,8 +491,21 @@ function main(option) {
     console.log(player.duration);
 
     console.log("grabbing json...");
-    fetch(`http://0.0.0.0:8080/api?url=www.youtube.com/watch?v=${youTubeId}`).then(response => response.json()).then(data => { ina_skyppy_data = data })
-      .then(another_fetch => fetch(`http://0.0.0.0:8080/api/status/${youTubeId}`).then(response => response.json()).then(data => { ina_skyppy_data = data }).then(data => { countinua() }))
+    fetch(`http://0.0.0.0:8080/api?url=www.youtube.com/watch?v=${youTubeId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        ina_skyppy_data = data;
+      })
+      .then((another_fetch) =>
+        fetch(`http://0.0.0.0:8080/api/status/${youTubeId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            ina_skyppy_data = data;
+          })
+          .then((data) => {
+            countinua();
+          })
+      );
 
     function countinua() {
       const json = ina_skyppy_data;
@@ -492,14 +513,8 @@ function main(option) {
       console.log("first json status");
       //alert("test");
 
-
       skyppy(json.data, player);
     }
-
-
-
-
-
 
     async function fetchWithTimeout(resource, options) {
       console.log("in fetch");
