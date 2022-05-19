@@ -496,7 +496,7 @@ function main(option) {
 
     const poll = setInterval(function () {
       console.log("in setTimeout");
-      fetch(`http://0.0.0.0:8080/api/status/${youTubeId}`)
+      fetch(`${api_url}api/status/${youTubeId}`)
         .then((response) => response.json())
         .then((data) => {
           //ina_skyppy_status = data;
@@ -517,7 +517,7 @@ function main(option) {
         });
     }, 1000);
 
-    fetch(`http://0.0.0.0:8080/api?url=www.youtube.com/watch?v=${youTubeId}`)
+    fetch(`${api_url}api?url=www.youtube.com/watch?v=${youTubeId}`)
       .then((response) => {
         response.json();
       })
@@ -525,7 +525,7 @@ function main(option) {
         ina_skyppy_data = data;
       })
       .then((another_fetch) =>
-        fetch(`http://0.0.0.0:8080/api/status/${youTubeId}`)
+        fetch(`${api_url}api/status/${youTubeId}`)
           .then((response) => response.json())
           .then((data) => {
             ina_skyppy_data = data;
