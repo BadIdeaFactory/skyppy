@@ -5,7 +5,7 @@ from os.path import exists
 
 
 def check_status(youtube_id):
-    filename = f"../{youtube_id}.status"
+    filename = f"{youtube_id}.status"
     file_exists = exists(filename)
     if file_exists:
         with open(filename, "r") as youtube_id_file_status:
@@ -14,7 +14,7 @@ def check_status(youtube_id):
     else:
         return {
             "status_description": "not started",
-            "message": f"{youtube_id} is not started",
+            "message": f"{youtube_id} is not started {filename}",
         }
 
 
