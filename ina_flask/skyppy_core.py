@@ -1,14 +1,16 @@
-import uuid
-import youtube_dl
 import os
-import config
-from ina_tools import segmentation_to_json
+import uuid
+
+import youtube_dl
 from inaSpeechSegmenter import Segmenter, seg2csv
+
+import config
+from ina_lib.audio_segmenter import AudioSegmenter
 from ina_lib.check_video_lenght import CheckVideoLenght
 from ina_lib.download_audio import DownloadAudio
-from ina_lib.audio_segmenter import AudioSegmenter
 from ina_lib.get_video_id import get_video_id
 from ina_lib.status import Status
+from ina_tools import segmentation_to_json
 
 
 class Segment:
@@ -62,12 +64,13 @@ class Skyppy_flask:
 
         try:
             video_lenght = CheckVideoLenght().get(posted["link_video"])
-        except:
+        except Exception as e:
             payload = jsonify(
                 {
                     "lib": "error: Video unavailable - wrong video url or your ip is banned from youtube",
                     "data": "error",
                     "status_code": 404,
+                    "error": str(e)
                 }
             )
             resp = make_response(payload, 404)

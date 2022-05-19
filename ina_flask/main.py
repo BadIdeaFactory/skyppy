@@ -1,25 +1,28 @@
 from __future__ import unicode_literals
+
+import json
 import os
-from flask import (
-    Flask,
-    render_template,
-    send_file,
-    request,
-    jsonify,
-    make_response,
-    url_for,
-    Response,
-    render_template,
-)
-from flask_cors import CORS
-from ina_lib.ina_cache import Cache
-import pandas as pd
 import re
 import time
-import json
 from subprocess import call
-from skyppy_core import Segment, Skyppy_flask
+
+import pandas as pd
+from flask import (
+    Flask,
+    Response,
+    jsonify,
+    make_response,
+    render_template,
+    request,
+    send_file,
+    url_for,
+)
+from flask_cors import CORS
+
 import config
+from ina_lib.ina_cache import Cache
+from ina_lib.status import check_status
+from skyppy_core import Segment, Skyppy_flask
 
 # initialize flask
 app = Flask(__name__)
@@ -29,9 +32,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route("/api/status/<youtube_id>")
 def status(youtube_id):
-    with open(youtube_id + ".status", "r") as youtube_id_file_status:
-        youtube_id_file_status = json.loads(youtube_id_file_status.read())
-
+    youtube_id_file_status = check_status(youtube_id)
     return jsonify(youtube_id_file_status)
 
 
