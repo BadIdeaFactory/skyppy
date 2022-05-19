@@ -30,5 +30,9 @@ docker run --rm -p 8080:8080 skyppy
 ``` 
 
 4. Navigate to `http://0.0.0.0:8080/` in your browser.
-5. No hot reload yet. You need to close (`ctrl+c`) and restart with `docker run --rm -p 8080:8080 skyppy`
-6. If you want to maintain the data do `docker run -p 8080:8080 skyppy`
+5. No hot reload yet. You need to close (`ctrl+c`) and restart with
+ ``` bash
+ docker build --tag skyppy .
+ docker run --rm -p 8080:8080 skyppy
+ ```
+7. If you want to maintain the data, subsitute `docker run -p 8080:8080 skyppy`
