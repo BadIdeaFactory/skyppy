@@ -115,7 +115,7 @@ label i:after {
 }
 
 label > span.deselected {
-  color: #f8f9fa;
+  color: #d5d4e1;
 }
 
 label > input:checked + i {

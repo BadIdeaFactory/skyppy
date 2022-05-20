@@ -288,11 +288,13 @@ function main(option) {
           );
         }
 
-        // switch the search button back on (and hide the spinner) and remove controls
+        // switch the search button back on (and hide the spinner) and remove controls, show segment selectors
 
         document.querySelector(".fa-search").style.removeProperty("display");
         document.querySelector("#button-search").disabled = false;
         document.querySelector(".spinner").style.display = "none";
+        document.querySelector(".label-holder").style.removeProperty("display");
+
         //document.querySelector(".plyr__controls").style.display = "none";
       });
 
