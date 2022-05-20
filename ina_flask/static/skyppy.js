@@ -30,8 +30,18 @@ function main(option) {
       ).style.marginLeft = `${position}px`;
       index = 0;
 
-      while (player.currentTime >= activeTimings[index][2] - margin) {
-        index++;
+      //console.log(activeTimings);
+
+      while (
+        player.currentTime >= activeTimings[index][2] - margin &&
+        player.currentTime < player.duration
+      ) {
+        //console.log(player.currentTime);
+        //console.log(player.duration);
+        if (index + 1 < activeTimings.length) {
+          index++;
+        }
+        //console.log("index = " + index);
       }
 
       if (player.currentTime < activeTimings[index][1] - margin) {
@@ -552,7 +562,7 @@ function main(option) {
       console.log("mio check", json);
       console.log("first json status");
       //alert("test");
-
+      player.currentTime = 0;
       skyppy(json.data, player);
     }
 
