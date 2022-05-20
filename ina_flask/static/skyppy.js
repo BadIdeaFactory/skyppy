@@ -507,7 +507,7 @@ function main(option) {
           }
 
           if (data.status_description === "download") {
-            tl.innerHTML = `<div class="label-m" style="width:${data.percent_str}"></div>`;
+            tl.innerHTML = `<div class="label-loader" style="width:${data.percent_str}"></div>`;
           }
 
           if (data.status_description === "segmenter") {
