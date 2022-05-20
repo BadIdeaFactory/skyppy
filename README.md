@@ -37,4 +37,4 @@ docker run --rm -p 8080:8080 skyppy
  ```
  or alternatively run `sh active_docker.sh`
 
-7. If you want to maintain ay downloaded data, subsitute `docker run -p 8080:8080 skyppy` for `docker run --rm -p 8080:8080 skyppy`
+7. If you want to maintain any downloaded data, subsitute `docker run -p 8080:8080 skyppy` for `docker run --rm -p 8080:8080 skyppy`
