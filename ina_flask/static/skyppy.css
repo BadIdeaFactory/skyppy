@@ -396,3 +396,8 @@ footer a {
     stroke-dashoffset: -124;
   }
 }
+
+/* plyr and overlay overide */
+.plyr--video .plyr__controls {
+  background: var(--plyr-video-controls-background,linear-gradient(transparent,rgba(0,0,0,0)));background: var(--plyr-video-controls-background,linear-gradient(transparent,rgba(0,0,0,0)));
+}
