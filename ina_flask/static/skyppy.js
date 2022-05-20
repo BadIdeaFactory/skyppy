@@ -288,11 +288,12 @@ function main(option) {
           );
         }
 
-        // switch the search button back on (and hide the spinner)
+        // switch the search button back on (and hide the spinner) and remove controls
 
         document.querySelector(".fa-search").style.removeProperty("display");
         document.querySelector("#button-search").disabled = false;
         document.querySelector(".spinner").style.display = "none";
+        //document.querySelector(".plyr__controls").style.display = "none";
       });
 
       const spanLowerPicker = `<span title="${
@@ -449,7 +450,12 @@ function main(option) {
           .getElementById("player")
           .setAttribute("data-plyr-embed-id", youTubeId);
 
-        player = new Plyr("#player");
+        let controls = [
+          "play-large", // The large play button in the center
+          "current-time", // The current time of playback
+        ];
+
+        player = new Plyr("#player", { controls });
 
         console.log("calling loadData...");
         loadData(youTubeId, player);
@@ -504,6 +510,10 @@ function main(option) {
           console.log(data);
           if (data.status_description === "complete") {
             clearInterval(poll);
+            player.on("ready", () => {
+              player.toggleControls(false);
+            });
+            //
           }
 
           if (data.status_description === "download") {
