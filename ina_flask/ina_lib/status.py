@@ -1,7 +1,10 @@
 import datetime
 import json
 import os
+import uuid
 from os.path import exists
+
+server_id = str(uuid.uuid1())
 
 from ina_lib import db
 
@@ -22,6 +25,7 @@ def check_status(youtube_id):
             return {
                 "status_description": "not started",
                 "message": f"{youtube_id} is not started",
+                "server_id": server_id,
             }
 
 
@@ -35,6 +39,7 @@ class Status:
             "status": 102,
             "status_description": "download",
             "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+            "server_id": server_id,
         }
 
         with db.DBSession() as session:
@@ -53,6 +58,7 @@ class Status:
             "status": 102,
             "status_description": "download",
             "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+            "server_id": server_id,
         }
         with db.DBSession() as session:
             new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
@@ -68,6 +74,7 @@ class Status:
             "status": 102,
             "status_description": "segmenter",
             "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+            "server_id": server_id,
         }
         with db.DBSession() as session:
             new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
@@ -81,6 +88,7 @@ class Status:
             "status": 200,
             "status_description": "complete",
             "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+            "server_id": server_id,
         }
         with db.DBSession() as session:
             new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
