@@ -1,3 +1,4 @@
+SQLAlchemy
 Flask
 inaSpeechSegmenter==0.6.8
 youtube_dl
@@ -7,4 +8,4 @@ pandas
 gunicorn
 flask-cors
 pyyaml
-SQLAlchemy
+protobuf==3.20.0

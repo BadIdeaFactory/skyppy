@@ -3,17 +3,18 @@ import json
 import os
 from os.path import exists
 
-# from . import db
+from ina_lib import db
 
-# db.init_db()
+db.init_db()
 
 
 def check_status(youtube_id):
     filename = f"{youtube_id}.status"
     file_exists = exists(filename)
-    # with db.DBSession as session:
-    #     session.add(db.DbStatus(youtube_id, '{"funzion": "si"}'))
-    #     session.commit()
+    with db.DBSession() as session:
+        new_status = db.DbStatus(youtube_id=youtube_id, data='{"funziona": "si"}')
+        session.add(new_status)
+        session.commit()
     if file_exists:
         with open(filename, "r") as youtube_id_file_status:
             youtube_id_file_status = json.loads(youtube_id_file_status.read())
