@@ -16,8 +16,9 @@ def to_dict(obj: Base) -> Dict[str, Any]:
 
 class DbStatus(Base):
     __tablename__ = "status"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    youtube_id = Column(String, nullable=False, index=True, unique=True)
+    youtube_id = Column(
+        String, nullable=False, index=True, unique=True, primary_key=True
+    )
     data = Column(JSON, nullable=False)
 
 

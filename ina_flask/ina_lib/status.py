@@ -5,6 +5,7 @@ from os.path import exists
 
 from ina_lib import db
 
+db.create_db()
 db.init_db()
 
 
@@ -12,18 +13,18 @@ def check_status(youtube_id):
     filename = f"{youtube_id}.status"
     file_exists = exists(filename)
     with db.DBSession() as session:
-        new_status = db.DbStatus(youtube_id=youtube_id, data='{"funziona": "si"}')
-        session.add(new_status)
-        session.commit()
-    if file_exists:
-        with open(filename, "r") as youtube_id_file_status:
-            youtube_id_file_status = json.loads(youtube_id_file_status.read())
-        return youtube_id_file_status
-    else:
-        return {
-            "status_description": "not started",
-            "message": f"{youtube_id} is not started {filename}",
-        }
+        youtube_exist = (
+            session.query(db.DbStatus)
+            .filter(db.DbStatus.youtube_id == youtube_id)
+            .first()
+        )
+        if youtube_exist:
+            return db.to_dict(youtube_exist)["data"]
+        else:
+            return {
+                "status_description": "not started",
+                "message": f"{youtube_id} is not started",
+            }
 
 
 class Status:
@@ -32,22 +33,20 @@ class Status:
         self.youtube_id_file = self.youtube_id + ".status"
 
     def download(self):
-        if os.path.isfile(self.youtube_id_file):
-            return False
-        with open(self.youtube_id_file, "w") as youtube_id_file:
-            youtube_id_file.write(
-                json.dumps(
-                    {
-                        "youtube_id": self.youtube_id,
-                        "status": 102,
-                        "status_description": "download",
-                        "datetime": datetime.datetime.now().strftime(
-                            "%m/%d/%Y, %H:%M:%S"
-                        ),
-                    }
-                )
-            )
-        return True
+        data = json.dumps(
+            {
+                "youtube_id": self.youtube_id,
+                "status": 102,
+                "status_description": "download",
+                "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+            }
+        )
+
+        with db.DBSession() as session:
+            new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
+            session.merge(new_status)
+            session.commit()
+            return True
 
     def current_download_percentage(self, d):
 
