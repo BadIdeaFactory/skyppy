@@ -10,8 +10,6 @@ db.init_db()
 
 
 def check_status(youtube_id):
-    filename = f"{youtube_id}.status"
-    file_exists = exists(filename)
     with db.DBSession() as session:
         youtube_exist = (
             session.query(db.DbStatus)
@@ -30,17 +28,14 @@ def check_status(youtube_id):
 class Status:
     def __init__(self, youtube_id):
         self.youtube_id = youtube_id
-        self.youtube_id_file = self.youtube_id + ".status"
 
     def download(self):
-        data = json.dumps(
-            {
-                "youtube_id": self.youtube_id,
-                "status": 102,
-                "status_description": "download",
-                "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
-            }
-        )
+        data = {
+            "youtube_id": self.youtube_id,
+            "status": 102,
+            "status_description": "download",
+            "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+        }
 
         with db.DBSession() as session:
             new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
@@ -52,44 +47,42 @@ class Status:
 
         data = {
             "filename": d["filename"],
-            "percent_str": d["percent_str"],
+            "percent_str": d["_percent_str"],
             "eta_str": d["_eta_str"],
             "youtube_id": self.youtube_id,
             "status": 102,
             "status_description": "download",
             "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
         }
-        with open(self.youtube_id_file, "w") as youtube_id_file:
-            youtube_id_file.write(json.dumps(data))
+        with db.DBSession() as session:
+            new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
+            session.merge(new_status)
+            session.commit()
+
+        print("write to db")
         return True
 
     def segmenter(self):
-        with open(self.youtube_id_file, "w") as youtube_id_file:
-            youtube_id_file.write(
-                json.dumps(
-                    {
-                        "youtube_id": self.youtube_id,
-                        "status": 102,
-                        "status_description": "segmenter",
-                        "datetime": datetime.datetime.now().strftime(
-                            "%m/%d/%Y, %H:%M:%S"
-                        ),
-                    }
-                )
-            )
+        data = {
+            "youtube_id": self.youtube_id,
+            "status": 102,
+            "status_description": "segmenter",
+            "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+        }
+        with db.DBSession() as session:
+            new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
+            session.merge(new_status)
+            session.commit()
 
     def complete(self, data):
-        with open(self.youtube_id_file, "w") as youtube_id_file:
-            youtube_id_file.write(
-                json.dumps(
-                    {
-                        "data": data,
-                        "youtube_id": self.youtube_id,
-                        "status": 200,
-                        "status_description": "complete",
-                        "datetime": datetime.datetime.now().strftime(
-                            "%m/%d/%Y, %H:%M:%S"
-                        ),
-                    }
-                )
-            )
+        data = {
+            "data": data,
+            "youtube_id": self.youtube_id,
+            "status": 200,
+            "status_description": "complete",
+            "datetime": datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+        }
+        with db.DBSession() as session:
+            new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
+            session.merge(new_status)
+            session.commit()
