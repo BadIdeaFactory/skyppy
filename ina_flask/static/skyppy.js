@@ -7,6 +7,7 @@
 
 function main(option) {
   const api_url = option["server_url"];
+  const max_video_lenght_in_minutes = option["max_video_lenght_in_minutes"];
   var ina_skyppy_data;
   let skyppy = function (allTimings, player) {
     let index = 0;
@@ -526,6 +527,10 @@ function main(option) {
               player.toggleControls(false);
             });
             //
+          }
+
+          if (data.status_description === "too long") {
+            tl.innerHTML = `<div class="label-h" style="width:100%; color:red; padding-top:20px">"the video is too long - the online version only supports videos up to ${max_video_lenght_in_minutes} minutes long"</div>`;
           }
 
           if (data.status_description === "download") {

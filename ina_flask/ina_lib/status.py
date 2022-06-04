@@ -33,6 +33,20 @@ class Status:
     def __init__(self, youtube_id):
         self.youtube_id = youtube_id
 
+    def too_long(self, video_lenght):
+        data = {
+            "video": self.youtube_id,
+            "duration_in_seconds": video_lenght,
+            "duration_in_minutes": video_lenght / 60,
+            "status_description": "too long",
+        }
+
+        with db.DBSession() as session:
+            new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
+            session.merge(new_status)
+            session.commit()
+            return True
+
     def download(self):
         data = {
             "youtube_id": self.youtube_id,
@@ -65,7 +79,7 @@ class Status:
             session.merge(new_status)
             session.commit()
 
-        print("write to db")
+        print(" -- write to db")
         return True
 
     def segmenter(self):

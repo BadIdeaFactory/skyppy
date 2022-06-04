@@ -28,15 +28,10 @@ class Segment:
 
     def download(self):
 
-        try:
-            yt_connection = DownloadAudio(self.input_file, self.video_id)
-            yt_connection.download(self.posted["link_video"])
+        yt_connection = DownloadAudio(self.input_file, self.video_id)
+        yt_connection.download(self.posted["link_video"])
 
-        except Exception as e:
-            self.logging = str(e)
-
-        finally:
-            pass
+        return yt_connection
 
     def segmenter(self):
         # initialize segmenter and use on-it
@@ -54,17 +49,12 @@ class Skyppy_flask:
         video_lengt_in_minutes: int = config.option.max_video_lenght_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
+        print("check video Lenght")
+        status = Status(posted["id_youtube"])
         try:
             video_lenght = CheckVideoLenght().get(posted["link_video"])
         except youtube_dl.utils.DownloadError as e:
-            payload = jsonify(
-                {
-                    "lib": "error: Video unavailable - wrong video url or your ip is banned from youtube",
-                    "data": "error",
-                    "status_code": 404,
-                    "error": str(e),
-                }
-            )
+            payload = jsonify()
             resp = make_response(payload, 404)
             result = resp
             return result
@@ -79,9 +69,11 @@ class Skyppy_flask:
                     }
                 )
             )
+            status.too_long(video_lenght)
+            print(f"status too long")
             return result
 
-        status = Status(posted["id_youtube"])
+        print("check cache")
 
         cache = Cache(posted["id_youtube_file"])
 
@@ -91,11 +83,12 @@ class Skyppy_flask:
 
         # if request.args.get("noprocess", default=False, type=bool):
         #     return jsonify(False)
-
+        print("start download")
         segment = Segment(posted)
 
         if status.download():
-            segment.download()
+            result = segment.download()
+            print(f"finish download: {result}")
         else:
             payload = jsonify(
                 {
