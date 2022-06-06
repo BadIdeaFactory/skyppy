@@ -93,6 +93,7 @@ function main(option) {
       });
     }
 
+    console.log("filter timing 2");
     filterTiming();
 
     const labelEdit = document.getElementsByClassName("editCheckname");
@@ -210,6 +211,7 @@ function main(option) {
         }
 
         allTimings[lastClickedSegmentIndex][0] = segmentType;
+        console.log("filter timing 1");
         filterTiming();
         drawTimeline(allTimings);
         event.preventDefault();
@@ -392,16 +394,18 @@ function main(option) {
       let inputElements = document.getElementsByClassName("filterCheckbox");
       let result = [];
 
-      allTimings.forEach((element) => {
-        Array.from(inputElements).forEach((input) => {
-          if (input.checked === true) {
-            if (input.value === element[0]) {
-              result.push(element);
+      if (typeof allTimings != "undefined") {
+        allTimings.forEach((element) => {
+          Array.from(inputElements).forEach((input) => {
+            if (input.checked === true) {
+              if (input.value === element[0]) {
+                result.push(element);
+              }
             }
-          }
+          });
         });
-      });
-      activeTimings = result;
+        activeTimings = result;
+      }
     }
   };
 
