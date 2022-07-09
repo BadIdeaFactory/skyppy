@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: skyppy
+    command: gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 main:app --reload
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
