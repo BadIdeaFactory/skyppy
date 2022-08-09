@@ -78,7 +78,7 @@ class Status:
             new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
             session.merge(new_status)
             session.commit()
-
+        # print(d["_percent_str"])
         print(" -- write to db")
         return True
 

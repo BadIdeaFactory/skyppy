@@ -5,6 +5,7 @@ import random
 
 import youtube_dl
 
+from ina_lib.hook_progression_equal_interval import Intervals, equal_status_interval
 from ina_lib.status import Status
 
 
@@ -14,6 +15,7 @@ class DownloadAudio:
     def __init__(self, output_file, video_id):
         self.filename = output_file
         self.video_id = video_id
+        self.intervals = Intervals(list(range(0, 105, 5)), False)
 
         self.ydl_opts = {
             "format": "bestaudio/best",
@@ -30,11 +32,13 @@ class DownloadAudio:
         }
 
     def my_hook(self, d):
+
         if d["status"] == "finished":
             print("Done downloading, now converting ...")
         if d["status"] == "downloading":
-            random_n = random.random()
-            if random_n > 0.75:
+
+            if equal_status_interval(d["_percent_str"], self.intervals).status:
+                print((equal_status_interval(d["_percent_str"], self.intervals)))
                 cur_status = Status(self.video_id)
                 cur_status.current_download_percentage(d)
 
