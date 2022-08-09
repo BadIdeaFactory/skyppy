@@ -43,7 +43,11 @@ def guide():
 
 @app.route("/")
 def first_page():
-    return render_template("index.html", option=config.option.__dict__)
+    option = {
+        "server_url": config.option.server_url,
+        "max_video_lenght_in_minutes": config.option.max_video_lenght_in_minutes,
+    }
+    return render_template("index.html", option=option)
 
 
 @app.route("/api", methods=["get", "post"])

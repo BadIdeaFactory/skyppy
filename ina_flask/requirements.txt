@@ -10,3 +10,4 @@ flask-cors
 pyyaml
 protobuf==3.20.0
 watchfiles
+mysql-connector-python

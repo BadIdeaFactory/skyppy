@@ -126,3 +126,6 @@ node_modules/
 
 #DS_Store
 .DS_Store
+
+#web_deploy_folder
+web_deploy.py

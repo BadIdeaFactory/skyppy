@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import random
 
 import youtube_dl
 
@@ -32,8 +33,10 @@ class DownloadAudio:
         if d["status"] == "finished":
             print("Done downloading, now converting ...")
         if d["status"] == "downloading":
-            cur_status = Status(self.video_id)
-            cur_status.current_download_percentage(d)
+            random_n = random.random()
+            if random_n > 0.75:
+                cur_status = Status(self.video_id)
+                cur_status.current_download_percentage(d)
 
     def download(self, url: str) -> int:
         with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
