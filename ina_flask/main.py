@@ -1,22 +1,5 @@
-from __future__ import unicode_literals
-
-import json
-import os
-import re
-import time
-from subprocess import call
-
 import pandas as pd
-from flask import (
-    Flask,
-    Response,
-    jsonify,
-    make_response,
-    render_template,
-    request,
-    send_file,
-    url_for,
-)
+from flask import Flask, jsonify, make_response, render_template, request
 from flask_cors import CORS
 
 import config
