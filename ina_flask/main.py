@@ -20,8 +20,7 @@ from flask import (
 from flask_cors import CORS
 
 import config
-from ina_lib.ina_cache import Cache
-from ina_lib.status import check_status
+from ina_lib.status import Cache, check_status
 from skyppy_core import Segment, Skyppy_flask
 
 # initialize flask

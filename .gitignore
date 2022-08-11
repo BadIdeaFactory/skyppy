@@ -129,3 +129,4 @@ node_modules/
 
 #web_deploy_folder
 web_deploy.py
+google_run.sh
