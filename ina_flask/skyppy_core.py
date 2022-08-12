@@ -6,7 +6,7 @@ from inaSpeechSegmenter import Segmenter, seg2csv
 
 import config
 from ina_lib.audio_segmenter import AudioSegmenter
-from ina_lib.check_video_lenght import CheckVideoLength
+from ina_lib.check_video_length import CheckVideoLength
 from ina_lib.download_audio import DownloadAudio
 from ina_lib.get_video_id import get_video_id, get_youtube_id_from_request
 from ina_lib.status import Status
@@ -46,7 +46,7 @@ class Skyppy_flask:
         Segment,
         jsonify,
         Cache,
-        video_lengt_in_minutes: int = config.option.max_video_length_in_minutes,
+        video_length_in_minutes: int = config.option.max_video_length_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
         print("check video length")
@@ -59,7 +59,7 @@ class Skyppy_flask:
             result = resp
             return result
 
-        if video_length >= 60 * video_lengt_in_minutes:
+        if video_length >= 60 * video_length_in_minutes:
             result = make_response(
                 jsonify(
                     {
