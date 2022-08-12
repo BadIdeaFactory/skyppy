@@ -1,5 +1,5 @@
 # basic configuration
 
 server_url: "/"
-max_video_lenght_in_minutes: 15
+max_video_length_in_minutes: 15
 deploy: "WEB" # "LOCAL_MACHINE" #

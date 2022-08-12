@@ -33,11 +33,11 @@ class Status:
     def __init__(self, youtube_id):
         self.youtube_id = youtube_id
 
-    def too_long(self, video_lenght):
+    def too_long(self, video_length):
         data = {
             "video": self.youtube_id,
-            "duration_in_seconds": video_lenght,
-            "duration_in_minutes": video_lenght / 60,
+            "duration_in_seconds": video_length,
+            "duration_in_minutes": video_length / 60,
             "status_description": "too long",
         }
 

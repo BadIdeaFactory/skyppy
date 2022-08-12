@@ -8,12 +8,20 @@ from skyppy_core import Segment, Skyppy_flask
 
 # initialize flask
 app = Flask(__name__)
-app.static_url_path = app.config.get("video")
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 @app.route("/api/status/<youtube_id>")
 def status(youtube_id):
+    """this route give the response with the status of processing of specific youtube_id (download, segmenting, complete)
+
+    args:
+        youtube_id (str)
+
+    return:
+        flask json response (str)
+
+    """
     youtube_id_file_status = check_status(youtube_id)
     return jsonify(youtube_id_file_status)
 
@@ -25,15 +33,31 @@ def guide():
 
 @app.route("/")
 def first_page():
+    """this route start homepage with preconfigured settings.
+
+    Options can be modified in ./ina_flask/config.yaml:
+        server_url (str): "/" -> server URL for Skyppy
+        max_video_length_in_minutes (int): 15 -> max accepted video length (in minutes)
+        deploy: "WEB" -> "WEB"/ "LOCALMACHINE"
+            1. "LOCALMACHINE": use preconfigured local sqlite database
+            2. "WEB": use remote mysql server
+            in "WEB" in that case you need to create a ./ina_flask/web_deploy.py file and include a valid engine.URL as the sqlURL variable (sqlachemy).
+    """
+
     option = {
         "server_url": config.option.server_url,
-        "max_video_lenght_in_minutes": config.option.max_video_lenght_in_minutes,
+        "max_video_length_in_minutes": config.option.max_video_length_in_minutes,
     }
     return render_template("index.html", option=option)
 
 
 @app.route("/api", methods=["get", "post"])
 def api():
+    """this route are the ones responsible of downloading the actual youtube file, analyze with inaspeech and return audio segmenter json
+
+    return:
+        json with audio segmentation in data key
+    """
     return Skyppy_flask.process(request, make_response, Segment, jsonify, Cache)
 
 

@@ -6,7 +6,7 @@ from inaSpeechSegmenter import Segmenter, seg2csv
 
 import config
 from ina_lib.audio_segmenter import AudioSegmenter
-from ina_lib.check_video_lenght import CheckVideoLenght
+from ina_lib.check_video_lenght import CheckVideoLength
 from ina_lib.download_audio import DownloadAudio
 from ina_lib.get_video_id import get_video_id, get_youtube_id_from_request
 from ina_lib.status import Status
@@ -46,30 +46,30 @@ class Skyppy_flask:
         Segment,
         jsonify,
         Cache,
-        video_lengt_in_minutes: int = config.option.max_video_lenght_in_minutes,
+        video_lengt_in_minutes: int = config.option.max_video_length_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
-        print("check video Lenght")
+        print("check video length")
         status = Status(posted["id_youtube"])
         try:
-            video_lenght = CheckVideoLenght().get(posted["link_video"])
+            video_length = CheckVideoLength().get(posted["link_video"])
         except youtube_dl.utils.DownloadError as e:
             payload = jsonify()
             resp = make_response(payload, 404)
             result = resp
             return result
 
-        if video_lenght >= 60 * video_lengt_in_minutes:
+        if video_length >= 60 * video_lengt_in_minutes:
             result = make_response(
                 jsonify(
                     {
                         "video": posted["link_video"],
-                        "duration_in_seconds": video_lenght,
+                        "duration_in_seconds": video_length,
                         "status": "too long",
                     }
                 )
             )
-            status.too_long(video_lenght)
+            status.too_long(video_length)
             print(f"status too long")
             return result
 
