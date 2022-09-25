@@ -3,8 +3,7 @@ import json
 import os
 
 import youtube_dl
-
-from ina_lib.status import Status
+from ina_flask.ina_lib.status import Status
 
 
 class DownloadAudio:
@@ -44,5 +43,5 @@ class DownloadAudio:
 if __name__ == "__main__":
     # connection = DownloadAudio("./test/audio_test.mp3", "test_id")
     # print(connection.download("https://www.youtube.com/watch?v=S9ui5JK4c8k"))
-    connection = DownloadAudio("./test/audio_test.mp3", "test_id")
+    connection = DownloadAudio("./tests/audio/file_example_MP3_700KB.mp3", "test_id")
     print(connection.download("https://www.youtube.com/watch?v=JpvX-cTsEB0"))

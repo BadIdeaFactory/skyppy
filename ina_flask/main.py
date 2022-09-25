@@ -19,10 +19,10 @@ from flask import (
 )
 from flask_cors import CORS
 
-import config
-from ina_lib.ina_cache import Cache
-from ina_lib.status import check_status
-from skyppy_core import Segment, Skyppy_flask
+import ina_flask.config as config
+from ina_flask.ina_lib.ina_cache import Cache
+from ina_flask.ina_lib.status import check_status
+from ina_flask.skyppy_core import Segment, Skyppy_flask
 
 # initialize flask
 app = Flask(__name__)
@@ -49,6 +49,10 @@ def first_page():
 @app.route("/api", methods=["get", "post"])
 def api():
     return Skyppy_flask.process(request, make_response, Segment, jsonify, Cache)
+
+
+def start():
+    app.run(host="0.0.0.0", port=7001, threaded=False)
 
 
 if __name__ == "__main__":

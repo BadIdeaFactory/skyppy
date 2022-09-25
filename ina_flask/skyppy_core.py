@@ -4,13 +4,13 @@ import uuid
 import youtube_dl
 from inaSpeechSegmenter import Segmenter, seg2csv
 
-import config
-from ina_lib.audio_segmenter import AudioSegmenter
-from ina_lib.check_video_lenght import CheckVideoLenght
-from ina_lib.download_audio import DownloadAudio
-from ina_lib.get_video_id import get_video_id, get_youtube_id_from_request
-from ina_lib.status import Status
-from ina_tools import segmentation_to_json
+import ina_flask.config as config
+from ina_flask.ina_lib.audio_segmenter import AudioSegmenter
+from ina_flask.ina_lib.check_video_lenght import CheckVideoLenght
+from ina_flask.ina_lib.download_audio import DownloadAudio
+from ina_flask.ina_lib.get_video_id import get_video_id, get_youtube_id_from_request
+from ina_flask.ina_lib.status import Status
+from ina_flask.ina_tools import segmentation_to_json
 
 
 class Segment:
@@ -75,11 +75,11 @@ class Skyppy_flask:
 
         print("check cache")
 
-        cache = Cache(posted["id_youtube_file"])
+        # cache = Cache(posted["id_youtube_file"])
 
-        if cache.check_log():
-            result = cache.data_from_log()
-            return result
+        # if cache.check_log():
+        #     result = cache.data_from_log()
+        #     return result
 
         # if request.args.get("noprocess", default=False, type=bool):
         #     return jsonify(False)
@@ -107,8 +107,8 @@ class Skyppy_flask:
             segment.video_id
         )
         output = jsonify(video_segment)
-        if video_segment["embed"] != "error":
-            cache.save_from_log(video_segment["embed"], video_segment["data"])
+        # if video_segment["embed"] != "error":
+        #     cache.save_from_log(video_segment["embed"], video_segment["data"])
         result = output, 200
         status.complete(video_segment["data"])
 

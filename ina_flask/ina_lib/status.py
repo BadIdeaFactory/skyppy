@@ -6,7 +6,7 @@ from os.path import exists
 
 server_id = str(uuid.uuid1())
 
-from ina_lib import db
+from ina_flask.ina_lib import db
 
 db.create_db()
 db.init_db()
