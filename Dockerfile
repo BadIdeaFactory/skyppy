@@ -1,5 +1,5 @@
 # Use the official UBUNTU IMAGE.
-FROM ubuntu:20.04 
+FROM ubuntu:20.04
 
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
@@ -34,4 +34,4 @@ COPY . ./
 # Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
 # CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
 # CMD exec pip3 install --upgrade youtube-dl
-CMD exec gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 main:app
+CMD exec gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 ina_flask.main:app
