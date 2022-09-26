@@ -24,7 +24,6 @@ We use a number of open source libraries to do the tricky bits, such as ...
 3. Open a terminal and running the following commands
 
 ``` bash
-cd ina_flask
 docker build --tag skyppy .
 docker run --rm -p 8080:8080 skyppy
 ``` 
