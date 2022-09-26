@@ -154,6 +154,20 @@ docs = ["sphinx-rtd-theme", "sphinx", "docutils (<0.18)"]
 bokeh = ["selenium", "bokeh"]
 
 [[package]]
+name = "coverage"
+version = "6.4.4"
+description = "Code coverage measurement for Python"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.11.0a6\" and extra == \"toml\""}
+
+[package.extras]
+toml = ["tomli"]
+
+[[package]]
 name = "cycler"
 version = "0.11.0"
 description = "Composable style cycles"
@@ -819,6 +833,21 @@ toml = "*"
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
 
 [[package]]
+name = "pytest-cov"
+version = "3.0.0"
+description = "Pytest plugin for measuring coverage."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+coverage = {version = ">=5.2.1", extras = ["toml"]}
+pytest = ">=4.6"
+
+[package.extras]
+testing = ["virtualenv", "pytest-xdist", "six", "process-tests", "hunter", "fields"]
+
+[[package]]
 name = "pytextgrid"
 version = "0.1.4"
 description = "A toolbox for manipulating praat textgrid in python: creation, modification, analysis"
@@ -1298,7 +1327,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "7e8500b90f8b8758cfa7bbb7270667c6636ae809f9a78314a5924871be713cee"
+content-hash = "7fc3a15551ba9fe930f8dfa8cbb9fe0231021d67f245b3d00688dd088ef1a957"
 
 [metadata.files]
 absl-py = []
@@ -1394,6 +1423,7 @@ colorama = [
     {file = "colorama-0.4.5.tar.gz", hash = "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"},
 ]
 contourpy = []
+coverage = []
 cycler = []
 docopt = []
 flask = []
@@ -1655,6 +1685,7 @@ pyparsing = [
 ]
 pyro4 = []
 pytest = []
+pytest-cov = []
 pytextgrid = []
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
