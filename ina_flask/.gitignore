@@ -74,6 +74,7 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+
 # PyBuilder
 target/
 
@@ -125,3 +126,7 @@ dmypy.json
 
 #
 .mp3
+
+#testing
+/htmlcov
+.coverage

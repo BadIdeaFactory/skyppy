@@ -24,6 +24,7 @@ loguru = "^0.6.0"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
 black = "^22.8.0"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.scripts]
 start = "ina_flask:main.start"
