@@ -8,6 +8,7 @@
 function main(option) {
   const api_url = option["server_url"];
   const max_video_lenght_in_minutes = option["max_video_lenght_in_minutes"];
+  const hashArray = window.location.hash.substr(1).split("&");
   var ina_skyppy_data;
   let skyppy = function (allTimings, player) {
     let index = 0;
@@ -54,7 +55,6 @@ function main(option) {
       requestAnimationFrame(timeUpdate);
     }
 
-    const hashArray = window.location.hash.substr(1).split("&");
     const labelParams = ["l", "h", "q", "n", "m"];
 
     // grab parameters from the URL
@@ -219,36 +219,6 @@ function main(option) {
       });
     }
 
-    function addUrlParam(key, val) {
-      let newParam = `${key}=${val}`;
-      let params = newParam;
-
-      let exactMatch = false;
-      let search = document.location.hash;
-
-      if (search) {
-        // Try to replace an existance instance
-        params = search.replace(
-          new RegExp(`([#&])${key}[^&]*`),
-          `$1${newParam}`
-        );
-
-        if (search.endsWith(newParam)) {
-          exactMatch = true;
-        }
-
-        if (search.indexOf(`${newParam}&`) >= 0) {
-          exactMatch = true;
-        }
-
-        // If nothing was replaced OR an exact match wasn't found, then add the new param to the end
-        if (params === search && exactMatch === false) {
-          params += `&${newParam}`;
-        }
-      }
-      document.location.hash = params;
-    }
-
     const timeline = document.getElementById("timeline");
     let lastClickedSegmentIndex = null;
 
@@ -409,6 +379,33 @@ function main(option) {
     }
   };
 
+  function addUrlParam(key, val) {
+    let newParam = `${key}=${val}`;
+    let params = newParam;
+
+    let exactMatch = false;
+    let search = document.location.hash;
+
+    if (search) {
+      // Try to replace an existance instance
+      params = search.replace(new RegExp(`([#&])${key}[^&]*`), `$1${newParam}`);
+
+      if (search.endsWith(newParam)) {
+        exactMatch = true;
+      }
+
+      if (search.indexOf(`${newParam}&`) >= 0) {
+        exactMatch = true;
+      }
+
+      // If nothing was replaced OR an exact match wasn't found, then add the new param to the end
+      if (params === search && exactMatch === false) {
+        params += `&${newParam}`;
+      }
+    }
+    document.location.hash = params;
+  }
+
   function getYouTubeId(url) {
     var regExp =
       /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -439,44 +436,25 @@ function main(option) {
       skyppy(json.data);
     });*/
 
-    let player = null;
+    if (window.location.hash.length > 0) {
+      hashArray.forEach((hash) => {
+        let keyval = hash.split("=");
+        console.log("looking for youtube id");
+
+        // check for youtube id
+        if (keyval[0] === "v") {
+          let searchUrl = "https://www.youtube.com/watch?" + hash;
+          console.log(searchUrl);
+          document.getElementById("box-search").value = searchUrl;
+        }
+      });
+      getVideoData();
+    }
 
     document
       .getElementById("button-search")
       .addEventListener("click", function (event) {
-        // disable button, hide search graphic and show spinner
-
-        document.querySelector(".fa-search").style.display = "none";
-        document.querySelector("#button-search").disabled = true;
-        document.querySelector(".spinner").style.display = "block";
-
-        let element = (searchBox = document.getElementById("box-search"));
-        let searchStr = searchBox.value;
-        console.log(searchStr.len);
-        if (searchStr === "") {
-          console.log("zero length");
-          searchStr = searchBox.getAttribute("placeholder");
-        }
-        console.log(searchStr);
-
-        if (player !== null) {
-          player.destroy();
-        }
-        let youTubeId = getYouTubeId(searchStr);
-        document
-          .getElementById("player")
-          .setAttribute("data-plyr-embed-id", youTubeId);
-
-        let controls = [
-          "play-large", // The large play button in the center
-          "current-time", // The current time of playback
-        ];
-
-        player = new Plyr("#player", { controls });
-
-        console.log("calling loadData...");
-        loadData(youTubeId, player);
-
+        getVideoData();
         event.preventDefault();
         return false;
       });
@@ -484,6 +462,47 @@ function main(option) {
     //console.log("calling loadData...");
     //loadData("d_Hfal3unHE");
   };
+
+  function getVideoData() {
+    console.log("searching........");
+
+    let player = null;
+
+    // disable button, hide search graphic and show spinner
+
+    document.querySelector(".fa-search").style.display = "none";
+    document.querySelector("#button-search").disabled = true;
+    document.querySelector(".spinner").style.display = "block";
+
+    let searchBox = document.getElementById("box-search");
+    let searchStr = searchBox.value;
+    console.log(searchStr.len);
+    if (searchStr === "") {
+      console.log("zero length");
+      searchStr = searchBox.getAttribute("placeholder");
+    }
+    console.log(searchStr);
+
+    if (player !== null) {
+      player.destroy();
+    }
+    let youTubeId = getYouTubeId(searchStr);
+    document
+      .getElementById("player")
+      .setAttribute("data-plyr-embed-id", youTubeId);
+
+    addUrlParam("v", youTubeId);
+
+    let controls = [
+      "play-large", // The large play button in the center
+      "current-time", // The current time of playback
+    ];
+
+    player = new Plyr("#player", { controls });
+
+    console.log("calling loadData...");
+    loadData(youTubeId, player);
+  }
 
   async function loadData(youTubeId, player) {
     console.log("in loadData...");
