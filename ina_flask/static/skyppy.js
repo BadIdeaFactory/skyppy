@@ -436,6 +436,50 @@ function main(option) {
       skyppy(json.data);
     });*/
 
+    let player = null;
+
+    document
+      .getElementById("button-search")
+      .addEventListener("click", function (event) {
+        // disable button, hide search graphic and show spinner
+
+        document.querySelector(".fa-search").style.display = "none";
+        document.querySelector("#button-search").disabled = true;
+        document.querySelector(".spinner").style.display = "block";
+
+        let element = (searchBox = document.getElementById("box-search"));
+        let searchStr = searchBox.value;
+        console.log(searchStr.len);
+        if (searchStr === "") {
+          console.log("zero length");
+          searchStr = searchBox.getAttribute("placeholder");
+        }
+        console.log(searchStr);
+
+        if (player !== null) {
+          player.destroy();
+        }
+        let youTubeId = getYouTubeId(searchStr);
+        document
+          .getElementById("player")
+          .setAttribute("data-plyr-embed-id", youTubeId);
+
+        addUrlParam("v", youTubeId);
+
+        let controls = [
+          "play-large", // The large play button in the center
+          "current-time", // The current time of playback
+        ];
+
+        player = new Plyr("#player", { controls });
+
+        console.log("calling loadData...");
+        loadData(youTubeId, player);
+
+        event.preventDefault();
+        return false;
+      });
+
     if (window.location.hash.length > 0) {
       hashArray.forEach((hash) => {
         let keyval = hash.split("=");
@@ -446,27 +490,21 @@ function main(option) {
           let searchUrl = "https://www.youtube.com/watch?" + hash;
           console.log(searchUrl);
           document.getElementById("box-search").value = searchUrl;
+          // dispatch event here
+          console.log("dispatching event");
+          document
+            .getElementById("button-search")
+            .dispatchEvent(new Event("click"));
         }
       });
-      getVideoData();
     }
-
-    document
-      .getElementById("button-search")
-      .addEventListener("click", function (event) {
-        getVideoData();
-        event.preventDefault();
-        return false;
-      });
 
     //console.log("calling loadData...");
     //loadData("d_Hfal3unHE");
   };
 
-  function getVideoData() {
+  /*function getVideoData(player) {
     console.log("searching........");
-
-    let player = null;
 
     // disable button, hide search graphic and show spinner
 
@@ -502,7 +540,7 @@ function main(option) {
 
     console.log("calling loadData...");
     loadData(youTubeId, player);
-  }
+  }*/
 
   async function loadData(youTubeId, player) {
     console.log("in loadData...");
