@@ -58,10 +58,11 @@ open /Applications/Python\ 3.9/Install\ Certificates.command
 
 Note – 3.9 is used above but your version may vary.
 
-If you are using zsh You may also need to alter your `.zshrc` to include:
+If you are using zsh You may also need to alter your `.zshrc` to include something like:
 
 ```bash
 export PATH="$HOME/.poetry/bin:$PATH"
 ```
+or wherever it installed poetry.
 
 
