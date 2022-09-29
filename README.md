@@ -19,6 +19,8 @@ We use a number of open source libraries to do the tricky bits, such as ...
 
 ## Installation (Docker)
 
+Required : [Docker Compose](https://docs.docker.com/compose/install/)
+
 1. Install [Docker](https://docs.docker.com/get-docker/)
 2. Run Docker
 3. Open a terminal and running the following commands
