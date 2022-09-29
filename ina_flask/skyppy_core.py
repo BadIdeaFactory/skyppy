@@ -8,8 +8,9 @@ import ina_flask.config as config
 from ina_flask.ina_lib.audio_segmenter import AudioSegmenter
 from ina_flask.ina_lib.check_video_lenght import CheckVideoLenght
 from ina_flask.ina_lib.download_audio import DownloadAudio
-from ina_flask.ina_lib.get_video_id import get_video_id, get_youtube_id_from_request
-from ina_flask.ina_lib.status import Status
+from ina_flask.ina_lib.get_video_id import (get_video_id,
+                                            get_youtube_id_from_request)
+from ina_flask.ina_lib.status import Status, check_status
 from ina_flask.ina_tools import segmentation_to_json
 
 
@@ -78,6 +79,10 @@ class Skyppy_flask:
         # cache = Cache(posted["id_youtube_file"])
 
         # if cache.check_log():
+        cache = check_status(posted["id_youtube"])
+        if "data"in cache.keys():
+            return cache["data"]
+
         #     result = cache.data_from_log()
         #     return result
 
