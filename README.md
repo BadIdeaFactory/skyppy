@@ -17,7 +17,7 @@ We use a number of open source libraries to do the tricky bits, such as ...
 - skypping the noise (life is too noisy already)
 - skypping the silence (who needs pregnant pauses - life is too short)
 
-## Installation
+## Installation (Docker)
 
 1. Install [Docker](https://docs.docker.com/get-docker/)
 2. Run Docker
@@ -37,3 +37,31 @@ docker run --rm -p 8080:8080 skyppy
  or alternatively run `sh active_docker.sh`
 
 7. If you want to maintain any downloaded data, subsitute `docker run -p 8080:8080 skyppy` for `docker run --rm -p 8080:8080 skyppy`
+
+## Installation (Poetry)
+
+1. Install Poetry
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+2. If you receive a certificate error try:
+
+```bash
+ python3 -m pip install --upgrade certifi
+```
+On MacOS you may also need to
+```
+open /Applications/Python\ 3.9/Install\ Certificates.command
+```
+
+Note – 3.9 is used above but your version may vary.
+
+If you are using zsh You may also need to alter your `.zshrc` to include:
+
+```bash
+export PATH="$HOME/.poetry/bin:$PATH"
+```
+
+
