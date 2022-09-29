@@ -8,7 +8,7 @@
 function main(option) {
   const api_url = option["server_url"];
   const max_video_lenght_in_minutes = option["max_video_lenght_in_minutes"];
-  const hashArray = window.location.hash.substr(1).split("&");
+  const hashArray = window.location.hash.substring(1).split("&");
   var ina_skyppy_data;
   let skyppy = function (allTimings, player) {
     let index = 0;
@@ -38,12 +38,9 @@ function main(option) {
         player.currentTime >= activeTimings[index][2] - margin &&
         player.currentTime < player.duration
       ) {
-        //console.log(player.currentTime);
-        //console.log(player.duration);
         if (index + 1 < activeTimings.length) {
           index++;
         }
-        //console.log("index = " + index);
       }
 
       if (player.currentTime < activeTimings[index][1] - margin) {
@@ -84,16 +81,15 @@ function main(option) {
         }
 
         // check for segment override
-        let firstChar = keyval[0].substr(0, 1);
+        let firstChar = keyval[0].substring(0, 1);
         if (firstChar === "i") {
-          let index = keyval[0].substr(1);
+          let index = keyval[0].substring(1);
           let segmentType = keyval[1];
           allTimings[index][0] = segmentType;
         }
       });
     }
 
-    console.log("filter timing 2");
     filterTiming();
 
     const labelEdit = document.getElementsByClassName("editCheckname");
@@ -211,7 +207,6 @@ function main(option) {
         }
 
         allTimings[lastClickedSegmentIndex][0] = segmentType;
-        console.log("filter timing 1");
         filterTiming();
         drawTimeline(allTimings);
         event.preventDefault();
@@ -277,8 +272,6 @@ function main(option) {
         document.querySelector("#button-search").disabled = false;
         document.querySelector(".spinner").style.display = "none";
         document.querySelector(".label-holder").style.removeProperty("display");
-
-        //document.querySelector(".plyr__controls").style.display = "none";
       });
 
       const spanLowerPicker = `<span title="${
@@ -416,7 +409,7 @@ function main(option) {
   // https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
 
   window.onload = function () {
-    //fetch("test.json").then((response) => response.json()).then((json) => {
+    // Suggested YouTube ids
     // SXG4KdstVw4
     // j0seO3yo504
     // rgldcSmxY5o
@@ -431,11 +424,6 @@ function main(option) {
     // v-xh_gq8sbk
     // cPyXP-wb2RM
 
-    //fetch("https://a4yxhpkq3n.us-east-1.awsapprunner.com/api?url=www.youtube.com/watch%3Fv%3DDqH-iwA0ZmU").then((response) => response.json()).then((json) => {
-    /*fetch("http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DlooRuovPcbg").then((response) => response.json()).then((json) => {
-      skyppy(json.data);
-    });*/
-
     let player = null;
 
     document
@@ -447,14 +435,12 @@ function main(option) {
         document.querySelector("#button-search").disabled = true;
         document.querySelector(".spinner").style.display = "block";
 
-        let element = (searchBox = document.getElementById("box-search"));
+        let searchBox = document.getElementById("box-search");
         let searchStr = searchBox.value;
-        console.log(searchStr.len);
         if (searchStr === "") {
           console.log("zero length");
           searchStr = searchBox.getAttribute("placeholder");
         }
-        console.log(searchStr);
 
         if (player !== null) {
           player.destroy();
@@ -472,8 +458,6 @@ function main(option) {
         ];
 
         player = new Plyr("#player", { controls });
-
-        console.log("calling loadData...");
         loadData(youTubeId, player);
 
         event.preventDefault();
@@ -483,105 +467,34 @@ function main(option) {
     if (window.location.hash.length > 0) {
       hashArray.forEach((hash) => {
         let keyval = hash.split("=");
-        console.log("looking for youtube id");
 
         // check for youtube id
         if (keyval[0] === "v") {
           let searchUrl = "https://www.youtube.com/watch?" + hash;
-          console.log(searchUrl);
           document.getElementById("box-search").value = searchUrl;
           // dispatch event here
-          console.log("dispatching event");
           document
             .getElementById("button-search")
             .dispatchEvent(new Event("click"));
         }
       });
     }
-
-    //console.log("calling loadData...");
-    //loadData("d_Hfal3unHE");
   };
 
-  /*function getVideoData(player) {
-    console.log("searching........");
-
-    // disable button, hide search graphic and show spinner
-
-    document.querySelector(".fa-search").style.display = "none";
-    document.querySelector("#button-search").disabled = true;
-    document.querySelector(".spinner").style.display = "block";
-
-    let searchBox = document.getElementById("box-search");
-    let searchStr = searchBox.value;
-    console.log(searchStr.len);
-    if (searchStr === "") {
-      console.log("zero length");
-      searchStr = searchBox.getAttribute("placeholder");
-    }
-    console.log(searchStr);
-
-    if (player !== null) {
-      player.destroy();
-    }
-    let youTubeId = getYouTubeId(searchStr);
-    document
-      .getElementById("player")
-      .setAttribute("data-plyr-embed-id", youTubeId);
-
-    addUrlParam("v", youTubeId);
-
-    let controls = [
-      "play-large", // The large play button in the center
-      "current-time", // The current time of playback
-    ];
-
-    player = new Plyr("#player", { controls });
-
-    console.log("calling loadData...");
-    loadData(youTubeId, player);
-  }*/
-
   async function loadData(youTubeId, player) {
-    console.log("in loadData...");
-
-    //let loadProgress = 0;
     let tl = document.getElementById("timeline");
     tl.innerHTML = "";
 
-    console.log(
+    /*console.log(
       "trying " + `${api_url}api?url=www.youtube.com/watch%3Fv%3D` + youTubeId
-    );
-
-    //document.getElementById("timeline").innerHTML =
-    // "Calculating. Please wait ...";
-
-    // rimoso temporaneamente
-    // const response = await fetchWithTimeout(
-    //   `${api_url}api?url=www.youtube.com/watch%3Fv%3D` +
-    //     youTubeId,
-    //   {
-    //     //const response = await fetchWithTimeout('http://localhost:8080/api?url=www.youtube.com/watch%3Fv%3DdFCbJmgeHmA', {
-
-    //     timeout: 3000,
-    //   }
-    // );
-
-    console.log("duration");
-    console.log(player.duration);
-
-    console.log("grabbing json...*.*!!!");
+    );*/
 
     let segmenterStr = "Segmenting";
 
     const poll = setInterval(function () {
-      console.log("in setTimeout");
       fetch(`${api_url}api/status/${youTubeId}`)
         .then((response) => response.json())
         .then((data) => {
-          //ina_skyppy_status = data;
-          console.log("ina_skyppy_status");
-          console.log(data);
           if (data.status_description === "complete") {
             clearInterval(poll);
             player.on("ready", () => {
@@ -612,7 +525,7 @@ function main(option) {
       .then((data) => {
         ina_skyppy_data = data;
       })
-      .then((another_fetch) =>
+      .then(() =>
         fetch(`${api_url}api/status/${youTubeId}`)
           .then((response) => response.json())
           .then((data) => {
@@ -625,29 +538,8 @@ function main(option) {
 
     function countinua() {
       const json = ina_skyppy_data;
-      console.log("mio check", json);
-      console.log("first json status");
-      //alert("test");
       player.currentTime = 0;
       skyppy(json.data, player);
-    }
-
-    async function fetchWithTimeout(resource, options) {
-      console.log("in fetch");
-      const { timeout = 8000 } = options;
-
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeout);
-
-      const response = await fetch(resource, {
-        ...options,
-        signal: controller.signal,
-      });
-      clearTimeout(id);
-
-      console.log(response);
-
-      return response;
     }
   }
 }
