@@ -438,7 +438,7 @@ function main(option) {
         let searchBox = document.getElementById("box-search");
         let searchStr = searchBox.value;
         if (searchStr === "") {
-          console.log("zero length");
+          //console.log("zero length");
           searchStr = searchBox.getAttribute("placeholder");
         }
 
