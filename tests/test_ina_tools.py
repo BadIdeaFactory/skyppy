@@ -1,7 +1,7 @@
 import json
 
 import pandas as pd
-from ina_flask.ina_tools import segmentation_to_pandas
+from ina_flask.ina_tools import segmentation_to_json, segmentation_to_pandas
 from loguru import logger
 
 test = [
@@ -20,3 +20,10 @@ def test_segmentation_to_pandas():
     assert type(data) == pd.DataFrame
     assert data.iloc[0, -1] == 0.36
     assert data.iloc[-1, 0] == "noEnergy"
+
+
+def test_segmentation_to_json():
+    data = segmentation_to_json(test)
+    assert type(data) == list
+    assert data[0] == ["q", 0.0, 0.36]
+    assert data[-1] == ["q", 208.7, 209.08]
