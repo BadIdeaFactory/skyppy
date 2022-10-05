@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  web:
+    build: .
+    entrypoint:
+      - flask
+      - run
+      - --host=0.0.0.0
+    environment:
+      FLASK_TEMPLATES_AUTO_RELOAD: "True"
+      FLASK_DEBUG: "on"
+      FLASK_APP: ./ina_flask/main.py
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
