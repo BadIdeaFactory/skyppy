@@ -11,10 +11,6 @@ def get_video_id(url):
     return metadata
 
 
-if __name__ == "__main__":
-    assert get_video_id("https://www.youtube.com/watch?v=OG__SwkV3wg") == "OG__SwkV3wg"
-
-
 def get_youtube_id_from_request(request) -> dict:
     posted = {}
     posted["link_video"] = "https://" + request.args.get("url", default="*", type=str)
