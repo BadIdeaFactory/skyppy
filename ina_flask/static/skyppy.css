@@ -436,4 +436,12 @@ footer a {
   background: var(--plyr-video-controls-background,linear-gradient(transparent,rgba(0,0,0,0)));background: var(--plyr-video-controls-background,linear-gradient(transparent,rgba(0,0,0,0)));
 }
 
+#share {
+  text-align: center;
+  padding: 8px;
+  display: none;
+}
 
+#copied-share-text {
+  display: none;
+}

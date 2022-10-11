@@ -500,6 +500,8 @@ function main(option) {
             player.on("ready", () => {
               player.toggleControls(false);
             });
+
+            document.querySelector("#share").style.display = "block";
             //
           }
 
@@ -541,5 +543,24 @@ function main(option) {
       player.currentTime = 0;
       skyppy(json.data, player);
     }
+
+    document.querySelector("#share-text").addEventListener("click", (event) => {
+      try {
+        navigator.clipboard.writeText(window.location.href);
+      } catch (err) {
+        console.log("Oops, unable to copy");
+      }
+
+      document.querySelector("#share-text").style.display = "none";
+      document.querySelector("#copied-share-text").style.display = "block";
+
+      setTimeout(() => {
+        document.querySelector("#share-text").style.display = "block";
+        document.querySelector("#copied-share-text").style.display = "none";
+      }, 1000);
+
+      event.preventDefault();
+      return false;
+    });
   }
 }
