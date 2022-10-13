@@ -74,6 +74,6 @@ In your chosen directory...
 ```bash
 poetry install
 poetry shell
-python run_local.py```
-
+python run_local.py
+```
 
