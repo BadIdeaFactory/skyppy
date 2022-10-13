@@ -108,3 +108,16 @@ class Status:
             new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
             session.merge(new_status)
             session.commit()
+
+
+def statistics(
+    url: str = "/",
+    youtube_dl="",
+    time=datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+) -> db.DbStats:
+    new_stats = db.DbStats(url=url, youtube_dl=youtube_dl, datetime=time)
+    with db.DBSession() as session:
+        session.merge(new_stats)
+        session.commit()
+
+    return new_stats
