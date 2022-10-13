@@ -40,8 +40,8 @@ class DownloadAudio:
         return result
 
 
-if __name__ == "__main__":
-    # connection = DownloadAudio("./test/audio_test.mp3", "test_id")
-    # print(connection.download("https://www.youtube.com/watch?v=S9ui5JK4c8k"))
-    connection = DownloadAudio("./tests/audio/file_example_MP3_700KB.mp3", "test_id")
-    print(connection.download("https://www.youtube.com/watch?v=JpvX-cTsEB0"))
+# if __name__ == "__main__":
+#     # connection = DownloadAudio("./test/audio_test.mp3", "test_id")
+#     # print(connection.download("https://www.youtube.com/watch?v=S9ui5JK4c8k"))
+#     connection = DownloadAudio("./tests/audio/file_example_MP3_700KB.mp3", "test_id")
+#     print(connection.download("https://www.youtube.com/watch?v=JpvX-cTsEB0"))
