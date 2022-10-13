@@ -1,7 +1,7 @@
 import json
-import os
 from pathlib import Path
 
+from ina_flask.ina_lib.status import delete_status
 from ina_flask.main import app
 from loguru import logger
 from pytest import fixture
@@ -20,7 +20,8 @@ data_test = {
 
 @fixture
 def download_test_youtube():
-
+    delete_status("KO8CdJ4tVVk")
+    delete_status("tn-xAjjgVcs")
     response = app.test_client().get("/api?url=www.youtube.com/watch?v=KO8CdJ4tVVk")
 
 
@@ -29,7 +30,7 @@ def test_first_page():
     assert response.status_code == 200
 
 
-def test_api():
+def test_api(download_test_youtube):
     response = app.test_client().get(
         f"/api?url=www.youtube.com/watch?v={youtube_video_test}"
     )

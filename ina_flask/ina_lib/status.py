@@ -27,6 +27,18 @@ def check_status(youtube_id):
             }
 
 
+def delete_status(youtube_id):
+    with db.DBSession() as session:
+        youtube_exist = (
+            session.query(db.DbStatus)
+            .filter(db.DbStatus.youtube_id == youtube_id)
+            .first()
+        )
+        if youtube_exist:
+            session.delete(youtube_exist)
+            session.commit()
+
+
 class Status:
     def __init__(self, youtube_id):
         self.youtube_id = youtube_id
