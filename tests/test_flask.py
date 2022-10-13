@@ -1,10 +1,14 @@
 import json
+import os
+from pathlib import Path
 
 from ina_flask.main import app
 from loguru import logger
 from pytest import fixture
 
 youtube_video_test = "KO8CdJ4tVVk"
+youtube_video_test_long = "tn-xAjjgVcs"
+
 
 data_test = {
     "data": [["n", 0.0, 1.72], ["l", 1.72, 7.04], ["n", 7.04, 10.74]],
@@ -16,6 +20,7 @@ data_test = {
 
 @fixture
 def download_test_youtube():
+
     response = app.test_client().get("/api?url=www.youtube.com/watch?v=KO8CdJ4tVVk")
 
 
@@ -45,3 +50,16 @@ def test_status(download_test_youtube):
     logger.debug(data)
 
     assert data["data"] == data_test["data"]
+
+
+def test_video_too_long():
+    response = app.test_client().get(
+        f"/api?url=www.youtube.com/watch?v={youtube_video_test_long}"
+    )
+    data = response.data.decode("utf-8")
+    logger.debug(data)
+    assert json.loads(data) == {
+        "duration_in_seconds": 37221,
+        "status": "too long",
+        "video": "https://www.youtube.com/watch?v=tn-xAjjgVcs",
+    }
