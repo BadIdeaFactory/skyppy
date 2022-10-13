@@ -115,9 +115,9 @@ def statistics(
     youtube_dl="",
     time=datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
 ) -> db.DbStats:
-    new_stats = db.DbStats(url=url, youtube_dl=youtube_dl, datetime=time)
+    new_stats = db.DbStats(url=url, youtube_dl=youtube_dl)
     with db.DBSession() as session:
-        session.merge(new_stats)
+        session.add(new_stats)
         session.commit()
 
     return new_stats

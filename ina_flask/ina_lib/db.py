@@ -29,7 +29,7 @@ class DbStats(Base):
     id = Column(Integer, primary_key=True)
     url = Column(String, default="/")
     youtube_dl = Column(String, default="")
-    datetime = Column(String)
+    datetime = Column(DateTime(timezone=True), default=func.now())
 
 
 def create_db(file: str = DB_FILE):
