@@ -3,14 +3,14 @@ import uuid
 
 import youtube_dl
 from inaSpeechSegmenter import Segmenter, seg2csv
+from loguru import logger
 
 import ina_flask.config as config
 from ina_flask.ina_lib.audio_segmenter import AudioSegmenter
 from ina_flask.ina_lib.check_video_lenght import CheckVideoLenght
 from ina_flask.ina_lib.download_audio import DownloadAudio
-from ina_flask.ina_lib.get_video_id import (get_video_id,
-                                            get_youtube_id_from_request)
-from ina_flask.ina_lib.status import Status, check_status
+from ina_flask.ina_lib.get_video_id import get_video_id, get_youtube_id_from_request
+from ina_flask.ina_lib.status import Status, check_status, statistics
 from ina_flask.ina_tools import segmentation_to_json
 
 
@@ -50,10 +50,12 @@ class Skyppy_flask:
         video_lengt_in_minutes: int = config.option.max_video_lenght_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
+
         print("check video Lenght")
         status = Status(posted["id_youtube"])
         try:
             video_lenght = CheckVideoLenght().get(posted["link_video"])
+
         except youtube_dl.utils.DownloadError as e:
             payload = jsonify()
             resp = make_response(payload, 404)
@@ -80,7 +82,12 @@ class Skyppy_flask:
 
         # if cache.check_log():
         cache = check_status(posted["id_youtube"])
-        if "data"in cache.keys():
+        if "data" in cache.keys():
+            logger.info(
+                statistics(
+                    url=posted["link_video"], youtube_dl=posted["id_youtube"]
+                ).__dict__
+            )
             return cache["data"]
 
         #     result = cache.data_from_log()
@@ -92,6 +99,11 @@ class Skyppy_flask:
         segment = Segment(posted)
 
         if status.download():
+            logger.info(
+                statistics(
+                    url=posted["link_video"], youtube_dl=posted["id_youtube"]
+                ).__dict__
+            )
             result = segment.download()
             print(f"finish download: {result}")
         else:
