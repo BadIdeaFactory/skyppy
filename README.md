@@ -40,9 +40,9 @@ docker run --rm -p 8080:8080 skyppy
 
 7. If you want to maintain any downloaded data, subsitute `docker run -p 8080:8080 skyppy` for `docker run --rm -p 8080:8080 skyppy`
 
-## Installation (Poetry)
+## Installation for Developers – Poetry Version (Linux only for now, we're working on Mac)
 
-1. Install Poetry
+1. Install Poetry 
 
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
@@ -67,4 +67,13 @@ export PATH="$HOME/.poetry/bin:$PATH"
 ```
 or wherever it installed poetry.
 
+3. Install Skyppy
+
+In your chosen directory...
+
+```bash
+poetry install
+poetry shell
+python run_local.py
+```
 
