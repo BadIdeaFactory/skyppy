@@ -95,7 +95,6 @@ class Skyppy_flask:
         make_response,
         Segment,
         jsonify,
-        Cache,
         video_lengt_in_minutes: int = config.option.max_video_lenght_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
