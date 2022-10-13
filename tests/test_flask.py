@@ -20,8 +20,8 @@ data_test = {
 
 @fixture
 def download_test_youtube():
-    delete_status("KO8CdJ4tVVk")
-    delete_status("tn-xAjjgVcs")
+    delete_status(youtube_video_test)
+    delete_status(youtube_video_test_long)
     response = app.test_client().get("/api?url=www.youtube.com/watch?v=KO8CdJ4tVVk")
 
 
