@@ -1,5 +1,6 @@
-import yaml
 from dataclasses import dataclass
+
+import yaml
 
 with open("config.yaml") as file:
     configuration = yaml.safe_load(file)
@@ -9,6 +10,7 @@ with open("config.yaml") as file:
 class Option:
     server_url: str = "http://0.0.0.0:8080/"
     max_video_lenght_in_minutes: int = 15
+    database: str = "sqlite:///status.db"
 
     def __post_init__(self):
         if type(self.max_video_lenght_in_minutes) != int:
@@ -21,6 +23,7 @@ class Option:
 option = Option(
     server_url=configuration["server_url"],
     max_video_lenght_in_minutes=configuration["max_video_lenght_in_minutes"],
+    database=configuration["database"],
 )
 
 if __name__ == "__main__":

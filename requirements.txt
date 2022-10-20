@@ -11,3 +11,4 @@ pyyaml
 protobuf==3.20.0
 watchfiles
 loguru
+mysql-connector-python

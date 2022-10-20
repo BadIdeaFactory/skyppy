@@ -8,6 +8,7 @@
 function main(option) {
   const api_url = option["server_url"];
   const max_video_lenght_in_minutes = option["max_video_lenght_in_minutes"];
+  const intervalTime = 5000
   const hashArray = window.location.hash.substring(1).split("&");
   var ina_skyppy_data;
   let skyppy = function (allTimings, player) {
@@ -518,7 +519,7 @@ function main(option) {
             tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; padding-left:40%; padding-top:20px">${segmenterStr}</div>`;
           }
         });
-    }, 1000);
+    }, intervalTime);
 
     fetch(`${api_url}api?url=www.youtube.com/watch?v=${youTubeId}`)
       .then((response) => {
