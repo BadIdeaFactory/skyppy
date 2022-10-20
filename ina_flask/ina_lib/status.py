@@ -1,6 +1,4 @@
 import datetime
-import json
-import os
 import uuid
 from os.path import exists
 
@@ -27,6 +25,18 @@ def check_status(youtube_id):
                 "message": f"{youtube_id} is not started",
                 "server_id": server_id,
             }
+
+
+def delete_status(youtube_id):
+    with db.DBSession() as session:
+        youtube_exist = (
+            session.query(db.DbStatus)
+            .filter(db.DbStatus.youtube_id == youtube_id)
+            .first()
+        )
+        if youtube_exist:
+            session.delete(youtube_exist)
+            session.commit()
 
 
 class Status:
@@ -110,11 +120,7 @@ class Status:
             session.commit()
 
 
-def statistics(
-    url: str = "/",
-    youtube_dl="",
-    time=datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
-) -> db.DbStats:
+def statistics(url: str = "/", youtube_dl="") -> db.DbStats:
     new_stats = db.DbStats(url=url, youtube_dl=youtube_dl)
     with db.DBSession() as session:
         session.add(new_stats)

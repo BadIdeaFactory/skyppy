@@ -26,5 +26,5 @@ def AudioSegmenter(input_file):
         return {"lib": "audio_segmenter", "data": "error", "status_code": 404}
 
 
-if __name__ == "__main__":
-    print(AudioSegmenter("/app/test/audio_test.mp3"))
+# if __name__ == "__main__":
+#     print(AudioSegmenter("/app/test/audio_test.mp3"))

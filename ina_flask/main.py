@@ -21,7 +21,6 @@ from flask_cors import CORS
 from loguru import logger
 
 import ina_flask.config as config
-from ina_flask.ina_lib.ina_cache import Cache
 from ina_flask.ina_lib.status import check_status, statistics
 from ina_flask.skyppy_core import Segment, Skyppy_flask
 
@@ -50,7 +49,7 @@ def first_page():
 
 @app.route("/api", methods=["get", "post"])
 def api():
-    return Skyppy_flask.process(request, make_response, Segment, jsonify, Cache)
+    return Skyppy_flask.process(request, make_response, Segment, jsonify)
 
 
 def start():
