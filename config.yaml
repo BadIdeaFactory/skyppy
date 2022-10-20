@@ -2,3 +2,10 @@
 
 server_url: "/"
 max_video_lenght_in_minutes: 15
+
+# DATABASE SELECTION
+# SQLITE
+database: "sqlite:///status.db"
+
+# MYSQL "mysql+mysqlconnector://user:password@ip/database_name" -> needs to create database_name in mysql manually
+# database: "mysql+mysqlconnector://user:password@ip/database_name"

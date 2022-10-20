@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+from random import randint
 
 import youtube_dl
 from ina_flask.ina_lib.status import Status
@@ -31,8 +32,10 @@ class DownloadAudio:
         if d["status"] == "finished":
             print("Done downloading, now converting ...")
         if d["status"] == "downloading":
-            cur_status = Status(self.video_id)
-            cur_status.current_download_percentage(d)
+            limit_status = randint(0, 100)
+            if limit_status > 80:
+                cur_status = Status(self.video_id)
+                cur_status.current_download_percentage(d)
 
     def download(self, url: str) -> int:
         with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
