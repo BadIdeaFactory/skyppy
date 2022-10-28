@@ -12,6 +12,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get install -y \
     python3.8 \
     python3-pip \
+    python3-dev \
+    libpq-dev \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
