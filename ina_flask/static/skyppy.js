@@ -35,13 +35,26 @@ function main(option) {
 
       //console.log(activeTimings);
 
-      while (
-        player.currentTime >= activeTimings[index][2] - margin &&
-        player.currentTime < player.duration
+      // check that currentTime is not greater than last active segment
+      if (
+        player.currentTime >
+        activeTimings[activeTimings.length - 1][2] - margin
       ) {
-        if (index + 1 < activeTimings.length) {
-          index++;
-        }
+        player.pause();
+      } else {
+        //establish activeTimings index using currentTime
+
+        activeTimings.forEach((timing, idx) => {
+          if (activeTimings[idx + 1]) {
+            if (
+              player.currentTime > timing[2] &&
+              player.currentTime < activeTimings[idx + 1][1] - margin
+            ) {
+              index = idx + 1;
+              //console.log("setting index to " + index);
+            }
+          }
+        });
       }
 
       if (player.currentTime < activeTimings[index][1] - margin) {
