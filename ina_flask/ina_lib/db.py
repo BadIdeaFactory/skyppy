@@ -7,6 +7,7 @@ from sqlalchemy import JSON, Column, DateTime, Integer, String, create_engine
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import NullPool
 from sqlalchemy.sql import func
 
 DB_FILE = option.database
@@ -35,7 +36,7 @@ class DbStats(Base):
 
 
 def create_db(file: str = DB_FILE):
-    engine = create_engine(file)
+    engine = create_engine(file, poolclass=NullPool, isolation_level="AUTOCOMMIT")
     Base.metadata.create_all(engine)
     logger.debug(engine)
 
@@ -45,7 +46,7 @@ DBSession = sessionmaker()
 
 
 def init_db(file: str = DB_FILE):
-    engine = create_engine(file)
+    engine = create_engine(file, poolclass=NullPool, isolation_level="AUTOCOMMIT")
     Base.metadata.bind = engine
     DBSession.bind = engine
 
