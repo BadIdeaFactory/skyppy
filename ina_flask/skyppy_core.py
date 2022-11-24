@@ -39,6 +39,29 @@ def if_video_too_long(
         return response
 
 
+def if_video_doesnt_exist(
+    video_lenght: int,
+    video_lengt_in_minutes: int,
+    posted: Dict,
+    status: Status,
+    make_response: make_response,
+    jsonify,
+) -> "Response":
+    if video_lenght == 0:
+        response = make_response(
+            jsonify(
+                {
+                    "video": posted["link_video"],
+                    "duration_in_seconds": video_lenght,
+                    "status": "video does not exist",
+                }
+            )
+        )
+        status.doesnt_exist(video_lenght)
+        logger.info(f"video does not exist")
+        return response
+
+
 def if_cache_exist(posted) -> "Response":
     cache = check_status(posted["id_youtube"])
     if "data" in cache.keys():
@@ -95,17 +118,38 @@ class Skyppy_flask:
         make_response,
         Segment,
         jsonify,
-        video_lengt_in_minutes: int = config.option.max_video_lenght_in_minutes,
+        video_length_in_minutes: int = config.option.max_video_lenght_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
 
         logger.debug("check video Lenght")
         status = Status(posted["id_youtube"])
-        video_lenght = CheckVideoLenght().get(posted["link_video"])
+
+        video_length = CheckVideoLenght().get(posted["link_video"])
+
+        logger.debug(f"check if video doesn´t exist: {video_length}")
+        if video_length == 0:
+
+            not_exist = if_video_doesnt_exist(
+                video_length,
+                video_length_in_minutes,
+                posted,
+                status,
+                make_response,
+                jsonify,
+            )
+            logger.debug(not_exist)
+            if not_exist:
+                return not_exist
 
         # video too long
         too_long = if_video_too_long(
-            video_lenght, video_lengt_in_minutes, posted, status, make_response, jsonify
+            video_length,
+            video_length_in_minutes,
+            posted,
+            status,
+            make_response,
+            jsonify,
         )
         if too_long:
             return too_long

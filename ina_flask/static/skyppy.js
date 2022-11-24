@@ -288,21 +288,16 @@ function main(option) {
         document.querySelector(".label-holder").style.removeProperty("display");
       });
 
-      const spanLowerPicker = `<span title="${
-        document.getElementById("checkname-l").innerText
-      }" class="picker label-l"></span>`;
-      const spanHigherPicker = `<span title="${
-        document.getElementById("checkname-h").innerText
-      }" class="picker label-h"></span>`;
-      const spanMusicPicker = `<span title="${
-        document.getElementById("checkname-m").innerText
-      }" class="picker label-m"></span>`;
-      const spanQuietPicker = `<span title="${
-        document.getElementById("checkname-q").innerText
-      }" class="picker label-q"></span>`;
-      const spanNoisePicker = `<span title="${
-        document.getElementById("checkname-n").innerText
-      }" class="picker label-n"></span>`;
+      const spanLowerPicker = `<span title="${document.getElementById("checkname-l").innerText
+        }" class="picker label-l"></span>`;
+      const spanHigherPicker = `<span title="${document.getElementById("checkname-h").innerText
+        }" class="picker label-h"></span>`;
+      const spanMusicPicker = `<span title="${document.getElementById("checkname-m").innerText
+        }" class="picker label-m"></span>`;
+      const spanQuietPicker = `<span title="${document.getElementById("checkname-q").innerText
+        }" class="picker label-q"></span>`;
+      const spanNoisePicker = `<span title="${document.getElementById("checkname-n").innerText
+        }" class="picker label-n"></span>`;
 
       // rome-ignore lint/js/noUndeclaredVariables
       tippy(".label-l", {
@@ -521,6 +516,10 @@ function main(option) {
 
           if (data.status_description === "too long") {
             tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; margin: auto; padding-top:15px; text-align: center;">Sorry. The online version of Skyppy only supports videos up to ${max_video_lenght_in_minutes} minutes long.</div>`;
+          }
+
+          if (data.status_description === "video does not exist") {
+            tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; margin: auto; padding-top:15px; text-align: center;">Sorry, this video does not appear to exist.</div>`;
           }
 
           if (data.status_description === "download") {

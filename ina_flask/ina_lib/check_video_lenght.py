@@ -10,8 +10,13 @@ class CheckVideoLenght:
         }
 
     def get(self, url: str) -> int:
-        with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
-            metadata = ydl.extract_info(url, download=False)
+        try:
+            with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
+                metadata = ydl.extract_info(url, download=False)
+        except youtube_dl.utils.DownloadError:
+            metadata = {}
+            metadata["duration"] = 0
+
         return metadata["duration"]
 
 
