@@ -43,6 +43,20 @@ class Status:
     def __init__(self, youtube_id):
         self.youtube_id = youtube_id
 
+    def doesnt_exist(self, video_lenght):
+        data = {
+            "video": self.youtube_id,
+            "duration_in_seconds": video_lenght,
+            "duration_in_minutes": video_lenght,
+            "status_description": "video does not exist",
+        }
+
+        with db.DBSession() as session:
+            new_status = db.DbStatus(youtube_id=self.youtube_id, data=data)
+            session.merge(new_status)
+            session.commit()
+            return True
+
     def too_long(self, video_lenght):
         data = {
             "video": self.youtube_id,
