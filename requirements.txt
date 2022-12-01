@@ -1,6 +1,6 @@
 SQLAlchemy
 Flask
-inaSpeechSegmenter==0.6.8
+inaSpeechSegmenter==0.7.3
 youtube_dl
 Keras==2.4.3
 tensorflow==2.2.0

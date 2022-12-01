@@ -11,7 +11,7 @@ youtube_video_test_long = "tn-xAjjgVcs"
 
 
 data_test = {
-    "data": [["n", 0.0, 1.72], ["l", 1.72, 7.04], ["n", 7.04, 10.74]],
+    "data": [["n", 0.0, 1.7], ["l", 1.7, 7.14], ["n", 7.14, 10.74]],
     "embed": "https://www.youtube.com/embed/KO8CdJ4tVVk",
     "lib": "audio_segmenter",
     "status_code": 200,
