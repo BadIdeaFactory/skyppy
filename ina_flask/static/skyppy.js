@@ -8,7 +8,7 @@
 function main(option) {
   const api_url = option["server_url"];
   const max_video_lenght_in_minutes = option["max_video_lenght_in_minutes"];
-  const intervalTime = 5000;
+  const intervalTime = 1000;
   const hashArray = window.location.hash.substring(1).split("&");
   var ina_skyppy_data;
   let skyppy = function (allTimings, player) {

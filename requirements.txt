@@ -13,3 +13,5 @@ watchfiles
 loguru
 mysql-connector-python
 psycopg2
+pydantic
+yt-dlp
