@@ -15,6 +15,7 @@ function main(option) {
     let index = 0;
     let margin = 0.1;
     let activeTimings = 0;
+    let playerSeeked = false;
 
     // rome-ignore lint/js/noUndeclaredVariables
 
@@ -33,8 +34,6 @@ function main(option) {
       ).style.marginLeft = `${position}px`;
       index = 0;
 
-      //console.log(activeTimings);
-
       // check that currentTime is not greater than last active segment
       if (
         player.currentTime >
@@ -51,15 +50,22 @@ function main(option) {
               player.currentTime < activeTimings[idx + 1][1] - margin
             ) {
               index = idx + 1;
-              //console.log("setting index to " + index);
             }
           }
         });
       }
 
-      if (player.currentTime < activeTimings[index][1] - margin) {
+      player.on("seeked", () => {
+        playerSeeked = true;
+      });
+
+      if (
+        player.currentTime < activeTimings[index][1] - margin &&
+        playerSeeked === true
+      ) {
         // it's in a gap between active timings
         // jump to the start of the next active timing
+
         player.currentTime = activeTimings[index][1];
       }
 
@@ -236,10 +242,13 @@ function main(option) {
         (document.getElementById("pagebody").clientWidth -
           timeline.clientWidth) /
         2;
+
       let newTime =
         (player.duration * (event.clientX - offset)) / timeline.clientWidth;
+
       player.currentTime = newTime;
       player.play();
+
       lastClickedSegmentIndex = event.target.getAttribute("data-index");
       let pickers = document.getElementsByClassName("picker");
       Array.from(pickers).forEach(addPickerListeners);
@@ -513,6 +522,7 @@ function main(option) {
             clearInterval(poll);
             player.on("ready", () => {
               player.toggleControls(false);
+              player.currentTime = 0;
             });
 
             document.querySelector("#share").style.display = "block";
