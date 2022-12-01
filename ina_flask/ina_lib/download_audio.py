@@ -4,6 +4,7 @@ import os
 from random import randint
 
 import youtube_dl
+import yt_dlp
 from ina_flask.ina_lib.status import Status
 
 
@@ -38,7 +39,7 @@ class DownloadAudio:
                 cur_status.current_download_percentage(d)
 
     def download(self, url: str) -> int:
-        with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
             result = ydl.download([url])
         return result
 
