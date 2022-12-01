@@ -17,6 +17,6 @@ def test_AudioSegmenter():
 
     assert output == {
         "lib": "audio_segmenter",
-        "data": [["q", 0.0, 0.52], ["m", 0.52, 27.2]],
+        "data": [["q", 0.0, 0.52], ["m", 0.52, 27.18]],
         "status_code": 200,
     }
