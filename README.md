@@ -1,4 +1,5 @@
 # Skyppy
+
 ## Speech is overrated - skyp it
 
 Everyone's talking and nobody's listening. What if we could reduce conversations to the gaps in between and while we're at it perhaps remove that pesky intro music. No music, no speaking - life would be so much better - this is the promise of Skyppy - a new app to let you concentrate on the good parts of YouTube videos.
@@ -25,24 +26,26 @@ Required : [Docker Compose](https://docs.docker.com/compose/install/)
 2. Run Docker
 3. Open a terminal and running the following commands
 
-``` bash
+```bash
 docker build --tag skyppy .
 docker run --rm -p 8080:8080 skyppy
-``` 
+```
 
 4. Navigate to `http://0.0.0.0:8080/` in your browser.
 5. No hot reload yet. You need to close (`ctrl+c`) and restart with
- ``` bash
- docker build --tag skyppy .
- docker run --rm -p 8080:8080 skyppy
- ```
- or alternatively run `sh active_docker.sh`
+
+```bash
+docker build --tag skyppy .
+docker run --rm -p 8080:8080 skyppy
+```
+
+or alternatively run `sh active_docker.sh`
 
 7. If you want to maintain any downloaded data, use `docker run -p 8080:8080 skyppy` instead of `docker run --rm -p 8080:8080 skyppy`
 
 ## Installation for Developers – Poetry Version (Linux only for now, we're working on Mac)
 
-1. Install Poetry 
+1. Install Poetry
 
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
@@ -53,7 +56,9 @@ curl -sSL https://install.python-poetry.org | python3 -
 ```bash
  python3 -m pip install --upgrade certifi
 ```
+
 On MacOS you may also need to
+
 ```
 open /Applications/Python\ 3.9/Install\ Certificates.command
 ```
@@ -65,6 +70,7 @@ If you are using zsh You may also need to alter your `.zshrc` to include somethi
 ```bash
 export PATH="$HOME/.poetry/bin:$PATH"
 ```
+
 or wherever it installed poetry.
 
 3. Install Skyppy
@@ -73,7 +79,5 @@ In your chosen directory...
 
 ```bash
 poetry install
-poetry shell
-python run_local.py
+poetry run start
 ```
-
