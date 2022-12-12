@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "skyppy"
+name = "ina_flask"
 version = "0.1.0"
 description = ""
 authors = ["Marco Scarselli <scarselli@gmail.com>", "Mark Boas <mark.boas@gmail.com>"]
@@ -21,6 +21,7 @@ watchfiles = "^0.17.0"
 inaSpeechSegmenter = "^0.7.3"
 loguru = "^0.6.0"
 psycopg2 = "^2.9.5"
+yt-dlp = "^2022.11.11"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -28,7 +29,10 @@ black = "^22.8.0"
 pytest-cov = "^3.0.0"
 
 [tool.poetry.scripts]
-start = "ina_flask:main.start"
+start = "ina_flask.main:start"
+
+[tool.poetry.group.dev.dependencies]
+aiohttp = "^3.8.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
