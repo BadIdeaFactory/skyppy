@@ -516,13 +516,10 @@ function main(option) {
 
   async function loadData(youTubeId, player) {
     let tl = document.getElementById("timeline");
-    tl.innerHTML = `<div class="label-l" style="width:100%; color:#fff; padding-left:40%; padding-top:20px">Downloading...</div>`;
-
-    /*console.log(
-      "trying " + `${api_url}api?url=www.youtube.com/watch%3Fv%3D` + youTubeId
-    );*/
+    tl.innerHTML = `<div class="label-m" style="width:100%; color:#000; padding-left:40%; padding-top:20px">Requesting...</div>`;
 
     let segmenterStr = "Segmenting";
+    let downloadingStr = "Downloading";
 
     const poll = setInterval(function () {
       fetch(`${api_url}api/status/${youTubeId}`)
@@ -552,7 +549,9 @@ function main(option) {
           }
 
           if (data.status_description === "download") {
-            tl.innerHTML = `<div class="label-loader" style="width:${data.percent_str}"></div>`;
+            //tl.innerHTML = `<div class="label-loader" style="width:${data.percent_str}"></div>`;
+            downloadingStr += ".";
+            tl.innerHTML = `<div class="label-l" style="width:100%; color:#fff; padding-left:40%; padding-top:20px">${downloadingStr}</div>`;
           }
 
           if (data.status_description === "segmenter") {
