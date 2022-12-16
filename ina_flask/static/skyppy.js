@@ -35,8 +35,6 @@ function main(option) {
       ).style.marginLeft = `${position}px`;
       index = 0;
 
-      console.log(player.currentTime);
-
       // check that currentTime is not greater than last active segment
       if (
         player.currentTime >
@@ -263,42 +261,42 @@ function main(option) {
     function drawTimeline(times) {
       let tl = document.getElementById("timeline");
       tl.innerHTML = "";
-      let totalTime = times[times.length - 1][2];
 
-      times.forEach((element, index) => {
-        let widthPc = ((element[2] - element[1]) / totalTime) * 100;
-        let label = element[0];
+      let totalTime = 0;
 
-        let inputElements = document.getElementsByClassName("filterCheckbox");
+      if (times !== undefined) {
+        totalTime = times[times.length - 1][2];
 
-        let matched = false;
+        times.forEach((element, index) => {
+          let widthPc = ((element[2] - element[1]) / totalTime) * 100;
+          let label = element[0];
 
-        Array.from(inputElements).forEach((input) => {
-          if (input.checked === true) {
-            if (input.value === element[0]) {
-              tl.insertAdjacentHTML(
-                "beforeend",
-                `<div class="label-${label}" style="width:${widthPc}%" data-index="${index}"></div>`
-              );
-              matched = true;
+          let inputElements = document.getElementsByClassName("filterCheckbox");
+
+          let matched = false;
+
+          Array.from(inputElements).forEach((input) => {
+            if (input.checked === true) {
+              if (input.value === element[0]) {
+                tl.insertAdjacentHTML(
+                  "beforeend",
+                  `<div class="label-${label}" style="width:${widthPc}%" data-index="${index}"></div>`
+                );
+                matched = true;
+              }
             }
+          });
+
+          if (matched === false) {
+            tl.insertAdjacentHTML(
+              "beforeend",
+              `<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`
+            );
           }
+
+          restoreSearchBtn();
         });
-
-        if (matched === false) {
-          tl.insertAdjacentHTML(
-            "beforeend",
-            `<div class="label-${label}" style="width:${widthPc}%; opacity:0.2" data-index="${index}"></div>`
-          );
-        }
-
-        // switch the search button back on (and hide the spinner) and remove controls, show segment selectors
-
-        document.querySelector(".fa-search").style.removeProperty("display");
-        document.querySelector("#button-search").disabled = false;
-        document.querySelector(".spinner").style.display = "none";
-        document.querySelector(".label-holder").style.removeProperty("display");
-      });
+      }
 
       const spanLowerPicker = `<span title="${
         document.getElementById("checkname-l").innerText
@@ -397,6 +395,15 @@ function main(option) {
       }
     }
   };
+
+  function restoreSearchBtn() {
+    // switch the search button back on (and hide the spinner) and remove controls, show segment selectors
+
+    document.querySelector(".fa-search").style.removeProperty("display");
+    document.querySelector("#button-search").disabled = false;
+    document.querySelector(".spinner").style.display = "none";
+    document.querySelector(".label-holder").style.removeProperty("display");
+  }
 
   function addUrlParam(key, val) {
     let newParam = `${key}=${val}`;
@@ -523,6 +530,7 @@ function main(option) {
         .then((data) => {
           if (data.status_description === "complete") {
             clearInterval(poll);
+            console.log("clearing interval " + poll);
             player.on("ready", () => {
               player.toggleControls(false);
               player.currentTime = 0;
@@ -532,12 +540,18 @@ function main(option) {
             //
           }
 
+          console.log(data.status_description);
+
           if (data.status_description === "too long") {
             tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; margin: auto; padding-top:15px; text-align: center;">Sorry. The online version of Skyppy only supports videos up to ${max_video_lenght_in_minutes} minutes long.</div>`;
+            restoreSearchBtn();
+            clearInterval(poll);
           }
 
           if (data.status_description === "video does not exist") {
             tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; margin: auto; padding-top:15px; text-align: center;">Sorry, this video does not appear to exist.</div>`;
+            restoreSearchBtn();
+            clearInterval(poll);
           }
 
           if (data.status_description === "download") {
