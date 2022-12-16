@@ -23,6 +23,7 @@ function main(option) {
       //player.volume = 1;
       player.muted = false;
       player.play();
+      playerSeeked = true;
       requestAnimationFrame(timeUpdate);
     });
 
@@ -33,6 +34,8 @@ function main(option) {
         "progress-marker"
       ).style.marginLeft = `${position}px`;
       index = 0;
+
+      console.log(player.currentTime);
 
       // check that currentTime is not greater than last active segment
       if (
