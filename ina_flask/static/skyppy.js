@@ -530,7 +530,6 @@ function main(option) {
         .then((data) => {
           if (data.status_description === "complete") {
             clearInterval(poll);
-            console.log("clearing interval " + poll);
             player.on("ready", () => {
               player.toggleControls(false);
               player.currentTime = 0;
@@ -539,8 +538,6 @@ function main(option) {
             document.querySelector("#share").style.display = "block";
             //
           }
-
-          console.log(data.status_description);
 
           if (data.status_description === "too long") {
             tl.innerHTML = `<div class="label-h" style="width:100%; color:#fff; margin: auto; padding-top:15px; text-align: center;">Sorry. The online version of Skyppy only supports videos up to ${max_video_lenght_in_minutes} minutes long.</div>`;
