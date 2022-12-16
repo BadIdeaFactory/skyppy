@@ -1,6 +1,13 @@
 from dataclasses import dataclass
+from typing import Optional
 
 import yaml
+from pydantic import BaseSettings
+
+
+class EnviromentConfig(BaseSettings):
+    database: Optional[str]
+
 
 with open("config.yaml") as file:
     configuration = yaml.safe_load(file)
@@ -18,6 +25,10 @@ class Option:
 
         if type(self.server_url) != str:
             raise ValueError("server_url must be string")
+
+        enviromentConfig = EnviromentConfig()
+        if enviromentConfig.database:
+            self.database = enviromentConfig.database
 
 
 option = Option(
