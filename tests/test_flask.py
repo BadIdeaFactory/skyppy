@@ -64,3 +64,11 @@ def test_video_too_long():
         "status": "too long",
         "video": "https://www.youtube.com/watch?v=tn-xAjjgVcs",
     }
+
+
+def test_stats():
+    response = app.test_client().get(f"/api/stats")
+    data = response.data.decode("utf-8")
+    logger.debug(data)
+    assert "total_requests" in json.loads(data).keys()
+    assert "video_link_openings" in json.loads(data).keys()

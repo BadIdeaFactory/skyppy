@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skyppy</title>
+  <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+  <script src="{{ url_for('static', filename='long-press-event.min.js') }}"></script>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='skyppy.css') }}" />
+  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico&display=swap">-->
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png')}}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png')}}">
+  <link rel="manifest" href="{{ url_for('static', filename='/site.webmanifest')}}">
+
+  <style>
+    #video {
+      text-align: center;
+      height: 400px;
+      width: 640px;
+    }
+  </style>
+</head>
+
+<body id="pagebody">
+
+  <div class="jumbotron text-center">
+    <h1 class="title">Skyppy</h1>
+    <p>Cut to the chase!</p>
+  </div>
+  <main role="main" class="container">
+    <p style="font-size: 0.8em;"><i>Skyppy is a tool that splits YouTube videos into segments, based on what's going on
+        in the audio. It detects type of voice, music, noise and quiet. We let you skip the bits that you're not
+        interested in. We also let you correct things the algorithm may have got wrong and share your Skyppy creations
+        with others. Start with a YouTube URL ...</i></p>
+
+    <!-- stats dashboard-->
+
+    <h2> total requests: <span id="total-requests"></span> </h2>
+
+    <h2> List of skyppyed videos</h2>
+    <ul id="skyppyed-videos">
+
+    </ul>
+
+
+
+    <!-- ennd stats dashboard-->
+
+
+    <!-- Footer -->
+    <footer class="page-footer font-small teal pt-4">
+
+      <!-- Footer Text -->
+      <div class="container-fluid text-md-left">
+
+        <!-- Grid row -->
+        <div class="row">
+
+          <!-- Grid column -->
+          <div class="col-md-6 mt-md-0 mt-3">
+
+            <!-- Content -->
+            <h5 class="text-uppercase font-weight-bold">Notes</h5>
+            <p><strong>Long-press</strong> on the segments in the progress bar above <span
+                style="font-size: 2em;">&#9757;</span> to reassign them!</p>
+            <p>Currently only videos under 15 minutes in length will be processed. For longer pieces or custom
+              projects
+              based on this technology please contact <a href="https://twitter.com/mscarselli">Marco</a> or <a
+                href="https://twitter.com/maboa/">Mark</a>.</p>
+
+          </div>
+          <!-- Grid column -->
+
+          <hr class="clearfix w-100 d-md-none pb-3">
+
+          <!-- Grid column -->
+          <div class="col-md-6 mb-md-0 mb-3">
+
+            <!-- Content -->
+            <h5 class="text-uppercase font-weight-bold">Disclaimer</h5>
+            <p>To the fullest extent permitted by applicable Law, <a href="https://biffud.com">Bad Idea Factory
+                LLC</a>
+              shall not be liable for any indirect, incidental, special, consequential or punitive damages incurred
+              directly or indirectly, or other intangible losses, resulting from any content of any third party on
+              the
+              services, including without limitation, (i) any defamatory, offensive or illegal content of any third
+              parties, (ii) any data or content obtained from the services.</p>
+
+          </div>
+          <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+      </div>
+      <!-- Footer Text -->
+
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3">© Copyright:
+        <a href="https://biffud.com/">Bad Idea Factory LLC</a>
+      </div>
+
+      <a href="https://biffud.com/" class="text-center py-3"
+        style="width:120px; margin-left:auto; margin-right:auto; display:block;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 866.82 252.28" class="Logo__SVG-sc-1b53oby-0 ieUzXH">
+          <title id="BrandmarkLogo">Bad Idea Factory</title>
+          <path fill="white" fill-rule="nonzero"
+            d="M37 28.5L0 238.16l16.8 14.12 91.68-33.37 22.1-26.35 10.31-58.45-13.84-11.62 20.12-24 10.31-58.46-46-38.64zM135.61 136L126 190.44l-20.43 24.34-85.18 31 35-198.64 10.33 8.67L52 133.83l38.54-14 10.33 8.67-51.2 18.62-14.24 80.77 58.42-21.26L116 180.29l9.33-52.93zM68.89 52.1l-10.33-8.67 48.57-17.68 10.34 8.67zM119.13 39l-5.79 32.83-20.43 24.34-31.33 11.4 9-50.9zm-16.59 94.06l-5.79 32.83-20.42 24.34L45 201.63l9-50.9zM152.2 42l-9.59 54.41-19.29 23-10.91-9.15 20.13-24 9.33-52.93zM128 84.1l-22.41 26.71 14.64 12.28.78.66-9.59 54.41L91 202.51l-49.32 17.93L44 207.16l35.19-12.81L101.32 168l7-39.65-16.8-14.07-33.26 12.1 2.35-13.28 35.19-12.81L117.9 74l7-39.65-16.79-14.13-56.49 20.56-36 204.16-10.34-8.7 36-204.13 69.17-25.17 27.12 22.75zM210.45 8.74l-17.17 14.41 37.83 214.55 21.07 7.67L269.35 231 231.52 16.41zM235.51 234L198.68 25.11l10.57-8.86 39.23 222.48zm17.87 3.86L214.15 15.38l13 4.72L264 229zM342.64 32.91l-36.19 205.23 16.42 13.79 20.13-7.34 16.24-92.05L412 133.35l3.72-21.11-16.46-13.79-32.56 11.85 8.8-49.92 70.26-25.48 3.72-21.12L433.06 0zm-20.92 211.84l-10.11-8.49 35.23-199.82 12.41-4.51zm86-114.93l-47.54 17.3 2.29-13 47.58-17.5zm-33.2-91.29l-13.94 79.06 37.72-13.73 10 8.36-50 18.38-19.49 110.46-12.4 4.52 38-215.53 65.11-23.7-2.29 13zM376.46 55l2.27-12.9 50.12-18.25L439 32.3zm67.86-39.31l-2.29 13-10.12-8.48 2.3-13zM575.29 58.45a15.55 15.55 0 0 0 4.38-11.06 13.89 13.89 0 0 0-2-7.26 11.58 11.58 0 0 0-6.2-4.91q6.42-3 6.43-10.8a13.71 13.71 0 0 0-4.09-10.16q-4.07-4-13.06-4h-23.2V63.1h24.25q9.11 0 13.49-4.65zm-27.58-38.72h13.15q6.64 0 6.65 5.6a4.91 4.91 0 0 1-2 4.15q-2 1.51-6 1.51h-11.8zm0 20.78h12.47q9.14 0 9.14 6.88a6.32 6.32 0 0 1-1.66 4.34c-1.11 1.24-2.9 1.85-5.37 1.85h-14.58zM599.38 52.15h20.4l4.08 11h11l-20.29-52.93h-10L584.35 63.1h11zm8.54-23a41.81 41.81 0 0 0 1.66-4.75 44.4 44.4 0 0 0 1.67 4.75l5.21 13.75h-13.75zM670.18 61.51a21.25 21.25 0 0 0 7.4-4.19 24.2 24.2 0 0 0 4.83-6.12 26 26 0 0 0 2.76-7.14 34.44 34.44 0 0 0 .79-7.4 32.44 32.44 0 0 0-1.43-9.66 27.29 27.29 0 0 0-4.38-8.42 19.89 19.89 0 0 0-8-6.08 29 29 0 0 0-11.75-2.23h-17.88V63.1h17.53a30.5 30.5 0 0 0 10.13-1.59zm-17.46-41.62h9.37a11.28 11.28 0 0 1 9.9 4.94 20.44 20.44 0 0 1 3.4 11.83 20.13 20.13 0 0 1-3.48 11.75c-2.31 3.35-5.87 5-10.65 5h-8.54zM541.89 100.85h10.2v52.88h-10.2zM590.13 103.08a29.18 29.18 0 0 0-11.75-2.23h-17.83v52.89h17.53a30.4 30.4 0 0 0 10.12-1.59 21.53 21.53 0 0 0 7.41-4.19 24.2 24.2 0 0 0 4.83-6.12 26 26 0 0 0 2.76-7.14 34.46 34.46 0 0 0 .79-7.41 32.06 32.06 0 0 0-1.43-9.7 27.34 27.34 0 0 0-4.38-8.43 20 20 0 0 0-8.05-6.08zm-.19 36c-2.31 3.35-5.87 5-10.65 5h-8.54v-33.56h9.37a11.26 11.26 0 0 1 9.9 5 20.41 20.41 0 0 1 3.4 11.82 20.11 20.11 0 0 1-3.48 11.66zM650.3 110.52v-9.67h-36.11v52.89h37.7v-9.67h-27.5V131.3h15.26v-9.67h-15.26v-11.11h25.91zM693.14 142.78l4.08 11h10.95l-20.25-52.89H678l-20.24 52.89h10.95l4.08-11zm-11.86-23a43.2 43.2 0 0 0 1.66-4.76 43.2 43.2 0 0 0 1.66 4.76l5.21 13.75h-13.74zM547.71 201.15h25.24v-9.67h-35.44v52.89h10.2v-22.44h16.02v-9.67h-16.02v-11.11zM589.56 191.48l-20.24 52.89h10.95l4.08-11h20.4l4.08 11h10.95l-20.24-52.89zm-1.88 32.64l5.21-13.75a43.2 43.2 0 0 0 1.66-4.76 43.2 43.2 0 0 0 1.66 4.76l5.22 13.75zM645.55 235.38q-5.67 0-8.65-5.29a24.22 24.22 0 0 1-3-12.16 31.77 31.77 0 0 1 1-8.05 14.65 14.65 0 0 1 3.74-6.57 9.27 9.27 0 0 1 6.92-2.84A9.44 9.44 0 0 1 651 202a17.13 17.13 0 0 1 4.3 4.76l9.14-4.15a19.35 19.35 0 0 0-6.91-8.46 20.07 20.07 0 0 0-12-3.48 20.67 20.67 0 0 0-10.35 2.53 18.87 18.87 0 0 0-7 6.65 33.22 33.22 0 0 0-3.7 8.69 36.9 36.9 0 0 0-1.2 9.41 39.33 39.33 0 0 0 1.17 9.82 31 31 0 0 0 3.66 8.65 17.9 17.9 0 0 0 7 6.42 21.9 21.9 0 0 0 10.43 2.38q13.07 0 19-13.07l-9.37-3.55q-4.11 6.78-9.62 6.78zM669.42 201.31h15.11v43.06h10.2v-43.06h15.11v-9.83h-40.42v9.83zM758.07 202.66a24.74 24.74 0 0 0-4.38-6.23 18.69 18.69 0 0 0-6.65-4.27 26.14 26.14 0 0 0-17.9 0 18.78 18.78 0 0 0-6.65 4.27 25.66 25.66 0 0 0-4.42 6.23 28.46 28.46 0 0 0-2.57 7.34 41.93 41.93 0 0 0 0 15.79 28.46 28.46 0 0 0 2.57 7.37 25.66 25.66 0 0 0 4.42 6.23 18.65 18.65 0 0 0 6.65 4.27 26.14 26.14 0 0 0 17.9 0 18.56 18.56 0 0 0 6.65-4.27 24.74 24.74 0 0 0 4.38-6.23 29.14 29.14 0 0 0 2.54-7.37 41.93 41.93 0 0 0 0-15.79 29.14 29.14 0 0 0-2.54-7.34zm-8 21.23a22.63 22.63 0 0 1-2.11 5.63 11.3 11.3 0 0 1-4 4.31 10.79 10.79 0 0 1-5.89 1.62 10.62 10.62 0 0 1-7.48-2.79 14.54 14.54 0 0 1-4.15-6.58 28 28 0 0 1-1.14-8.15 26.49 26.49 0 0 1 .68-6 24.15 24.15 0 0 1 2.08-5.59 11 11 0 0 1 4-4.31 11.3 11.3 0 0 1 15.94 4.15 22.31 22.31 0 0 1 2.07 5.55 27.09 27.09 0 0 1 .68 6.2 26 26 0 0 1-.65 5.96zM811.11 217.21a18.12 18.12 0 0 0-1.51-21.08q-4.2-4.65-13.49-4.65h-24.55v52.89h10.2v-19.72h10.65l9.9 19.72h11.48l-10.27-21.08a14.28 14.28 0 0 0 7.59-6.08zm-9.56-4.21c-1.11 1.3-2.87 2-5.29 2h-14.5v-13.85h14.5q3.71 0 5.33 2a8.29 8.29 0 0 1 0 9.9zM855.26 191.48l-13.06 21.61-13.07-21.61h-11.56l19.56 32.26v20.63h10.13v-20.63l19.56-32.26h-11.56z">
+          </path>
+        </svg>
+      </a>
+      <!-- Copyright -->
+
+    </footer>
+
+
+
+    <!-- Development -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+
+
+    <!-- Production -->
+    <!-- <script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script> -->
+
+    <script src="{{ url_for('static', filename='skyppy_stats.js') }}"></script>
+    <script>
+      main({{ option | safe}}, {{ data | safe }}) //flask jinja variable
+    </script>
+
+</body>
+
+</html>
