@@ -21,6 +21,7 @@ from flask_cors import CORS
 from loguru import logger
 
 import ina_flask.config as config
+from ina_flask.ina_lib.stats import get_statistics_of_video_link_openings
 from ina_flask.ina_lib.status import check_status, statistics
 from ina_flask.skyppy_core import Segment, Skyppy_flask
 
@@ -38,7 +39,18 @@ def status(youtube_id):
 
 @app.route("/guide")
 def guide():
-    return "api example = www.skyppy.io/api?url=www.youtube.com/watch?v={{youtube_id}}"
+    return "api example = www.skyppy.tv/api?url=www.youtube.com/watch?v={{youtube_id}}"
+
+
+@app.route("/api/stats")
+def api_stats():
+    return jsonify(get_statistics_of_video_link_openings())
+
+
+@app.route("/pages/stats")
+def page_stats():
+    data = get_statistics_of_video_link_openings()
+    return render_template("stats.html", option=config.option.__dict__, data=data)
 
 
 @app.route("/")
