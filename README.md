@@ -45,13 +45,24 @@ or alternatively run `sh active_docker.sh`
 
 ## Installation for Developers – Poetry Version (Linux only for now, we're working on Mac)
 
-1. Install Poetry
+1. Install python 3.8 and other dependencies
+
+```bash
+sudo apt-get install -y \
+    python3.8 \
+    python3-pip \
+    python3-dev \
+    libpq-dev \
+    ffmpeg
+```
+
+2. Install Poetry
 
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-2. If you receive a certificate error try:
+3. If you receive a certificate error try:
 
 ```bash
  python3 -m pip install --upgrade certifi
@@ -60,10 +71,10 @@ curl -sSL https://install.python-poetry.org | python3 -
 On MacOS you may also need to
 
 ```
-open /Applications/Python\ 3.9/Install\ Certificates.command
+open /Applications/Python\ 3.8/Install\ Certificates.command
 ```
 
-Note – 3.9 is used above but your version may vary.
+Note – 3.8 is used above but your version may vary.
 
 If you are using zsh You may also need to alter your `.zshrc` to include something like:
 
@@ -73,11 +84,16 @@ export PATH="$HOME/.poetry/bin:$PATH"
 
 or wherever it installed poetry.
 
-3. Install Skyppy
+4. Install Skyppy
 
 In your chosen directory...
 
 ```bash
 poetry install
+```
+
+5. RUN Skyppy
+
+```bash
 poetry run start
 ```
