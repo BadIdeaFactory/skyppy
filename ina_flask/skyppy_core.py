@@ -65,11 +65,11 @@ def if_video_doesnt_exist(
 def if_cache_exist(posted) -> "Response":
     cache = check_status(posted["id_youtube"])
     if "data" in cache.keys():
-        logger.info(
-            statistics(
-                url=posted["link_video"], youtube_dl=posted["id_youtube"]
-            ).__dict__
-        )
+        # logger.info(
+        #     statistics(
+        #         url=posted["link_video"], youtube_dl=posted["id_youtube"]
+        #     ).__dict__
+        # )
         response = cache["data"]
         return response
 
@@ -162,16 +162,16 @@ class Skyppy_flask:
         if cache:
             return cache
 
-        logger.debug("start download ")
+        logger.debug("start download")
         segment = Segment(posted)
 
         # download status
         status.download()
-        logger.info(
-            statistics(
-                url=posted["link_video"], youtube_dl=posted["id_youtube"]
-            ).__dict__
-        )
+        # logger.info(
+        #     statistics(
+        #         url=posted["link_video"], youtube_dl=posted["id_youtube"]
+        #     ).__dict__
+        # )
         result = segment.download()
         logger.debug(f"finish download: {result}")
 

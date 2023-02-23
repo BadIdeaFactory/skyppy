@@ -4,6 +4,16 @@ function getYouTubeId(url) {
   return v;
 }
 
+function getSArgument(url) {
+  //get the s argument from the url
+  try {
+    let s = url.match(/s=([^&]+)/)[1];
+    return s;
+  } catch (error) {
+    return "none";
+  }
+}
+
 /**
  *
  * @param {object} option [contain url and other variables ]
@@ -49,7 +59,9 @@ function main(option, data) {
     let thumbnailTd = document.createElement("td");
 
     video.href = video_link_openings_element[0];
-    video.innerText = `visualization: ${video_link_openings_element[1]}`;
+    video.innerText = `visualization: ${
+      video_link_openings_element[1]
+    } + filter: ${getSArgument(video_link_openings_element[0])}`;
 
     let thumbnail_url = `https://img.youtube.com/vi/${getYouTubeId(
       video_link_openings_element[0]

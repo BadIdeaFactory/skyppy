@@ -63,7 +63,7 @@ def page_stats():
 
 @app.route("/")
 def first_page():
-    logger.info(statistics().__dict__)
+
     return render_template("index.html", option=config.option.__dict__)
 
 
