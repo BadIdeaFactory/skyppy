@@ -1,7 +1,8 @@
 import pandas as pd
+from loguru import logger
+
 from ina_flask.ina_lib import db
 from ina_flask.ina_lib.db import DBSession, DbStats, DbStatus
-from loguru import logger
 
 db.init_db()
 
@@ -16,7 +17,7 @@ def get_statistics_of_video_link_openings():
 
     video_link_openings = (
         pd.DataFrame(results)
-        .groupby("youtube_dl")
+        .groupby("url")
         .count()
         .sort_values(by="id", ascending=False)["id"]
         .to_dict()
