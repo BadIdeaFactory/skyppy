@@ -121,6 +121,7 @@ class Skyppy_flask:
         video_length_in_minutes: int = config.option.max_video_lenght_in_minutes,
     ):
         posted = get_youtube_id_from_request(request)
+        logger.debug(f"get_youtube_id: {posted}")
 
         logger.debug("check video Lenght")
         status = Status(posted["id_youtube"])
@@ -161,7 +162,7 @@ class Skyppy_flask:
         if cache:
             return cache
 
-        logger.debug("start download")
+        logger.debug("start download ")
         segment = Segment(posted)
 
         # download status

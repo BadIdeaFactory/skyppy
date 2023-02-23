@@ -1,4 +1,4 @@
-import youtube_dl
+import yt_dlp as youtube_dl
 
 
 class CheckVideoLenght:

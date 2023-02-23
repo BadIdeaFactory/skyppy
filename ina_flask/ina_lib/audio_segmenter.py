@@ -1,15 +1,16 @@
 import os
 import sys
 
-from ina_flask.ina_tools import segmentation_to_json
 from inaSpeechSegmenter import Segmenter, seg2csv
+
+from ina_flask.ina_tools import segmentation_to_json
 
 
 def AudioSegmenter(input_file):
     # initialize segmenter and use on-it
     try:
         seg = Segmenter()
-        segmentation = seg(input_file)
+        segmentation = seg(input_file + ".mp3")
         segmentation_output = segmentation_to_json(segmentation)
         print(segmentation_output)
 

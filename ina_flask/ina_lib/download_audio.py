@@ -3,8 +3,8 @@ import json
 import os
 from random import randint
 
-import youtube_dl
 import yt_dlp
+
 from ina_flask.ina_lib.status import Status
 
 
