@@ -10,8 +10,44 @@ function getSArgument(url) {
     let s = url.match(/s=([^&]+)/)[1];
     return s;
   } catch (error) {
-    return "none";
+    return "avoid";
   }
+}
+
+/**
+ * get label from url attributes
+ * url
+ */
+function getSoundLabel(url) {
+  let getSArgumentString = getSArgument(url);
+  console.log(getSArgumentString);
+  function urlmatch(regex) {
+    try {
+      return url.match(regex)[1];
+    } catch (error) {
+      return "default label";
+    }
+  }
+
+  let soundLabel = {
+    l: ["lower voice", urlmatch(/l=([^&]+)/), getSArgumentString.includes("l")],
+    h: [
+      "higher voice",
+      urlmatch(/h=([^&]+)/),
+      getSArgumentString.includes("h"),
+    ],
+    q: ["quiet", urlmatch(/q=([^&]+)/), getSArgumentString.includes("q")],
+    n: ["noise", urlmatch(/n=([^&]+)/), getSArgumentString.includes("n")],
+    m: ["music", urlmatch(/m=([^&]+)/), getSArgumentString.includes("m")],
+  };
+
+  // Get the value of the "arg1" parameter
+
+  return soundLabel;
+}
+
+function renderSoundLabel(soundLabel) {
+  return JSON.stringify(soundLabel);
 }
 
 /**
@@ -59,9 +95,10 @@ function main(option, data) {
     let thumbnailTd = document.createElement("td");
 
     video.href = video_link_openings_element[0];
+    let soundLabel = getSoundLabel(video.href);
     video.innerText = `visualization: ${
       video_link_openings_element[1]
-    } + filter: ${getSArgument(video_link_openings_element[0])}`;
+    } + filter: ${renderSoundLabel(soundLabel)}`;
 
     let thumbnail_url = `https://img.youtube.com/vi/${getYouTubeId(
       video_link_openings_element[0]
