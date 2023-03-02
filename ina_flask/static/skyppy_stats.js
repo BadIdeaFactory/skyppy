@@ -1,3 +1,19 @@
+function getYouTubeId(url) {
+  //get the v argument from the url
+  let v = url.match(/v=([^&]+)/)[1];
+  return v;
+}
+
+function getSArgument(url) {
+  //get the s argument from the url
+  try {
+    let s = url.match(/s=([^&]+)/)[1];
+    return s;
+  } catch (error) {
+    return "none";
+  }
+}
+
 /**
  *
  * @param {object} option [contain url and other variables ]
@@ -42,11 +58,14 @@ function main(option, data) {
     let videoTd = document.createElement("td");
     let thumbnailTd = document.createElement("td");
 
-    video.href =
-      protocol + "//" + domain.host + "/#v=" + video_link_openings_element[0];
-    video.innerText = `visualization: ${video_link_openings_element[1]}`;
+    video.href = video_link_openings_element[0];
+    video.innerText = `visualization: ${
+      video_link_openings_element[1]
+    } + filter: ${getSArgument(video_link_openings_element[0])}`;
 
-    let thumbnail_url = `https://img.youtube.com/vi/${video_link_openings_element[0]}/maxresdefault.jpg`;
+    let thumbnail_url = `https://img.youtube.com/vi/${getYouTubeId(
+      video_link_openings_element[0]
+    )}/maxresdefault.jpg`;
     thumbnail.src = thumbnail_url;
     thumbnail.classList.add("responsive-img");
 

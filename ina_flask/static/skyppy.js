@@ -1,10 +1,29 @@
+function sendStats(server_url = "http://127.0.0.1:8000/", youTubeId = "") {
+  //get the url of the page
+  let current_url = window.location.href;
+  //send the url to the server to save it in the database with fetch post
+  fetch(server_url + "pages/getStats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      url: current_url,
+      youtube_id: youTubeId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    });
+}
+
 /**
  *
  * @param {object} option [contain url and other variables ]
  * @return {NULL}
  *
  */
-
 function main(option) {
   const api_url = option["server_url"];
   const max_video_lenght_in_minutes = option["max_video_lenght_in_minutes"];
@@ -531,7 +550,7 @@ function main(option) {
               player.toggleControls(false);
               player.currentTime = 0;
             });
-
+            sendStats(api_url, youTubeId);
             document.querySelector("#share").style.display = "block";
             //
           }

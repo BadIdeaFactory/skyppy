@@ -47,6 +47,14 @@ def api_stats():
     return jsonify(get_statistics_of_video_link_openings())
 
 
+@app.route("/pages/getStats", methods=["POST"])
+def getStats():
+    # flask get data from json request
+    data = request.get_json()
+    statistics(data["url"], data["youtube_id"])
+    return jsonify({"data": data})
+
+
 @app.route("/pages/stats")
 def page_stats():
     data = get_statistics_of_video_link_openings()
@@ -55,7 +63,7 @@ def page_stats():
 
 @app.route("/")
 def first_page():
-    logger.info(statistics().__dict__)
+
     return render_template("index.html", option=config.option.__dict__)
 
 
