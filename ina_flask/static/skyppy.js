@@ -539,7 +539,7 @@ function main(option) {
 
     let segmenterStr = "Segmenting";
     let downloadingStr = "Downloading";
-
+    let counter = false;
     const poll = setInterval(function () {
       fetch(`${api_url}api/status/${youTubeId}`)
         .then((response) => response.json())
@@ -550,7 +550,10 @@ function main(option) {
               player.toggleControls(false);
               player.currentTime = 0;
             });
-            sendStats(api_url, youTubeId);
+            if (counter === false) {
+              sendStats(api_url, youTubeId);
+              counter = true;
+            }
             document.querySelector("#share").style.display = "block";
             //
           }
