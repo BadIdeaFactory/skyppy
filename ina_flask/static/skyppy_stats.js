@@ -25,29 +25,46 @@ function getSoundLabel(url) {
     try {
       return url.match(regex)[1];
     } catch (error) {
-      return "default label";
+      return false;
     }
   }
 
   let soundLabel = {
-    l: ["lower voice", urlmatch(/l=([^&]+)/), getSArgumentString.includes("l")],
-    h: [
-      "higher voice",
-      urlmatch(/h=([^&]+)/),
-      getSArgumentString.includes("h"),
-    ],
-    q: ["quiet", urlmatch(/q=([^&]+)/), getSArgumentString.includes("q")],
-    n: ["noise", urlmatch(/n=([^&]+)/), getSArgumentString.includes("n")],
-    m: ["music", urlmatch(/m=([^&]+)/), getSArgumentString.includes("m")],
+    l: {
+      label: "lower voice",
+      custom: urlmatch(/l=([^&]+)/),
+      active: getSArgumentString.includes("l"),
+      css: "btn-lower",
+    },
+    h: {
+      label: "higher voice",
+      custom: urlmatch(/h=([^&]+)/),
+      active: getSArgumentString.includes("h"),
+      css: "btn-higher",
+    },
+    q: {
+      label: "quiet",
+      custom: urlmatch(/q=([^&]+)/),
+      active: getSArgumentString.includes("q"),
+      css: "btn-quiet",
+    },
+    n: {
+      label: "noise",
+      custom: urlmatch(/n=([^&]+)/),
+      active: getSArgumentString.includes("n"),
+      css: "btn-noise",
+    },
+    m: {
+      label: "music",
+      custom: urlmatch(/m=([^&]+)/),
+      active: getSArgumentString.includes("m"),
+      css: "btn-music",
+    },
   };
 
   // Get the value of the "arg1" parameter
 
   return soundLabel;
-}
-
-function renderSoundLabel(soundLabel) {
-  return JSON.stringify(soundLabel);
 }
 
 /**
@@ -58,13 +75,13 @@ function renderSoundLabel(soundLabel) {
  *
  */
 function main(option, data) {
-  console.log(option, data);
+  //console.log(option, data);
 
   let entries = Object.entries(data["video_link_openings"]);
   let sorted = entries.sort((a, b) => a[1] - b[1]);
   let video_link_openings = sorted.reverse();
   let total_requests = data["total_requests"];
-  console.log(total_requests, video_link_openings);
+  //console.log(total_requests, video_link_openings);
 
   let totalRequests = document.getElementById("total-requests");
   let skyppyedVideos = document.getElementById("skyppyed-videos");
@@ -72,44 +89,60 @@ function main(option, data) {
   totalRequests.innerHTML = total_requests;
 
   function render_video(video_link_openings_element) {
-    console.log(video_link_openings_element);
+    //console.log(video_link_openings_element);
     let li = document.createElement("li");
     let video = document.createElement("a");
-    let thumbnail = document.createElement("img");
 
-    let domain = new URL(location);
-    const protocol = domain.protocol;
-    // video.href =
-    //   protocol + "//" + domain.host + "/#v=" + video_link_openings_element[0];
-    // video.innerText = `${video.href} - visualization: ${video_link_openings_element[1]}`;
-    // let thumbnail_url = `https://img.youtube.com/vi/${video_link_openings_element[0]}/maxresdefault.jpg`;
-    // thumbnail.src = thumbnail_url;
-    // thumbnail.classList.add("responsive-img");
-
-    // li.appendChild(video);
-    // li.appendChild(thumbnail);
-    // return li;
+    //let domain = new URL(location);
+    //const protocol = domain.protocol;
 
     let tr = document.createElement("tr");
-    let videoTd = document.createElement("td");
     let thumbnailTd = document.createElement("td");
 
     video.href = video_link_openings_element[0];
     let soundLabel = getSoundLabel(video.href);
-    video.innerText = `visualization: ${
-      video_link_openings_element[1]
-    } + filter: ${renderSoundLabel(soundLabel)}`;
 
     let thumbnail_url = `https://img.youtube.com/vi/${getYouTubeId(
       video_link_openings_element[0]
     )}/maxresdefault.jpg`;
-    thumbnail.src = thumbnail_url;
-    thumbnail.classList.add("responsive-img");
 
-    videoTd.appendChild(video);
-    thumbnailTd.appendChild(thumbnail);
+    let thumbnail = `<a href="${video.href}"><img class="responsive-img" src="${thumbnail_url}" /></a>`;
+
+    thumbnail.src = thumbnail_url;
+
+    thumbnailTd.innerHTML = thumbnail;
     tr.appendChild(thumbnailTd);
-    tr.appendChild(videoTd);
+
+    Object.keys(soundLabel).forEach((els, val) => {
+      console.log(els);
+      console.log(val);
+      let el = soundLabel[els];
+      console.log(el);
+      let voice = document.createElement("td");
+      let vSelect = "deselected";
+      let vOpacity = "0.3";
+
+      if (el.active === true) {
+        vSelect = "";
+        vOpacity = "1";
+      }
+
+      let vLabel = el.label;
+      if (el.custom !== false) {
+        vLabel = decodeURI(el.custom);
+      }
+
+      voice.innerHTML = `<label><span style="white-space: nowrap" id="checkname-${els}" class="checkname ${vSelect}">${vLabel}</span><i id="${el.css}" style="height:0; opacity:${vOpacity};"></i></label>`;
+
+      tr.appendChild(voice);
+    });
+
+    let hits = document.createElement("td");
+    hits.innerHTML =
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>' +
+      video_link_openings_element[1];
+
+    tr.appendChild(hits);
 
     return tr;
   }
