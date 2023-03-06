@@ -104,7 +104,7 @@ function main(option, data) {
 
     let thumbnail_url = `https://img.youtube.com/vi/${getYouTubeId(
       video_link_openings_element[0]
-    )}/maxresdefault.jpg`;
+    )}/sddefault.jpg`;
 
     let thumbnail = `<a href="${video.href}"><img class="responsive-img" src="${thumbnail_url}" /></a>`;
 
