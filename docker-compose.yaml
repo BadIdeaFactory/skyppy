@@ -6,11 +6,12 @@ services:
       - flask
       - run
       - --host=0.0.0.0
+      - --port=8000
     environment:
       FLASK_TEMPLATES_AUTO_RELOAD: "True"
       FLASK_DEBUG: "on"
       FLASK_APP: ./ina_flask/main.py
     ports:
-      - 8080:8080
+      - 8000:8000
     volumes:
       - .:/app
